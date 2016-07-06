@@ -23,21 +23,19 @@
         </style>	
     </head>
     <body>
-
         <header class="container-fluid">		
 		
             <?php if ($sf_user->isAuthenticated()): ?>
              <table>  
 			<tr>
 			<td class="pull-left">
-			 <div>
-				
+			 <div>				
 			   </div>
 			   </td>
 			<td>
 			 <div class="pull-right" style="text-align: left;line-height:1.5em;color:black; font-size:13px">
                     <div><?php //echo date('Y-m-d'); ?></div>
-                    <div class="username">Bienvenido(a): <span style="font-weight:bold"><?php echo $sf_user->getNombreCompleto(); ?></span></div>								
+                    <div class="username">Welcome(a): <span style="font-weight:bold"><?php echo $sf_user->getNombreCompleto(); ?></span></div>								
                     <div style="font-size:15px" class="logout-element">
                         <a href="<?php echo url_for('@signout'); ?>"title="Click para salir del sistema">Cerrar Sesion</a> 					
 						</br>
@@ -259,8 +257,7 @@
             }
         })
     };
-}(jQuery));
-		 
+}(jQuery));		 
 
 		</script>
     </body>
