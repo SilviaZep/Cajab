@@ -1,0 +1,7 @@
+all:
+  layout: menu
+serviciosSuccess:
+  javascripts: [moment.min.js,servicios.js]
+asignarServiciosSuccess:
+  javascripts: [moment.min.js,asignarServicios.js]
+  

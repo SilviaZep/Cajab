@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+.search_container{ position: relative; display: -webkit-inline-box; margin-right: 20px; display: -moz-box;}
+.search_ic{ position: absolute; top: 7px; right: 8px; }
+.search_container > input{ font-size: 12px; padding-right: 25px; }
+
+.th_index{ font-weight: bold; color: #004483; }
+.td_actions{ text-align: center; }
+.txt_center{ text-align: center; }
+
+.expand-team{ background-color: #69b; }
+.badge{ cursor: pointer; }
+.badge:hover{ background-color: #fcf1f7; }
+.dataTable td {
+    font-size: 12px;
+}
+
+.dataTable tbody tr > .sorting_1{ background-color: transparent !important; }
+.dataTables_paginate{ float: none !important; text-align: center !important; }
+.dataTables_wrapper .dataTables_paginate .paginate_button{ cursor: pointer; border: none; padding: 0 0; border-radius: 18px; }
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover{ background: #ccc; border: none; color: #047 !important; }
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{ font-weight: 600; cursor: default; color: #047 !important; border: none; background: #ccc; border-radius: 18px; }
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{ font-weight: 600; cursor: default; color: #047 !important; border: none; background: #ccc; border-radius: 18px; }

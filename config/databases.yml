@@ -1,0 +1,16 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/07-Databases
+
+all:
+  default:
+    class: sfDoctrineDatabase
+    param:
+      dsn:      mysql:host=localhost;dbname=cajab
+      username: root
+      password: 
+  instituto:
+    class: sfDoctrineDatabase
+    param:
+      dsn:      mysql:host=centroeducativooriente.com;dbname=centrof3_io
+      username: centrof3_view
+      password: vista#43.Si

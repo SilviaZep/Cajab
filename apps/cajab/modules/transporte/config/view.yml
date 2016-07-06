@@ -1,0 +1,10 @@
+all:
+  layout: menu  
+horariosSuccess:
+  javascripts: [moment.min.js,horarios.js]
+listasRutasSuccess:
+  javascripts: [moment.min.js,listasRutas.js]  
+rutasSuccess:
+  javascripts: [moment.min.js,rutas.js]
+  
+                

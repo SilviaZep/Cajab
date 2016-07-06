@@ -1,0 +1,5 @@
+all:
+  layout: login
+indexSuccess:
+  javascripts: []
+  stylesheets: [structure.css]

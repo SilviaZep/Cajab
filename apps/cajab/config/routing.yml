@@ -1,0 +1,207 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/10-Routing
+
+# default rules
+homepage:
+  url:   /
+  param: { module: pagos, action: index }
+clientes_externos:
+  url:   /clientes-externos
+  param: { module: clientes, action: index }
+clientes_modificar:
+  url:   /clientes-modificar
+  param: { module: clientes, action: clientesModificar }
+agregar_clientes:
+  url:   /agregar-clientes
+  param: { module: clientes, action: agregarNuevoCliente }
+
+proveedores_list:
+  url:   /proveedores-list
+  param: { module: egresos, action: proveedores }
+proveedor_modificar:
+  url:   /proveedor-modificar
+  param: { module: egresos, action: ProveedorModificar }
+agregar_proveedor:
+  url:   /agregar-proveedor
+  param: { module: egresos, action: agregarNuevoProveedor }
+
+egresos_list:
+  url:   /egresos-list
+  param: { module: egresos, action: index }
+agregar_egresos:
+  url:   /agregar-egresos
+  param: { module: egresos, action: agregarEgreso }  
+  
+catalogo_conceptos_pago:
+  url:   /catalogo-conceptosPago
+  param: { module: egresos, action: catalogoConceptosPago } 
+
+egresos_imprimir:
+  url:   /imprimir-egresos
+  param: { module: egresos, action: imprimirEgresos } 
+egresos_excel:
+  url:   /excel-egresos
+  param: { module: egresos, action: excelEgresos }     
+#ParametroS
+empleados_lista:
+  url:   /empleados
+  param: { module: parametros, action: index }
+empleados_agregar:
+  url:   /nuevo-empleados
+  param: { module: parametros, action: agregarEmpleado }
+empleados_actualizar:
+  url:   /actualizar-empleados
+  param: { module: parametros, action: actualizarEmpleado }
+empleados_detalle:
+  url:   /detalle-empleados
+  param: { module: parametros, action: detalleEmpleado }
+empleados_password:
+  url:   /empleados-password
+  param: { module: parametros, action: nuevaPassword }
+
+#categorias
+categorias-list:
+  url:   /categorias-list
+  param: { module: parametros, action: categoriasList }
+categorias_agregar:
+  url:   /categorias-agregar
+  param: { module: parametros, action: agregarCategoria } 
+categorias_modificar:
+  url:   /categorias-modificar
+  param: { module: parametros, action: modificarCategoria } 
+
+#conceptos de cobro
+conceptos-list:
+  url:   /conceptos-list
+  param: { module: egresos, action: getConceptosList }
+conceptos_agregar:
+  url:   /conceptos-agregar
+  param: { module: egresos, action: agregarConceptos } 
+conceptos_modificar:
+  url:   /conceptos-modificar
+  param: { module: egresos, action: conceptoModificar } 
+
+  #SERVICIOS  *CORONEL*
+
+
+servicios:
+  url:   /servicios
+  param: { module: servicios, action: index }
+servicios_guardar_nuevo_servicio:
+  url:   /servicios_guardar_nuevo_servicio
+  param: { module: servicios, action: guardarNuevoServicio }
+servicios_listado_servicios:
+  url:   /servicios_listado_servicios
+  param: { module: servicios, action: listadoServicios }
+servicios_asignar_servicios:
+  url:   /servicios_asignar_servicios
+  param: { module: servicios, action: asignarServicios }
+servicios_eliminar_servicio:
+  url:   /servicios_eliminar_servicio
+  param: { module: servicios, action: eliminarServicio }
+servicios_listado_servicios_vigentes:
+  url:   /servicios_listado_servicios_vigentes
+  param: { module: servicios, action: listadoServiciosVigentes }
+servicios_listado_categorias_servicios:
+  url:   /servicios_listado_categorias_servicios
+  param: { module: servicios, action: listadoCategoriasServicios }
+servicios_listado_alumnos:
+  url:   /servicios_listado_alumnos
+  param: { module: servicios, action: listadoAlumnos } 
+servicios_listado_clientes_externos:
+  url:   /servicios_listado_clientes_externos
+  param: { module: servicios, action: listadoClientesExternos }
+servicios_asignar_alumnos_servicio:
+  url:   /servicios_asignar_alumnos_servicio
+  param: { module: servicios, action: asignarAlumnosServicio }
+servicios_asignar_clientes_servicio:
+  url:   /servicios_asignar_clientes_servicio
+  param: { module: servicios, action: asignarClientesServicio }    
+servicios_asignados_a_servicio:
+  url:   /servicios_asignados_a_servicio
+  param: { module: servicios, action: asignadosAServicio }    
+servicios_cambiar_estatus_servicio_cliente:
+  url:   /servicios_cambiar_estatus_servicio_cliente
+  param: { module: servicios, action:  cambiarEstatusServicioCliente }    
+  
+  
+
+
+#Fin SERVICIOS
+
+#TRANSPORTE  *CORONEL*
+
+
+transporte_horarios:
+  url:   /transporte_horarios
+  param: { module: transporte, action: horarios }
+transporte_rutas:
+  url:   /transporte_rutas
+  param: { module: transporte, action: rutas }
+transporte_listas_rutas:
+  url:   /transporte_listas_rutas
+  param: { module: transporte, action: listasRutas }
+transporte_listado_rutas:
+  url:   /transporte_listado_rutas
+  param: { module: transporte, action: listadoRutas }
+transporte_listado_rutas_activas:
+  url:   /transporte_listado_rutas_activas
+  param: { module: transporte, action: listadoRutasActivas }
+transporte_guardar_ruta:
+  url:   /transporte_guardar_ruta
+  param: { module: transporte, action: guardarRuta }  
+transporte_eliminar_ruta:
+  url:   /transporte_eliminar_ruta
+  param: { module: transporte, action: eliminarRuta } 
+transporte_horarios_alumnos:
+  url:   /transporte_horarios_alumnos
+  param: { module: transporte, action: horariosAlumnos } 
+transporte_cambiar_horario_alumno:
+  url:   /transporte_cambiar_horario_alumno
+  param: { module: transporte, action: cambiarHorarioAlumno }   
+transporte_alumnos_por_ruta_dia:
+  url:   /transporte_alumnos_por_ruta_dia
+  param: { module: transporte, action: alumnosPorRutaDia }     
+transporte_guardar_alumnos_eventuales:
+  url:   /transporte_guardar_alumnos_eventuales
+  param: { module: transporte, action: guardarAlumnosEventuales }  
+transporte_eliminar_alumno_eventual:
+  url:   /transporte_eliminar_alumno_eventual
+  param: { module: transporte, action: eliminarAlumnoEventual }  
+transporte_guardar_listas_por_ruta:
+  url:   /transporte_guardar_listas_por_ruta
+  param: { module: transporte, action: guardarListasPorRuta }   
+transporte_verificar_guardado:
+  url:   /transporte_verificar_guardado
+  param: { module: transporte, action: verificaGuardado } 
+
+  
+  
+#Fin TRANSPORTE
+
+
+#PAGOS
+pagos_pagar_servicio:
+  url:   /pagos_pagar_servicio
+  param: { module: pagos, action: pagarServicio } 
+
+
+
+#Fin pagos
+
+
+#SEGURIDAD  
+signin:
+  url:   /signin
+  param: { module: acceso, action: index }    
+signout:
+  url:   /signout
+  param: { module: acceso, action: signout } 
+# generic rules
+# please, remove them by adding more specific rules
+default_index:
+  url:   /:module
+  param: { action: index }
+
+default:
+  url:   /:module/:action/*

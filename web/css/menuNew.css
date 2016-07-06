@@ -1,0 +1,195 @@
+
+#menu {
+  color: #555;
+  background: url(../images/menu_back.png) 0 0 repeat;
+  overflow: auto;
+  z-index: 10;
+}
+
+.menu-opts .mt-i {
+    color: transparent;
+    color: rgba(160, 160, 160, 0.7);
+    text-shadow: 1px 4px 8px #ddd, 0 0 0 #000, 1px 4px 8px #ddd;
+    margin-left: 0px;
+    margin-right: 10px;
+    font-size: 1.6em;
+    width: 21px;
+    height: 21px;
+}
+
+.menu-opts .mt-si {
+    margin-left: 50px;
+}
+
+.menu-opts li {
+  background-color: #c2c2c2;
+  color: #686767;
+  /* border: solid 2px #E6E6E5; */
+  border: 0px;
+  margin-top:3px;
+}
+.menu-opts li:first-child {
+  border-radius: 0;
+}
+
+/* BUENA */
+.menu-opts li:hover {
+  /*background-color: #E9500E;*/
+  background-color: #ec6525;
+  border: 0px;
+  color: #fff;
+}
+
+.menu-opts li:hover span.mt-i{
+  background-color: #F18626;
+}
+
+.menu-opts li.active {
+  background-color: #ec6525;
+  color: #fff;
+}
+
+.list-group-sub-item {
+	padding: 3px;
+	font-size: 12px;
+}
+
+.menu-opts li.pre-active{
+  /* background-color: #F18626; 
+  color: #fff; */
+}
+
+.menu-opts li.active{
+  background-color: #ec6525;
+}
+/*
+.list-group-sub-item li.active{
+  background-color: #F18626;
+}*/
+
+.menu-opts .active span {
+  color: #fff;
+  text-shadow: none;
+}
+.menu-opts li a{
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+.menu-opts li span{
+  vertical-align: middle;
+}
+
+.menu-opts .mt-i {
+  background-color: #adadad;
+  width: 40px;
+  height: 40px;
+}
+
+.list-group .active .mt-i {
+  background-color: #F18626;
+  width: 40px;
+  height: 40px;
+}
+
+.list-group-item {
+	padding: 0px;
+}
+
+.menu-opts .badge {
+  float: right;
+  border-radius: 3px;
+  padding: 5px 7px;
+  color: #fff;
+  background-color: #e80;  
+}
+.menu-opts .active .badge {
+  color: #e80;  
+  background-color: #fff;
+  font-weight: bold;
+}
+
+#logo-menu {
+  width: 165px;
+  display: block;
+  margin: auto;
+  margin-top: 12px;
+}
+#boton-menu {
+  padding: 10px 15px;
+  margin: 0 -5px 0 -15px;
+  font-size: 1.5em;
+}
+.fotomas {
+  cursor: pointer;
+  /*background-image: url("../images/fotomas.svg");*/
+  background-size: 80px;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 130px;
+  height: 130px;
+  border: 0px;
+  /* border-radius: 3px; */
+  display: inline-block;
+  margin-top: 20px;
+}
+.fotomas img {
+  display: inline;
+  text-align: center;  
+}
+.user-tag {
+  color: #fff;
+  background-color: #226d8f;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  margin-top: 6px;
+}
+
+
+.menu-text-support{
+	font-size: 11px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.list-group-item:last-child {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.mt-i.i-dashboard { background-image: url(icons/icon-01.svg); }
+.active .mt-i.i-dashboard { background-image: url(icons/icon-01.svg); }
+.mt-i.i-student { background-image: url(icons/icon-02.svg); }
+.active .mt-i.i-student { background-image: url(icons/icon-02.svg); }
+.mt-i.i-learning { background-image: url(icons/icon-03.svg); }
+.active .mt-i.i-learning { background-image: url(icons/icon-03.svg); }
+.mt-i.i-docucenter { background-image: url(icons/icon-04.svg); }
+.active .mt-i.i-docucenter { background-image: url(icons/icon-04.svg); }
+.mt-i.i-compliance { background-image: url(icons/icon-05.svg); }
+.active .mt-i.i-compliance { background-image: url(icons/icon-05.svg); }
+.mt-i.i-sds { background-image: url(icons/icon-06.svg); }
+.active .mt-i.i-sds { background-image: url(icons/icon-06.svg); }
+.mt-i.i-organization { background-image: url(icons/icon-07.svg); }
+.active .mt-i.i-organization { background-image: url(icons/icon-07.svg); }
+.mt-i.i-notifications { background-image: url(icons/icon-08.svg); }
+.active .mt-i.i-notifications { background-image: url(icons/icon-08.svg); }
+.mt-i.i-helpdesk { background-image: url(icons/icon-09.svg); }
+.active .mt-i.i-helpdesk { background-image: url(icons/icon-09.svg); }
+.mt-i.i-report { background-image: url(icons/icon_reports.svg); }
+.active .mt-i.i-report { background-image: url(icons/icon_reports.svg); }
+
+
+.mt-i.i-department { background-image: url(icons/icon_department_bl.svg); }
+.mt-barnav-department { background-image: url(icons/icon_department.svg); height:20px; width:20px; }
+
+
+.mt-i.i-catalogs { background-image: url(icons/icon-catalog.svg); }
+.active .mt-i.i-catalogs { background-image: url(icons/icon-catalog.svg); }
+.mt-i.i-categorys { background-image: url(icons/icon-category.svg); }
+.active .mt-i.i-categorys { background-image: url(icons/icon-category.svg); }
+.mt-i.i-companies{ background-image: url(icons/icon-companies.svg); }
+.active .mt-i.i-companies { background-image: url(icons/icon-companies.svg); }
+.mt-i.i-positions { background-image: url(icons/icon-positions.svg); }
+.active .mt-i.i-positions { background-image: url(icons/icon-positions.svg); }
+.mt-i.i-switch { background-image: url(icons/icon_switch.svg); }
+.active .mt-i.i-switch { background-image: url(icons/icon_switch.svg); }
