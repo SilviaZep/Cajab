@@ -175,7 +175,9 @@ transporte_verificar_guardado:
   url:   /transporte_verificar_guardado
   param: { module: transporte, action: verificaGuardado } 
 
-  
+filtros_alumnos:
+  url:   /filtros-alumnos
+  param: { module: servicios, action: filtrosAlumnos }  
   
 #Fin TRANSPORTE
 
