@@ -18,14 +18,14 @@ class consultasActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
       //echo "hola"; die();
-     $this->setLayout('login');
+     $this->setLayout('index');
    
   }
   public function executeGetCiclosEscolares(sfWebRequest $request) {
-  	try {
+  	try {  		
   		if ($request->isMethod(sfWebRequest::POST)) {  			
   			 
-  			$ciclosEscolares = consultasBd::getCiclosEscolares();
+  			$ciclosEscolares = consultasInstituto::getCiclosEscolares();
   			return $this->sendJSON($ciclosEscolares);
   		}
   	} catch (Doctrine_Exception $e) {
@@ -38,7 +38,7 @@ class consultasActions extends sfActions
   		if ($request->isMethod(sfWebRequest::POST)) {
   			$idCiclo = $request->getParameter("idCiclo", 0);
   			 
-  			$listaGrados = consultasBd::getGradosByCiclo($idCiclo);
+  			$listaGrados = consultasInstituto::getGradosByCiclo($idCiclo);
   			return $this->sendJSON($listaGrados);
   		}
   	} catch (Doctrine_Exception $e) {
@@ -51,7 +51,7 @@ class consultasActions extends sfActions
   		if ($request->isMethod(sfWebRequest::POST)) {
   			$idGrado = $request->getParameter("idGrado", 0);
   
-  			$listaGrupos = consultasBd::getGruposByGrado($idSeccion, $idGrado, $idgrupo);
+  			$listaGrupos = consultasInstituto::getGruposByGrado($idSeccion, $idGrado, $idgrupo);
   			return $this->sendJSON($listaGrupos);
   		}
   	} catch (Doctrine_Exception $e) {
@@ -65,7 +65,7 @@ class consultasActions extends sfActions
   			$idGrado = $request->getParameter("idGrado", 0);
   			$idgrupo = $request->getParameter("idGrupo", 0);
   			 
-  			$listaAlumnosQuery = consultasBd::getListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo);
+  			$listaAlumnosQuery = consultasInstituto::getListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo);
   			return $this->sendJSON($listaAlumnosQuery);
   		}
   	} catch (Doctrine_Exception $e) {
