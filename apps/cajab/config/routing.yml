@@ -175,13 +175,24 @@ transporte_verificar_guardado:
   url:   /transporte_verificar_guardado
   param: { module: transporte, action: verificaGuardado } 
 
-filtros_alumnos:
-  url:   /filtros-alumnos
-  param: { module: servicios, action: filtrosAlumnos }  
+
   
 #Fin TRANSPORTE
 
-
+##Consultas
+filtros_ciclos:
+  url:   /filtros-ciclos
+  param: { module: consultas, action: getCiclosEscolares }  
+filtros_grados:
+  url:   /filtros-grados
+  param: { module: consultas, action: getGradosByCiclo } 
+filtros_grupos:
+  url:   /filtros-grupos
+  param: { module: consultas, action: getGruposByGrado } 
+filtros_alumnos:
+  url:   /filtros-alumnos
+  param: { module: consultas, action: filtrosAlumnos }   
+  
 #PAGOS
 pagos_pagar_servicio:
   url:   /pagos_pagar_servicio

@@ -427,19 +427,6 @@ class serviciosActions extends baseCajabProjectActions {
         }
     }
     
-    public function executeFiltrosAlumnos(sfWebRequest $request) {
-    	try {
-    		if ($request->isMethod(sfWebRequest::POST)) {
-    			$idSeccion = $request->getParameter("idSeccion", 0);
-    			$idGrado = $request->getParameter("idGrado", 0);
-    			$idgrupo = $request->getParameter("idGrupo", 0);
-    			
-    			$listaAlumnosQuery = consultasBd::getListaAlumnosFiltros($idSeccion, $idGrado, $idgrupo);
-    			return $this->sendJSON($listaAlumnosQuery);
-    		}
-    	} catch (Doctrine_Exception $e) {
-    		throw new sfException($e);
-    	}
-    }
+    
     
 }

@@ -461,4 +461,82 @@ class transporteActions extends baseCajabProjectActions {
     }
 
     //-------------------------------------------------------
+    
+    public function executeImprimirRutasAlumnos(sfWebRequest $request) {
+    	
+    			date_default_timezone_set('America/Mexico_City');
+    			$fechaActual = new DateTime();
+    	
+    			$fecha = $request->getParameter("fecha", 0);
+    			$idRuta = $request->getParameter("idRuta", 0);
+    			
+    	
+    			$diaSem = consultasBd::getDiaSemana($fecha);
+    			$diaSem = $diaSem[0]['dia'];
+    	
+    			$dia = '';
+    			switch ($diaSem) {
+    				case '0':
+    					$dia = "lun";
+    					break;
+    				case '1':
+    					$dia = "mar";
+    					break;
+    				case '2':
+    					$dia = "mie";
+    					break;
+    				case '3':
+    					$dia = "jue";
+    					break;
+    				case '4':
+    					$dia = "vie";
+    					break;
+    			}
+    	
+    			if ($dia == '') {
+    				echo "no hay servicio";
+    				die();
+    			}
+    	
+    			if(isset($idRuta) && $idRuta>0){
+    			$listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $idRuta);
+    			}else{
+    				$listaRutas = consultasBd::getListadoRutas((int) $limit, (int) $offset, $nombreRuta);
+    				$alumnosPorRuta[];
+    				for($i = 0; $i < sizeof ( $listaRutas ); $i ++) {
+    					$listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $idRuta);
+    					$alumnosPorRuta[]=$listaAlumnos[$i];
+    				}
+    		}
+    		
+    			 
+    	$pdf = new \FPDF ();
+		$pdf->AddPage ('L');		
+		$pdf->Ln ( 10 );
+		$pdf->SetFont ( 'Arial', 'B', 18 );
+		$pdf->SetTextColor ( 25, 47, 98 );
+		$pdf->Cell ( 190, 10, utf8_decode ( 'Rutas' ), 0, 1, 'R' );
+		$pdf->Ln ( 8 );
+		$pdf->Cell ( 190, 10, utf8_decode ( 'Ruta:' ), 0, 1, 'L' );
+		$pdf->Ln ( 8 );
+		$pdf->Cell ( 190, 10, utf8_decode ( 'Horario:' ), 0, 1, 'L' );
+		$pdf->Ln ( 8 );
+		
+		$pdf->SetFont ( 'Arial', '', 11 );
+		$pdf->SetTextColor ( 255, 255, 255 );
+		$pdf->SetFillColor ( 136, 138, 140 );
+		$pdf->Cell ( 0, 8, "Rutaas", 'B', 0, 'L', true );
+		$pdf->Ln ( 8 );
+		$pdf->SetFont ( 'Arial', '', 10 );
+		$pdf->SetTextColor ( 88, 89, 91 );
+		$pdf->Cell ( 0, 8, utf8_decode ( "Closure" . ": "   ), 'B', 0, 'L' );
+		$pdf->Ln ( 8 );
+		$pdf->Cell ( 0, 8, utf8_decode ( "Follow Date" . ": "  ), 'B', 0, 'L' );
+		$pdf->Ln ( 8 );
+		$pdf->Ln ( 6 );
+		
+		$response = new sfWebResponse ( $pdf->Output () );
+		$response->headers->set ( 'Content-Type', 'application/pdf' );
+		return $response;
+    }
 }
