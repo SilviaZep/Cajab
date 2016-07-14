@@ -31,7 +31,7 @@ class consultasInstituto
     		$condicion= $condicion.= " AND (nombre LIKE '%" . $alumno . "%' OR appat LIKE '%" . $alumno . "%' OR apmat LIKE '%" . $alumno . "%')";
     	}
     	
-    	$conn = Doctrine_Manager::getInstance()->getConnection("instituto"); //nombre de mi conexion 
+    	$conn = Doctrine_Manager::getInstance()->getConnection("default"); //nombre de mi conexion 
     	$sql = $campos. " FROM listaalumnob".$condicion."
           ORDER BY idalumno ASC;";
     	//ECHO $sql; die();
@@ -40,7 +40,7 @@ class consultasInstituto
     }
     
     public static function getGradosByCiclo($cicloEscolar){
-    	$conn = Doctrine_Manager::getInstance()->getConnection("instituto");
+    	$conn = Doctrine_Manager::getInstance()->getConnection("default");
     	$sql = "select DISTINCT idgrado ,grado
                 from listagrupo WHERE idcicloescolar=".$cicloEscolar;
     	$st = $conn->execute($sql);
@@ -48,14 +48,14 @@ class consultasInstituto
     }
     
     public static function getGruposByGrado($grado,$cicloEscolar){
-    	$conn = Doctrine_Manager::getInstance()->getConnection("instituto");
+    	$conn = Doctrine_Manager::getInstance()->getConnection("default");
     	$sql = "select idgrupo,nombre 
                 from listagrupo WHERE idcicloescolar=".$cicloEscolar." AND grado='".$grado."'";
     	$st = $conn->execute($sql);
     	return $st->fetchAll(PDO::FETCH_ASSOC);
     }  
     public static function getCiclosEscolares(){
-    	$conn = Doctrine_Manager::getInstance()->getConnection("instituto");
+    	$conn = Doctrine_Manager::getInstance()->getConnection("default");
     	$sql = "select idcicloescolar ,nombre,estatus 
                 from listacicloescolar WHERE estatus IN ('Activo','Programacion')";
     	$st = $conn->execute($sql);
