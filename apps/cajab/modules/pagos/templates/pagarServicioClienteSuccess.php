@@ -1,6 +1,6 @@
 
 
-<div ng-app="pagarServicio" ng-controller="pagarServicioController">      
+<div ng-app="pagarServicioCliente" ng-controller="pagarServicioClienteController">      
 
     <div ng-show="detalle == false">
         <div class="panel panel-default">
@@ -9,10 +9,10 @@
 
                     <div class="form-group">
                         <label for="exampleInputName2">Nombre: </label>
-                        <input type="text" ng-model="nombreAlumno" class="form-control" placeholder="nombre del alumno">
+                        <input type="text" ng-model="nombreCliente" class="form-control" placeholder="nombre del cliente">
                     </div>
 
-                    <button type="button" ng-click="listadoAlumnos(1)" class="btn btn-default">
+                    <button type="button" ng-click="listadoClientes(1)" class="btn btn-default">
                         <i class="fa fa-refresh" aria-hidden="true"></i>
                     </button>                
 
@@ -25,7 +25,7 @@
             <table  class="table table-striped table-bordered">
                 <thead>
 
-                <td colspan="4" class="info"><h4><span class="label label-primary">{{numeroRegistrosAlumnos}}</span> Alumnos
+                <td colspan="2" class="info"><h4><span class="label label-primary">{{numeroRegistrosClientes}}</span> Clientes
 
 
                     </h4>
@@ -34,18 +34,16 @@
 
                 <tr>
                     <th class="col-md-2">Nombre</th>
-                    <th class="col-md-1">Grado</th>                        
-                    <th class="col-md-1">Grupo</th>                        
+                                  
                     <th class="col-md-1"></th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="a in listaAlumnos">
+                    <tr ng-repeat="a in listaClientes">
 
 
                         <td>{{a.nombre}}</td>
-                        <td>{{a.grado}}</td>  
-                        <td>{{a.grupo}}</td>      
+                        
                         <td>
                             <span >
                                 <button type="button" class="btn btn-info btn-xs" ng-click="contraer(a.id)">
@@ -58,16 +56,16 @@
                 </tbody>
             </table>
             <br />
-            <nav ng-show="numPaginasAlumnos > 1">
+            <nav ng-show="numPaginasClientes > 1">
                 <ul class="pagination">                             
-                    <li><a ng-click="iniAlumnos()">INI</a></li>
-                    <li><a ng-click="anteriorAlumnos()">Ant</a ></li>
-                    <li  ng-repeat="x in paginadoAlumnos">
-                        <a ng-click="listadoAlumnos(x)" ng-if="x == paginaActualAlumnos" ><span class="badge">{{x}}</span></a>
-                        <a ng-click="listadoAlumnos(x)" ng-if="x != paginaActualAlumnos" >{{x}}</a>
+                    <li><a ng-click="iniClientes()">INI</a></li>
+                    <li><a ng-click="anteriorClientes()">Ant</a ></li>
+                    <li  ng-repeat="x in paginadoClientes">
+                        <a ng-click="listadoClientes(x)" ng-if="x == paginaActualClientes" ><span class="badge">{{x}}</span></a>
+                        <a ng-click="listadoClientes(x)" ng-if="x != paginaActualClientes" >{{x}}</a>
                     </li>
-                    <li><a ng-click="siguienteAlumnos()">Sig</a></li>
-                    <li><a ng-click="endAlumnos()">FIN</a></li>
+                    <li><a ng-click="siguienteClientes()">Sig</a></li>
+                    <li><a ng-click="endClientes()">FIN</a></li>
                 </ul>
             </nav>
 
@@ -80,7 +78,7 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="10" class="info"><h3>Servicios del alumno <small>(Pagando)</small><button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3></td>
+            <td colspan="10" class="info"><h3>Servicios del Cliente <small>(Pagando)</small><button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3></td>
 
             <tr>
                 <th class="col-md-2">Categoria</th>
@@ -150,7 +148,7 @@
 
                     <td align="right" class="success"><h4><b>{{totalPrecio| currency}}</b></h4></td>
                     <td align="right" class="success"><h4><b>{{totalAbonado| currency}}</b></h4></td>
-                    <td></td>
+                    <td class="success"></td>                    
                     <td align="right" class="success"><h4><b>{{totalAdeuda| currency}}</b></h4></td>
                     <td align="right" class="success"><h4><b>{{totalPagara| currency}}</b></h4></td>
                     <td align="center" class="success">
