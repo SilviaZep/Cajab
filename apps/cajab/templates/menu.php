@@ -112,6 +112,7 @@
                                    <b class="caret"></b>
                                </a>
                                <ul class="dropdown-menu">
+                                   <li id="mConceptos"><a href="<?php echo url_for("@filtros_alumnos"); ?>"><i class="fa fa-cogs"> Consultas</i></a></li>
 								   <li id="mConceptos"><a href="<?php echo url_for("@conceptos-list"); ?>"><i class="fa fa-cogs"> Conceptos de pago</i></a></li>    
 								   <li id="mCategorias"><a href="<?php echo url_for("@categorias-list"); ?>"><i class="fa fa-cogs"> Categorias</i></a></li>   
                                    <li id="mClientes"><a href="<?php echo url_for("@clientes_externos");?>"><i class="fa fa-users"> Clientes Externos</i></a></li>  

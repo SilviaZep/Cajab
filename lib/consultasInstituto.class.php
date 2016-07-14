@@ -5,49 +5,44 @@ Clase para hacer consultas a la bd
 
 class consultasInstituto
 {
-  
-        public static function getListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo){
-    	$conn = Doctrine_Manager::getInstance()->getConnection("instituto");
+ //SISE DESEA USAR EL LOCAL  CAMBIAR
+ //'instutto' en $conn = Doctrine_Manager::getInstance()->getConnection("instituto"); por 'default'  
+        public static function getListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo,$alumno){    	
     	
-    	$conn = Doctrine_Manager::getInstance()->getConnection("default");
-    	$campos = "select idAlumno,nombre,seccion";
+    	$campos = "select idalumno,nombre,appat,apmat";
     		
-    	$condicion = " WHERE alumnoActivo=1 AND";
+    	$condicion = " WHERE alumnoactivo=1 ";
     	
     	if(isset($idCiclo) && !empty($idCiclo))
     	{
-    		$condicion= $condicion.= " AND os.id_cliente ='".$idCiclo."'";
+    		$condicion= $condicion.= " AND idcicloescolar ='".$idCiclo."'";
     	}
     	
     	if(isset($idGrado) && !empty($idGrado))
     	{
-    		$condicion= $condicion.= " AND sos.idGrado ='".$idGrado."'";
+    		$condicion= $condicion.= " AND idgrado ='".$idGrado."'";
     	}
     	if(isset($idgrupo) && !empty($idgrupo))
     	{
-    		$condicion= $condicion.= " AND sos.idgrupo ='".$idgrupo."'";
+    		$condicion= $condicion.= " AND idgrupo ='".$idgrupo."'";
+    	}
+    	if(isset($alumno) && !empty($alumno))
+    	{
+    		$condicion= $condicion.= " AND (nombre LIKE '%" . $alumno . "%' OR appat LIKE '%" . $alumno . "%' OR apmat LIKE '%" . $alumno . "%')";
     	}
     	
-    	$conn = Doctrine_Manager::getInstance()->getConnection("instituto"); //nombre de mi conexion
-    	$sql = $campos. " FROM from ListaAlumnoB".$condicion."
-          ORDER BY idAlumno ASC;";
-    	// ECHO $sql; die();
+    	$conn = Doctrine_Manager::getInstance()->getConnection("instituto"); //nombre de mi conexion 
+    	$sql = $campos. " FROM listaalumnob".$condicion."
+          ORDER BY idalumno ASC;";
+    	//ECHO $sql; die();
     	$st = $conn->execute($sql);
-    	
-    	return $st->fetchAll(PDO::FETCH_ASSOC);    	 
+    	return $st->fetchAll(PDO::FETCH_ASSOC);  	 
     }
     
-    public static function getSecciones($cicloEscolar){
-    	$conn = Doctrine_Manager::getInstance()->getConnection("instituto");
-    	$sql = "select idseccion ,seccion
-                from ListaCicloEscolar WHERE idcicloescolar=".$cicloEscolar;
-    	$st = $conn->execute($sql);
-    	return $st->fetchAll(PDO::FETCH_ASSOC);
-    }
     public static function getGradosByCiclo($cicloEscolar){
     	$conn = Doctrine_Manager::getInstance()->getConnection("instituto");
     	$sql = "select DISTINCT idgrado ,grado
-                from ListaGrupo WHERE idseccion=".$seccion." AND idcicloescolar=".$cicloEscolar;
+                from listagrupo WHERE idcicloescolar=".$cicloEscolar;
     	$st = $conn->execute($sql);
     	return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -55,21 +50,14 @@ class consultasInstituto
     public static function getGruposByGrado($grado,$cicloEscolar){
     	$conn = Doctrine_Manager::getInstance()->getConnection("instituto");
     	$sql = "select idgrupo,nombre 
-                from ListaGrupo WHERE idcicloescolar=".$cicloEscolar." AND idgrado=".$grado;
+                from listagrupo WHERE idcicloescolar=".$cicloEscolar." AND grado='".$grado."'";
     	$st = $conn->execute($sql);
     	return $st->fetchAll(PDO::FETCH_ASSOC);
-    }
-    public static function getSecciones(){
-    	$conn = Doctrine_Manager::getInstance()->getConnection("instituto");
-    	$sql = "select nombre,seccion as total
-                from ListaAlumnoB";
-    	$st = $conn->execute($sql);
-    	return $st->fetchAll(PDO::FETCH_ASSOC);
-    }
+    }  
     public static function getCiclosEscolares(){
     	$conn = Doctrine_Manager::getInstance()->getConnection("instituto");
     	$sql = "select idcicloescolar ,nombre,estatus 
-                from ListaCicloEscolar WHERE estatus IN ('Activo','Programacion')";
+                from listacicloescolar WHERE estatus IN ('Activo','Programacion')";
     	$st = $conn->execute($sql);
     	return $st->fetchAll(PDO::FETCH_ASSOC);
     }

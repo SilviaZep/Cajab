@@ -23,11 +23,11 @@ class consultasActions extends sfActions
   }
   public function executeGetCiclosEscolares(sfWebRequest $request) {
   	try {  		
-  		if ($request->isMethod(sfWebRequest::POST)) {  			
-  			 
-  			$ciclosEscolares = consultasInstituto::getCiclosEscolares();
+  				
+  			//trae los ciclos porgramados y activos
+  			$ciclosEscolares = consultasInstituto::getCiclosEscolares();  			
   			return $this->sendJSON($ciclosEscolares);
-  		}
+  		
   	} catch (Doctrine_Exception $e) {
   		throw new sfException($e);
   	}
@@ -35,39 +35,42 @@ class consultasActions extends sfActions
   
   public function executeGetGradosByCiclo(sfWebRequest $request) {
   	try {
-  		if ($request->isMethod(sfWebRequest::POST)) {
-  			$idCiclo = $request->getParameter("idCiclo", 0);
-  			 
-  			$listaGrados = consultasInstituto::getGradosByCiclo($idCiclo);
+  		
+  			// hace un select distict de los grados por cada ciclo
+  			$idCiclo = $request->getParameter("idCiclo", 0);  			 
+  			$listaGrados = consultasInstituto::getGradosByCiclo($idCiclo);  			
   			return $this->sendJSON($listaGrados);
-  		}
+  	
   	} catch (Doctrine_Exception $e) {
   		throw new sfException($e);
   	}
   }
   
   public function executeGetGruposByGrado(sfWebRequest $request) {
-  	try {
-  		if ($request->isMethod(sfWebRequest::POST)) {
-  			$idGrado = $request->getParameter("idGrado", 0);
+  	try {  		
+  			//consigue los grupos por el nombre del grado y por el ciclo
+  			$grado = $request->getParameter("grado", 0);
+  			$idCiclo = $request->getParameter("idCiclo", 0);
   
-  			$listaGrupos = consultasInstituto::getGruposByGrado($idSeccion, $idGrado, $idgrupo);
+  			$listaGrupos = consultasInstituto::getGruposByGrado($grado, $idCiclo);  			
   			return $this->sendJSON($listaGrupos);
-  		}
+  		
   	} catch (Doctrine_Exception $e) {
   		throw new sfException($e);
   	}
   }
   public function executeFiltrosAlumnos(sfWebRequest $request) {
   	try {
-  		if ($request->isMethod(sfWebRequest::POST)) {
+  		
   			$idCiclo = $request->getParameter("idCiclo", 0);
   			$idGrado = $request->getParameter("idGrado", 0);
   			$idgrupo = $request->getParameter("idGrupo", 0);
+  			$alumno = $request->getParameter("alumno", 0); //busca por alumno se deben bloquear las demas opciones
   			 
-  			$listaAlumnosQuery = consultasInstituto::getListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo);
+  			$listaAlumnosQuery = consultasInstituto::getListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo,$alumno);
+  			//print_r($listaAlumnosQuery);die();
   			return $this->sendJSON($listaAlumnosQuery);
-  		}
+  	
   	} catch (Doctrine_Exception $e) {
   		throw new sfException($e);
   	}
