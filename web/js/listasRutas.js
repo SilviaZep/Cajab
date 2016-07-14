@@ -34,13 +34,35 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
             }).then(
                     function (r) {
                         var flag = r.data.guardado;//true.- guardado/false.- no guardado
-                        if (fechaHoy == fechaIni&&flag==false) {                            
+                        if (fechaHoy == fechaIni && flag == false) {
                             $scope.flagGuardar = true;
                         } else {
                             $scope.flagGuardar = false;
                         }
                     }
             );
+
+        };
+
+
+        $scope.imprimirListasRutasAlumnos = function () {
+
+            var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');
+            /* $http({
+             method: 'POST',
+             url: 'transporte_imprimir_rutas_alumnos',
+             params: {
+             fecha: fechaIni
+             }
+             }).then(
+             function (r) {
+             
+             }
+             );*/
+            window.open('transporte_imprimir_rutas_alumnos?fecha=' + fechaIni, '_blank');
+            return;
+
+
 
         };
 

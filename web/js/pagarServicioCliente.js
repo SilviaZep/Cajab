@@ -1,8 +1,8 @@
-var app = angular.module('pagarServicio', []);
+var app = angular.module('pagarServicioCliente', []);
 
-app.controller('pagarServicioController', ['$http', '$scope', function ($http, $scope) {
+app.controller('pagarServicioClienteController', ['$http', '$scope', function ($http, $scope) {
 
-        $scope.paginaActualAlumnos = 1;
+        $scope.paginaActualClientes = 1;
         $scope.detalle = false;
         $scope.hoy = new Date();
         $scope.globalFormaPago = "EFECTIVO";
@@ -46,7 +46,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
         $scope.guardarPago = function () {
 
             var idServicios = "";
-            var idAlumno = "";
+            var idCliente = "";
             var montosPagara = "";
             var formaPagos = "";
 
@@ -67,7 +67,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                     }
 
                     idServicios += $scope.listaServicios[i].id + ",";
-                    idAlumno = $scope.listaServicios[i].id_alumno;
+                    idCliente = $scope.listaServicios[i].id_cliente;
                     montosPagara += $scope.listaServicios[i].pagara + ",";
                     formaPagos += $scope.listaServicios[i].formaPago + ",";
 
@@ -78,9 +78,9 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
             $http({
                 method: 'POST',
-                url: 'pagos_pagos_servicios_alumno',
+                url: 'pagos_pagos_servicios_cliente',
                 params: {
-                    idAlumno: idAlumno,
+                    idCliente: idCliente,
                     idServicios:idServicios,
                     montosPagara:montosPagara,
                     formaPagos:formaPagos
@@ -88,7 +88,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
             }).then(
                     function (r) {
                        alert(r.data.mensaje);
-                       $scope.listadoServicios(parseInt(idAlumno));
+                       $scope.listadoServicios(parseInt(idCliente));
                         $scope.totalPagara = 0;
                         $scope.numPagos = 0;
                     }
@@ -132,7 +132,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
         //-----------------Listado de servicios--------------
 
-        $scope.listadoServicios = function (idAlumno) {
+        $scope.listadoServicios = function (idCliente) {
             $scope.totalPrecio = 0;
             $scope.totalAbonado = 0;
             $scope.totalAdeuda = 0;
@@ -140,9 +140,9 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
             $http({
                 method: 'POST',
-                url: 'pagos_servicios_pagando_alumno',
+                url: 'pagos_servicios_pagando_cliente',
                 params: {
-                    idAlumno: idAlumno
+                    idCliente: idCliente
                 }
             }).then(
                     function (r) {
@@ -173,29 +173,29 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
 
 
-        $scope.listadoAlumnos = function (pag) {
+        $scope.listadoClientes = function (pag) {
             if (!pag) {
                 pag = 1;
             }
 
 
-            $scope.paginaActualAlumnos = pag;
+            $scope.paginaActualClientes = pag;
             var numRegistros = 10;//se cambio para que no salga el paginador
             var max = numRegistros;
-            var offset = numRegistros * ($scope.paginaActualAlumnos - 1);
+            var offset = numRegistros * ($scope.paginaActualClientes - 1);
 
-            var nombreAlumno = $scope.nombreAlumno;
+            var nombreCliente = $scope.nombreCliente;
 
 
 
 
             $http({
                 method: 'POST',
-                url: 'servicios_listado_alumnos',
+                url: 'servicios_listado_clientes_externos',
                 params: {
                     offset: offset,
                     limit: max,
-                    nombreAlumno: nombreAlumno,
+                    nombreCliente: nombreCliente,
                     idServicio: 0,
                     idCategoria: 0,
                     tipoTransporte: 0
@@ -203,71 +203,71 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                 }
             }).then(
                     function (r) {
-                        $scope.listaAlumnos = r.data.listaAlumnos;
-                        $scope.numeroRegistrosAlumnos = r.data.total;
-                        $scope.paginadorAlumnos(max);
+                        $scope.listaClientes = r.data.listaClientes;
+                        $scope.numeroRegistrosClientes = r.data.total;
+                        $scope.paginadorClientes(max);
                     }
             );
 
         };
 
-        $scope.paginadorAlumnos = function (max) {
-            $scope.numPaginasAlumnos = Math.ceil($scope.numeroRegistrosAlumnos / max);
-            $scope.tamanioPaginadorAlumnos = 10;//estatico
-            $scope.primeraAlumnos = 1;//numero de pagina de inicioAlumnos
-            $scope.ultimaAlumnos = $scope.numPaginasAlumnos;//numero de pagina de finAlumnos 
+         $scope.paginadorClientes = function (max) {
+            $scope.numPaginasClientes = Math.ceil($scope.numeroRegistrosClientes / max);
+            $scope.tamanioPaginadorClientes = 10;//estatico
+            $scope.primeraClientes = 1;//numero de pagina de inicioClientes
+            $scope.ultimaClientes = $scope.numPaginasClientes;//numero de pagina de finClientes 
 
-            $scope.inicioAlumnos = $scope.paginaActualAlumnos - ($scope.tamanioPaginadorAlumnos / 2);
-            if ($scope.inicioAlumnos < $scope.primeraAlumnos) {
-                $scope.inicioAlumnos = $scope.primeraAlumnos;
+            $scope.inicioClientes = $scope.paginaActualClientes - ($scope.tamanioPaginadorClientes / 2);
+            if ($scope.inicioClientes < $scope.primeraClientes) {
+                $scope.inicioClientes = $scope.primeraClientes;
             }
-            //$scope.finAlumnos = $scope.paginaActualAlumnos + ($scope.tamanioPaginadorAlumnos / 2);
-            $scope.finAlumnos = $scope.inicioAlumnos + $scope.tamanioPaginadorAlumnos;
-            if ($scope.finAlumnos > $scope.ultimaAlumnos) {
-                $scope.finAlumnos = $scope.ultimaAlumnos;
-                $scope.inicioAlumnos = $scope.ultimaAlumnos - $scope.tamanioPaginadorAlumnos;
-                if ($scope.inicioAlumnos < $scope.primeraAlumnos) {
-                    $scope.inicioAlumnos = $scope.primeraAlumnos;
+            //$scope.finClientes = $scope.paginaActualClientes + ($scope.tamanioPaginadorClientes / 2);
+            $scope.finClientes = $scope.inicioClientes + $scope.tamanioPaginadorClientes;
+            if ($scope.finClientes > $scope.ultimaClientes) {
+                $scope.finClientes = $scope.ultimaClientes;
+                $scope.inicioClientes = $scope.ultimaClientes - $scope.tamanioPaginadorClientes;
+                if ($scope.inicioClientes < $scope.primeraClientes) {
+                    $scope.inicioClientes = $scope.primeraClientes;
                 }
 
             }
-            var i = 0;
-            $scope.paginadoAlumnos = [];
-            for (i = $scope.inicioAlumnos; i <= $scope.finAlumnos; i++) {
-                $scope.paginadoAlumnos.push(i);
+
+            $scope.paginadoClientes = [];
+            for (i = $scope.inicioClientes; i <= $scope.finClientes; i++) {
+                $scope.paginadoClientes.push(i);
             }
         };
 
-        $scope.anteriorAlumnos = function () {
-            $scope.paginaActualAlumnos = $scope.paginaActualAlumnos - 1;
-            if ($scope.paginaActualAlumnos < $scope.primeraAlumnos) {
-                $scope.paginaActualAlumnos = $scope.primeraAlumnos;
+        $scope.anteriorClientes = function () {
+            $scope.paginaActualClientes = $scope.paginaActualClientes - 1;
+            if ($scope.paginaActualClientes < $scope.primeraClientes) {
+                $scope.paginaActualClientes = $scope.primeraClientes;
             }
-            $scope.listadoAlumnos($scope.paginaActualAlumnos);
+            $scope.listadoClientes($scope.paginaActualClientes);
         };
-        $scope.siguienteAlumnos = function () {
-            $scope.paginaActualAlumnos = $scope.paginaActualAlumnos + 1;
-            if ($scope.paginaActualAlumnos > $scope.ultimaAlumnos) {
-                $scope.paginaActualAlumnos = $scope.primeraAlumnos;
+        $scope.siguienteClientes = function () {
+            $scope.paginaActualClientes = $scope.paginaActualClientes + 1;
+            if ($scope.paginaActualClientes > $scope.ultimaClientes) {
+                $scope.paginaActualClientes = $scope.primeraClientes;
             }
-            $scope.listadoAlumnos($scope.paginaActualAlumnos);
+            $scope.listadoClientes($scope.paginaActualClientes);
 
 
         };
 
-        $scope.iniAlumnos = function () {
-            $scope.paginaActualAlumnos = $scope.primeraAlumnos;
-            $scope.listadoAlumnos($scope.paginaActualAlumnos);
+        $scope.iniClientes = function () {
+            $scope.paginaActualClientes = $scope.primeraClientes;
+            $scope.listadoClientes($scope.paginaActualClientes);
         };
-        $scope.endAlumnos = function () {
-            $scope.paginaActualAlumnos = $scope.ultimaAlumnos;
-            $scope.listadoAlumnos($scope.paginaActualAlumnos);
+        $scope.endClientes = function () {
+            $scope.paginaActualClientes = $scope.ultimaClientes;
+            $scope.listadoClientes($scope.paginaActualClientes);
         };
 
 
 
 
-        $scope.listadoAlumnos();
+        $scope.listadoClientes();
 
 
         //-----------------Fin listado Alumnos---------------
