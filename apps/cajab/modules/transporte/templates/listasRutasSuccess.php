@@ -20,7 +20,7 @@
                     <i class="fa fa-floppy-o" aria-hidden="true"> Guardar Listas</i> 
                 </button>
 
-                <button ng-show="flagGuardar == false" type="button" class="btn btn-default pull-right" ng-click="">
+                <button ng-show="flagGuardar == false" type="button" class="btn btn-default pull-right" ng-click="imprimirListasRutasAlumnos()">
                     <i class="fa fa-print" aria-hidden="true"> Imprimir Listas</i>
                 </button>
 
