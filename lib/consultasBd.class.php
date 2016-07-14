@@ -1,101 +1,105 @@
 <?php
-/*
-Clase para hacer consultas a la bd
-*/
 
-class consultasBd
-{
-  
+/*
+  Clase para hacer consultas a la bd
+ */
+
+class consultasBd {
+
     public static function getClientesExternosList() {
-   $conn = Doctrine_Manager::getInstance()->getConnection("default");               
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT *
-          FROM clientes_externos";        
-    $sql = sprintf($sql);  
-    $st = $conn->execute($sql);  
-    return $st->fetchAll(PDO::FETCH_ASSOC);    
-  }  
-  
-   public static function getProveedoresList() {
-   $conn = Doctrine_Manager::getInstance()->getConnection("default");               
+          FROM clientes_externos";
+        $sql = sprintf($sql);
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getProveedoresList() {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT *
-          FROM proveedores";        
-    $sql = sprintf($sql);  
-    $st = $conn->execute($sql);  
-    return $st->fetchAll(PDO::FETCH_ASSOC);    
-  }  
-  
-  public static function getEgresossList() {
-   $conn = Doctrine_Manager::getInstance()->getConnection("default");               
+          FROM proveedores";
+        $sql = sprintf($sql);
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getEgresossList() {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT e.*,p.nombre as proveedor, cc.concepto, s.nombre as servicio
 		FROM
 		egresos e
 		JOIN servicio s ON (s.id = e.id_servicio)
 		JOIN proveedores p ON (p.id= e.id_proveedor)
 		JOIN conceptos_cobro cc ON (cc.id=e.id_concepto)
-		ORDER BY s.fecha_registro DESC";        
-    $sql = sprintf($sql);  
-    $st = $conn->execute($sql);  
-    return $st->fetchAll(PDO::FETCH_ASSOC);    
-  }  
-  
-  /*  public static function getListadoServicios() {
-		 $valor="Silvia";
+		ORDER BY s.fecha_registro DESC";
+        $sql = sprintf($sql);
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /*  public static function getListadoServicios() {
+      $valor="Silvia";
+      $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+      $sql = "select * from servicio
+      where activo=1
+      and fecha_evento >='2016-05-08'
+      and fecha_evento <='2016-05-08'
+      and nombre like '%" . $valor . "%'
+      limit 1;";
+      // echo $sql; die();
+      $st = $conn->execute($sql);
+      return $st->fetchAll(PDO::FETCH_ASSOC);
+      } */
+
+    public static function getServiciosList() {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
-      
-        $sql = "select * from servicio 
-                where activo=1
-                and fecha_evento >='2016-05-08'
-                and fecha_evento <='2016-05-08'
-                and nombre like '%" . $valor . "%'
-                limit 1;";
-		// echo $sql; die();         
-    $st = $conn->execute($sql);  
-    return $st->fetchAll(PDO::FETCH_ASSOC);  
-    }*/
-  
- public static function getServiciosList() {
-   $conn = Doctrine_Manager::getInstance()->getConnection("default");               
         $sql = "SELECT *
-          FROM servicio";        
-    $sql = sprintf($sql);  
-    $st = $conn->execute($sql);  
-    return $st->fetchAll(PDO::FETCH_ASSOC);    
-  }  
- 
-  public static function getConceptoPagoList($id) {
-   $conn = Doctrine_Manager::getInstance()->getConnection("default");               
+          FROM servicio";
+        $sql = sprintf($sql);
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getConceptoPagoList($id) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT *
           FROM conceptos_cobro 
-		  WHERE id_servicio=%d";        
-    $sql = sprintf($sql,$id);  
-    $st = $conn->execute($sql);  
-    return $st->fetchAll(PDO::FETCH_ASSOC);    
-  }  
-   public static function getUsuarios() {
-   $conn = Doctrine_Manager::getInstance()->getConnection("default");               
+		  WHERE id_servicio=%d";
+        $sql = sprintf($sql, $id);
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getUsuarios() {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT *
-          FROM usuario ORDER by nombre_completo ASC";        
-    $sql = sprintf($sql);  
-    $st = $conn->execute($sql);  
-    return $st->fetchAll(PDO::FETCH_ASSOC);    
-  } 
-public static function getConceptoList() {
-   $conn = Doctrine_Manager::getInstance()->getConnection("default");               
+          FROM usuario ORDER by nombre_completo ASC";
+        $sql = sprintf($sql);
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getConceptoList() {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT cc.*,s.nombre as servicio
           FROM conceptos_cobro  cc
 		  JOIN servicio s ON (s.id = cc.id_servicio)
-		  ORDER BY s.nombre";  
-      $sql = sprintf($sql); 		  
-     $st = $conn->execute($sql);  
-    return $st->fetchAll(PDO::FETCH_ASSOC);    
-  }    
- public static function getCategoriasList() {
+		  ORDER BY s.nombre";
+        $sql = sprintf($sql);
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getCategoriasList() {
 
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT * FROM categoria_servicio ORDER BY categoria";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+
 //--------------Consultas Coronel----------------
 
     public static function getListadoServicios($fechaIni, $fechaFin, $lim, $off, $nombreServicio, $categoria) {
@@ -617,24 +621,99 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-     public static function getGenerarHorariosActivos() {
+
+    public static function getGenerarHorariosActivos() {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
-          date_default_timezone_set('America/Mexico_City');
+        date_default_timezone_set('America/Mexico_City');
         $fechaActual = new DateTime();
         $fechaActual = $fechaActual->format('Y-m-d');
         $sql = " call sp_generar_horarios_transporte_activo('{$fechaActual}');";
         $conn->execute($sql);
         return true;
     }
+
 //Queryrs insituto	
-	 public static function getAlumnosInstituto() {
+    public static function getAlumnosInstituto() {
         $conn = Doctrine_Manager::getInstance()->getConnection("instituto");
         $sql = "select nombre,seccion as total
                 from ListaAlumnoB";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
-       
     }
-       
+
+    //-------------------------------------Querys del estado de cuenta--------------------------------
+
+
+    public static function getServiciosPagandoAlumno($idAlumno) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "
+select s.nombre as servicio,s.aplica_parcialidad,cs.descripcion as categoria,a.nombre as cliente,
+s.precio,
+ifnull((select sum(sp.monto) from servicio_pago sp 
+where sp.id_alumno=sc.id_alumno 
+and sp.id_servicio=sc.id),0) as abonado,
+(select count(*) from servicio_pago sp 
+where sp.id_alumno=sc.id_alumno 
+and sp.id_servicio=sc.id) as no_pagos,
+sc.*
+from 
+servicio_cliente sc,servicio s,categoria_servicio cs,alumno_pruebas a
+where sc.id_servicio=s.id 
+and s.categoria_id=cs.id
+and sc.id_alumno=a.id
+and sc.id_alumno={$idAlumno}
+and sc.estatus=1;";
+
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getActualizarEstatusServicioCliente($idServicioCliente) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        date_default_timezone_set('America/Mexico_City');
+        $sql = " call sp_actualizar_estatus_servicio_cliente({$idServicioCliente});";
+        $conn->execute($sql);
+        return true;
+    }
+
+    public static function getDetallesPagosServicioCliente($idServicioCliente) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "
+
+select fecha_pago,forma_pago,monto from servicio_pago sp 
+where  sp.id_servicio={$idServicioCliente}";
+
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    //*********************************************Cliente servicios
+
+
+
+    public static function getServiciosPagandoCliente($idCliente) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "
+select s.nombre as servicio,s.aplica_parcialidad,cs.descripcion as categoria,a.nombre as cliente,
+s.precio,
+ifnull((select sum(sp.monto) from servicio_pago sp 
+where sp.id_cliente=sc.id_cliente 
+and sp.id_servicio=sc.id),0) as abonado,
+(select count(*) from servicio_pago sp 
+where sp.id_cliente=sc.id_cliente 
+and sp.id_servicio=sc.id) as no_pagos,
+sc.*
+from 
+servicio_cliente sc,servicio s,categoria_servicio cs,clientes_externos a
+where sc.id_servicio=s.id 
+and s.categoria_id=cs.id
+and sc.id_cliente=a.id
+and sc.id_cliente={$idCliente}
+and sc.estatus=1;";
+
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+//----------------------------------Fin Querys estado de cuenta--------------------------------------
 }
