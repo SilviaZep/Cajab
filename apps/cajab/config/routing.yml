@@ -170,10 +170,13 @@ transporte_eliminar_alumno_eventual:
   param: { module: transporte, action: eliminarAlumnoEventual }  
 transporte_guardar_listas_por_ruta:
   url:   /transporte_guardar_listas_por_ruta
-  param: { module: transporte, action: guardarListasPorRuta }   
+  param: { module: transporte, action: guardarListasPorRuta } 
 transporte_verificar_guardado:
   url:   /transporte_verificar_guardado
   param: { module: transporte, action: verificaGuardado } 
+transporte_imprimir_rutas_alumnos:
+  url:   /transporte_imprimir_rutas_alumnos
+  param: { module: transporte, action: imprimirRutasAlumnos } 
 
 
   
@@ -197,7 +200,24 @@ filtros_alumnos:
 pagos_pagar_servicio:
   url:   /pagos_pagar_servicio
   param: { module: pagos, action: pagarServicio } 
-
+pagos_pagar_servicio_cliente:
+  url:   /pagos_pagar_servicio_cliente
+  param: { module: pagos, action: pagarServicioCliente } 
+pagos_servicios_pagando_alumno:
+  url:   /pagos_servicios_pagando_alumno
+  param: { module: pagos, action: serviciosPagandoAlumno } 
+pagos_pagos_servicios_alumno:
+  url:   /pagos_pagos_servicios_alumno
+  param: { module: pagos, action: pagoServiciosAlumno } 
+pagos_detalles_pagos_servicio_cliente:
+  url:   /pagos_detalles_pagos_servicio_cliente
+  param: { module: pagos, action: detallesPagosServicioCliente } 
+pagos_servicios_pagando_cliente:
+  url:   /pagos_servicios_pagando_cliente
+  param: { module: pagos, action: serviciosPagandoCliente } 
+pagos_pagos_servicios_cliente:
+  url:   /pagos_pagos_servicios_cliente
+  param: { module: pagos, action: pagoServiciosCliente } 
 
 
 #Fin pagos
