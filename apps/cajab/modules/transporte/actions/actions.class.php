@@ -501,7 +501,7 @@ class transporteActions extends baseCajabProjectActions {
     			if(isset($idRuta) && $idRuta>0){
     			$listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $idRuta);
     			}else{
-    				$listaRutas = consultasBd::getListadoRutas((int) $limit, (int) $offset, $nombreRuta);
+    				$listaRutas = consultasBd::getListadoRutas((int) 100, (int) 0, "");
     				$alumnosPorRuta=[];
     				for($i = 0; $i < sizeof ( $listaRutas ); $i ++) {
     					$listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $idRuta);
