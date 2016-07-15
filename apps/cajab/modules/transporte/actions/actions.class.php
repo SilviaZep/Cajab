@@ -468,8 +468,9 @@ class transporteActions extends baseCajabProjectActions {
     			$fechaActual = new DateTime();
     	
     			$fecha = $request->getParameter("fecha", 0);
-    			$idRuta = $request->getParameter("idRuta", 0);
-    			
+    			$idRuta = $request->getParameter("idRuta");
+    			//$idRuta=0;
+    			//$fecha=date('Y-m-d');
     	
     			$diaSem = consultasBd::getDiaSemana($fecha);
     			$diaSem = $diaSem[0]['dia'];
@@ -497,46 +498,82 @@ class transporteActions extends baseCajabProjectActions {
     				echo "no hay servicio";
     				die();
     			}
-    	
+    			$pdf = new \FPDF ();
+    			//$pdf->AddPage ('L');
+    			$pdf->AddPage ();
+    			$pdf->Ln ( 10 );
+    			$pdf->SetFont ( 'Arial', '', 18 );
+    			$pdf->SetTextColor ( 88, 89, 91 );
+    			$pdf->Cell ( 0, 8, utf8_decode ( 'Listado de Rutas' ), 'B', 0, 'C' );
+    			$pdf->Ln ( 15 );
+    			
     			if(isset($idRuta) && $idRuta>0){
     			$listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $idRuta);
+    			$rutaDetail = Doctrine::getTable('Ruta')->find((int) $idRuta);
+    			//print_r($listaAlumnos);die();    			
+    			$pdf->SetFont ( 'Arial', '', 10 );
+    			$pdf->SetTextColor ( 88, 89, 91 );
+    			$pdf->Cell ( 50, 8, utf8_decode ( 'Ruta: '.$rutaDetail->getNombre() ), 'B', 0, 'L' );
+    			$pdf->Cell ( 50, 8, utf8_decode ('Horario: '.$rutaDetail->getHorario() ), 'B', 0, 'L' );
+    			$pdf->Cell ( 40, 8, utf8_decode ('Fecha: '.$fecha ), 'B', 0, 'L' );
+    			$pdf->Cell ( 50, 8, utf8_decode ('Chofer: '.$rutaDetail->getChofer() ), 'B', 0, 'L' );
+    			$pdf->Ln ( 8 );
+    			$this->pdfListaAlumnos ( $pdf,$listaAlumnos);
+    			
     			}else{
-    				$listaRutas = consultasBd::getListadoRutas((int) 100, (int) 0, "");
-    				$alumnosPorRuta=[];
+    				$listaRutas = consultasBd::getListaRutasActivas();
+    				
+    				$y=1;
     				for($i = 0; $i < sizeof ( $listaRutas ); $i ++) {
-    					$listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $idRuta);
-    					$alumnosPorRuta[]=$listaAlumnos[$i];
+    					$rutaDetail = Doctrine::getTable('Ruta')->find((int) $listaRutas[$i]['id']);
+    					
+    					$listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $listaRutas[$i]['id']); 
+    					$pdf->SetFont ( 'Arial', '', 18 );
+		    			$pdf->SetTextColor ( 88, 89, 91 );
+		    			$pdf->Cell ( 0, 8, utf8_decode ( '' ), 'B', 0, 'C' );
+		    			$pdf->Ln ( 10 );
+		    			$pdf->SetFont ( 'Arial', '', 10 );
+		    			$pdf->SetTextColor ( 88, 89, 91 );
+		    			$pdf->Cell ( 50, 8, utf8_decode ( 'Ruta: '.$rutaDetail->getNombre() ), 'B', 0, 'L' );
+		    			$pdf->Cell ( 50, 8, utf8_decode ('Horario: '.$rutaDetail->getHorario() ), 'B', 0, 'L' );
+		    			$pdf->Cell ( 40, 8, utf8_decode ('Fecha: '.$fecha ), 'B', 0, 'L' );
+		    			$pdf->Cell ( 50, 8, utf8_decode ('Chofer: '.$rutaDetail->getChofer() ), 'B', 0, 'L' );
+		    			$pdf->Ln ( 15 );
+		    			$this->pdfListaAlumnos ( $pdf,$listaAlumnos);
+		    			$y++;
+		    			if($y <= sizeof ( $listaRutas )){
+		    			$pdf->AddPage ();
+		    			}
     				}
+    				
     		}
     		
     			 
-    	$pdf = new \FPDF ();
-		$pdf->AddPage ('L');		
-		$pdf->Ln ( 10 );
-		$pdf->SetFont ( 'Arial', 'B', 18 );
-		$pdf->SetTextColor ( 25, 47, 98 );
-		$pdf->Cell ( 190, 10, utf8_decode ( 'Rutas' ), 0, 1, 'R' );
-		$pdf->Ln ( 8 );
-		$pdf->Cell ( 190, 10, utf8_decode ( 'Ruta:' ), 0, 1, 'L' );
-		$pdf->Ln ( 8 );
-		$pdf->Cell ( 190, 10, utf8_decode ( 'Horario:' ), 0, 1, 'L' );
-		$pdf->Ln ( 8 );
-		
-		$pdf->SetFont ( 'Arial', '', 11 );
-		$pdf->SetTextColor ( 255, 255, 255 );
-		$pdf->SetFillColor ( 136, 138, 140 );
-		$pdf->Cell ( 0, 8, "Rutaas", 'B', 0, 'L', true );
-		$pdf->Ln ( 8 );
-		$pdf->SetFont ( 'Arial', '', 10 );
-		$pdf->SetTextColor ( 88, 89, 91 );
-		$pdf->Cell ( 0, 8, utf8_decode ( "Closure" . ": "   ), 'B', 0, 'L' );
-		$pdf->Ln ( 8 );
-		$pdf->Cell ( 0, 8, utf8_decode ( "Follow Date" . ": "  ), 'B', 0, 'L' );
-		$pdf->Ln ( 8 );
-		$pdf->Ln ( 6 );
-		
 		$response = new sfWebResponse ( $pdf->Output () );
 		$response->headers->set ( 'Content-Type', 'application/pdf' );
 		return $response;
+    }
+    
+    private function pdfListaAlumnos($pdf,$listaAlumnos) {
+    	$pdf->SetFont ( 'Arial', 'B', 11 );
+    	$pdf->SetTextColor ( 255, 255, 255 );
+    	$pdf->SetFillColor ( 136,138,140);
+    	$pdf->Cell ( 20, 8, utf8_decode ( "#"   ), 'B', 0, 'L',true );
+    	$pdf->Cell ( 110, 8, utf8_decode ( "Alumno"  ), 'B', 0, 'L',true );
+    	$pdf->Cell ( 30, 8, utf8_decode ( "Tipo" ), 'B', 0, 'L',true );
+    	$pdf->Cell ( 30, 8, utf8_decode ( "Observaciones   " . ": "  ), 'B', 0, 'L',true );
+    	$pdf->Ln ( 8 );
+    	
+    	$pdf->SetFont ( 'Arial', '', 10 );
+    	$pdf->SetTextColor ( 88, 89, 91 );
+    	$y=1;
+    	for($x = 0; $x < sizeof ( $listaAlumnos ); $x ++) {
+    		$pdf->Cell ( 20, 8, utf8_decode ( $y   ), 'B', 0, 'L' );
+    		$pdf->Cell ( 110, 8, utf8_decode ( $listaAlumnos[$x]['nombre']  ), 'B', 0, 'L' );
+    		$pdf->Cell ( 30, 8, utf8_decode ( $listaAlumnos[$x]['tipo_transporte']  ), 'B', 0, 'L' );
+    		$pdf->Cell ( 30, 8, utf8_decode ( ""  ), 'B', 0, 'L' );
+    		$y++;
+    		$pdf->Ln ( 8 );
+    	}
     }
 }
