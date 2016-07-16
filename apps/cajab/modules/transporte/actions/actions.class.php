@@ -521,7 +521,7 @@ class transporteActions extends baseCajabProjectActions {
     			$this->pdfListaAlumnos ( $pdf,$listaAlumnos);
     			
     			}else{
-    				$listaRutas = consultasBd::getListaRutasActivas();
+    				$listaRutas = consultasBd::getListadoRutas((int) 100, (int) 0, "");
     				
     				$y=1;
     				for($i = 0; $i < sizeof ( $listaRutas ); $i ++) {
@@ -537,7 +537,7 @@ class transporteActions extends baseCajabProjectActions {
 		    			$pdf->Cell ( 50, 8, utf8_decode ( 'Ruta: '.$rutaDetail->getNombre() ), 'B', 0, 'L' );
 		    			$pdf->Cell ( 50, 8, utf8_decode ('Horario: '.$rutaDetail->getHorario() ), 'B', 0, 'L' );
 		    			$pdf->Cell ( 40, 8, utf8_decode ('Fecha: '.$fecha ), 'B', 0, 'L' );
-		    			$pdf->Cell ( 50, 8, utf8_decode ('Chofer: '.$rutaDetail->getChofer() ), 'B', 0, 'L' );
+		    			$pdf->Cell ( 50, 8, utf8_decode ('Conductor: '.$rutaDetail->getChofer() ), 'B', 0, 'L' );
 		    			$pdf->Ln ( 15 );
 		    			$this->pdfListaAlumnos ( $pdf,$listaAlumnos);
 		    			$y++;
