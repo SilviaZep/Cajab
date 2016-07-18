@@ -86,24 +86,64 @@
         <div class="panel-body">
             <h3>{{aliasServicio}} <button type="button" class="btn btn-default btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3><br/>
 
+
             <div  class="col-md-12">
-                <div ng-show="tipoClienteS == 1 || tipoClienteS == 3" class="col-md-4">
+                <div ng-show="tipoClienteS == 1 || tipoClienteS == 3" class="col-md-12">
                     <form class="form-inline">
                         <div class="form-group">
-                            <label for="exampleInputName2">Nombre: </label><br/>
+                            <label for="exampleInputName2">Ciclo:</label>
+                            <select class="form-control" ng-model="selCiclo">
+                                <option value="0">TODOS</option>
+                                <option value="2">CICLO 1</option>
+                                <option value="3">CICLO 2</option>
+                                <option value="4">CICLO 3</option>
+                                <option value="5">CICLO 4</option>
+                            </select>
+                        </div>
+                        <div ng-show="selCiclo > 0" class="form-group">
+                            <label for="exampleInputName2">Grado:</label>
+                            <select  class="form-control" ng-model="selGrado">
+                                <option value="0">TODOS</option>
+                                <option value="2">grado 1</option>
+                                <option value="3">grado 2</option>
+                                <option value="4">grado 3</option>
+                                <option value="5">grado 4</option>
+                            </select >
+
+                        </div>
+                        <div ng-show="selCiclo > 0 && selGrado > 0" class="form-group">
+                            <label for="exampleInputName2">Grupo:</label>
+                            <select  class="form-control" ng-model="selGrupo">
+                                <option value="0">TODOS</option>
+                                <option value="2">grupo 1</option>
+                                <option value="3">grupo 2</option>
+                                <option value="4">grupo 3</option>
+                                <option value="5">grupo 4</option>
+                            </select>
+                        </div>
+
+                    </form><br/>
+                </div>
+            </div>
+
+            <div  class="col-md-12">
+                <div class="col-md-4">
+                    <form ng-show="tipoClienteS == 1 || tipoClienteS == 3" class="form-inline">
+                        <div class="form-group">
+                            <label for="exampleInputName2">Nombre: </label>
                             <input type="text" ng-model="nombreAlumno" class="form-control" placeholder="Nombre del Alumno"><br/>
                         </div>
                         <button class="btn btn-default" ng-click="listadoAlumnos()" title="Actualizar">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
-                        </button>
+                        </button> 
                     </form>
                 </div>
 
-                <div ng-show="tipoClienteS == 2 || tipoClienteS == 3" class="col-md-4">
+                <div  class="col-md-4">
 
-                    <form class="form-inline">
+                    <form ng-show="tipoClienteS == 2 || tipoClienteS == 3" class="form-inline">
                         <div class="form-group">
-                            <label for="exampleInputName2">Nombre: </label><br/>
+                            <label for="exampleInputName2">Nombre: </label>
                             <input type="text" ng-model="nombreCliente" class="form-control" placeholder="Nombre del Cliente"><br/>
                         </div>
                         <button class="btn btn-default" ng-click="listadoClientes()" title="Actualizar">
@@ -117,7 +157,7 @@
 
                     <form class="form-inline">
                         <div class="form-group">
-                            <label for="exampleInputName2">Nombre: </label><br/>
+                            <label for="exampleInputName2">Nombre: </label>
                             <input type="text" ng-model="nombreAsignado" class="form-control" placeholder="Nombre"><br/>
                         </div>
                         <button class="btn btn-default" ng-click="listadoAsignados()" title="Actualizar">
@@ -128,130 +168,136 @@
                 </div>
             </div>
 
-            <div ng-show="tipoClienteS == 1 || tipoClienteS == 3" class="col-md-4">
-                <table  class="table table-striped table-bordered">
-                    <thead>
+            <div class="col-md-4">
+                <div  ng-show="tipoClienteS == 1 || tipoClienteS == 3">
+                    <table  class="table table-striped table-bordered">
+                        <thead>
 
-                    <td colspan="8" class="info"><h4><span class="label label-primary">{{numeroRegistrosAlumnos}}</span> Alumnos
-                            <button class="btn btn-info pull-right" ng-click="guardarAlumnos()"
-                                    title="Asignar servicio a los Alumnos seleccionados">
-                                <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosAlumnos}}</span>
-                            </button>
+                        <td colspan="8" class="info"><h4><span class="label label-primary">{{numeroRegistrosAlumnos}}</span> Alumnos
+                                <button class="btn btn-info pull-right" ng-click="guardarAlumnos()"
+                                        title="Asignar servicio a los Alumnos seleccionados">
+                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosAlumnos}}</span>
+                                </button>
 
-                        </h4>
+                            </h4>
 
-                    </td>
+                        </td>
 
-                    <tr>
-                        <th class="col-md-2">Nombre</th>
-                        <th class="col-md-1">Grado</th>                        
-                        <th class="col-md-1">Grupo</th>                        
-                        <th class="col-md-1">
-                            <span ng-show="!todosAlumnos">
-                                <button type="button" class="btn btn-success btn-xs" ng-click="seleccionarTodosAlumnos(true)">
-                                    <i class="fa fa-plus"></i> Todos
-                                </button></span>
-                            <span ng-show="todosAlumnos">
-                                <button class="btn btn-danger btn-xs" ng-click="seleccionarTodosAlumnos(false)"><i class="fa fa-times" aria-hidden="true"></i> Ninguno</button>
-                            </span>
-
-
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="a in listaAlumnos">
-
-
-                            <td>{{a.nombre}}</td>
-                            <td>{{a.grado}}</td>  
-                            <td>{{a.grupo}}</td>      
-                            <td>
-                                <span ng-show="!a.seleccionado">
-                                    <button type="button" class="btn btn-success btn-xs" ng-click="seleccionarAlumno(a, true)">
-                                        <i class="fa fa-plus"></i> Agregar
+                        <tr>
+                            <th class="col-md-2">Nombre</th>
+                            <th class="col-md-1">Grado</th>                        
+                            <th class="col-md-1">Grupo</th>                        
+                            <th class="col-md-1">
+                                <span ng-show="!todosAlumnos">
+                                    <button type="button" class="btn btn-success btn-xs" ng-click="seleccionarTodosAlumnos(true)">
+                                        <i class="fa fa-plus"></i> Todos
                                     </button></span>
-                                <span ng-show="a.seleccionado">
-                                    <button class="btn btn-danger btn-xs" ng-click="seleccionarAlumno(a, false)">
-                                        <i class="fa fa-times" aria-hidden="true"></i> Quitar</button>
+                                <span ng-show="todosAlumnos">
+                                    <button class="btn btn-danger btn-xs" ng-click="seleccionarTodosAlumnos(false)"><i class="fa fa-times" aria-hidden="true"></i> Ninguno</button>
                                 </span>
-                            </td>
+
+
+                            </th>
                         </tr>
-                    </tbody>
-                </table>
-                <br />
-                <nav ng-show="numPaginasAlumnos > 1">
-                    <ul class="pagination">                             
-                        <li><a ng-click="iniAlumnos()">INI</a></li>
-                        <li><a ng-click="anteriorAlumnos()">Ant</a ></li>
-                        <li  ng-repeat="x in paginadoAlumnos">
-                            <a ng-click="listadoAlumnos(x)" ng-if="x == paginaActualAlumnos" ><span class="badge">{{x}}</span></a>
-                            <a ng-click="listadoAlumnos(x)" ng-if="x != paginaActualAlumnos" >{{x}}</a>
-                        </li>
-                        <li><a ng-click="siguienteAlumnos()">Sig</a></li>
-                        <li><a ng-click="endAlumnos()">FIN</a></li>
-                    </ul>
-                </nav>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="a in listaAlumnos">
+
+
+                                <td>{{a.nombre}}</td>
+                                <td>{{a.grado}}</td>  
+                                <td>{{a.grupo}}</td>      
+                                <td>
+                                    <span ng-show="!a.seleccionado">
+                                        <button type="button" class="btn btn-success btn-xs" ng-click="seleccionarAlumno(a, true)">
+                                            <i class="fa fa-plus"></i> Agregar
+                                        </button></span>
+                                    <span ng-show="a.seleccionado">
+                                        <button class="btn btn-danger btn-xs" ng-click="seleccionarAlumno(a, false)">
+                                            <i class="fa fa-times" aria-hidden="true"></i> Quitar</button>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <nav ng-show="numPaginasAlumnos > 1">
+                        <ul class="pagination">                             
+                            <li><a ng-click="iniAlumnos()">INI</a></li>
+                            <li><a ng-click="anteriorAlumnos()">Ant</a ></li>
+                            <li  ng-repeat="x in paginadoAlumnos">
+                                <a ng-click="listadoAlumnos(x)" ng-if="x == paginaActualAlumnos" ><span class="badge">{{x}}</span></a>
+                                <a ng-click="listadoAlumnos(x)" ng-if="x != paginaActualAlumnos" >{{x}}</a>
+                            </li>
+                            <li><a ng-click="siguienteAlumnos()">Sig</a></li>
+                            <li><a ng-click="endAlumnos()">FIN</a></li>
+                        </ul>
+                    </nav>
+                </div>
 
 
             </div>
-            <div ng-show="tipoClienteS == 2 || tipoClienteS == 3" class="col-md-4">
-                <table class="table table-striped table-bordered">
-                    <thead>
-
-                    <td colspan="8" class="info"><h4><span class="label label-primary">{{numeroRegistrosClientes}}</span> Clientes
-                            <button class="btn btn-info pull-right" ng-click="guardarClientes()"
-                                    title="Asignar servicio a los clientes seleccionados">
-                                <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosClientes}}</span>
-                            </button>
-                        </h4>
-                    </td>
-
-                    <tr>
-                        <th class="col-md-2">Nombre</th>                      
-                        <th class="col-md-1">
-                            <span ng-show="!todosClientes">
-                                <button type="button" class="btn btn-success btn-xs" ng-click="seleccionarTodosClientes(true)">
-                                    <i class="fa fa-plus"></i> Todos
-                                </button></span>
-                            <span ng-show="todosClientes">
-                                <button class="btn btn-danger btn-xs" ng-click="seleccionarTodosClientes(false)"><i class="fa fa-times" aria-hidden="true"></i> Ninguno</button>
-                            </span>
+            <div  class="col-md-4">
+                <div ng-show="tipoClienteS == 2 || tipoClienteS == 3">
 
 
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="c in listaClientes">
-                            <td>{{c.nombre}}</td>
-                            <td>
-                                <span ng-show="!c.seleccionado">
-                                    <button type="button" class="btn btn-success btn-xs" ng-click="seleccionarCliente(c, true)">
-                                        <i class="fa fa-plus"></i> Agregar
+                    <table class="table table-striped table-bordered">
+                        <thead>
+
+                        <td colspan="8" class="info"><h4><span class="label label-primary">{{numeroRegistrosClientes}}</span> Clientes
+                                <button class="btn btn-info pull-right" ng-click="guardarClientes()"
+                                        title="Asignar servicio a los clientes seleccionados">
+                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosClientes}}</span>
+                                </button>
+                            </h4>
+                        </td>
+
+                        <tr>
+                            <th class="col-md-2">Nombre</th>                      
+                            <th class="col-md-1">
+                                <span ng-show="!todosClientes">
+                                    <button type="button" class="btn btn-success btn-xs" ng-click="seleccionarTodosClientes(true)">
+                                        <i class="fa fa-plus"></i> Todos
                                     </button></span>
-                                <span ng-show="c.seleccionado">
-                                    <button class="btn btn-danger btn-xs" ng-click="seleccionarCliente(c, false)"><i class="fa fa-times" aria-hidden="true"></i> Quitar</button>
+                                <span ng-show="todosClientes">
+                                    <button class="btn btn-danger btn-xs" ng-click="seleccionarTodosClientes(false)"><i class="fa fa-times" aria-hidden="true"></i> Ninguno</button>
                                 </span>
-                            </td>
 
 
+                            </th>
                         </tr>
-                    </tbody>
-                </table>
-                <br />
-                <nav ng-show="numPaginasClientes > 1">
-                    <ul class="pagination">                             
-                        <li><a ng-click="iniClientes()">INI</a></li>
-                        <li><a ng-click="anteriorClientes()">Ant</a ></li>
-                        <li  ng-repeat="x in paginadoClientes">
-                            <a ng-click="listadoClientes(x)" ng-if="x == paginaActualClientes" ><span class="badge">{{x}}</span></a>
-                            <a ng-click="listadoClientes(x)" ng-if="x != paginaActualClientes" >{{x}}</a>
-                        </li>
-                        <li><a ng-click="siguienteClientes()">Sig</a></li>
-                        <li><a ng-click="endClientes()">FIN</a></li>
-                    </ul>
-                </nav>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="c in listaClientes">
+                                <td>{{c.nombre}}</td>
+                                <td>
+                                    <span ng-show="!c.seleccionado">
+                                        <button type="button" class="btn btn-success btn-xs" ng-click="seleccionarCliente(c, true)">
+                                            <i class="fa fa-plus"></i> Agregar
+                                        </button></span>
+                                    <span ng-show="c.seleccionado">
+                                        <button class="btn btn-danger btn-xs" ng-click="seleccionarCliente(c, false)"><i class="fa fa-times" aria-hidden="true"></i> Quitar</button>
+                                    </span>
+                                </td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <nav ng-show="numPaginasClientes > 1">
+                        <ul class="pagination">                             
+                            <li><a ng-click="iniClientes()">INI</a></li>
+                            <li><a ng-click="anteriorClientes()">Ant</a ></li>
+                            <li  ng-repeat="x in paginadoClientes">
+                                <a ng-click="listadoClientes(x)" ng-if="x == paginaActualClientes" ><span class="badge">{{x}}</span></a>
+                                <a ng-click="listadoClientes(x)" ng-if="x != paginaActualClientes" >{{x}}</a>
+                            </li>
+                            <li><a ng-click="siguienteClientes()">Sig</a></li>
+                            <li><a ng-click="endClientes()">FIN</a></li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
 
 
