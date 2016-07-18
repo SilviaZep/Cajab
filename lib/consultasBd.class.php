@@ -200,6 +200,14 @@ class consultasBd {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+    public static function getListaRutasActivas() {
+    	$conn = Doctrine_Manager::getInstance()->getConnection("default");
+    
+    	$sql = "select
+    	* from ruta";
+    	$st = $conn->execute($sql);
+    	return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public static function getTotalListadoRutas($nombreRuta) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
