@@ -50,7 +50,7 @@ class consultasInstituto
     public static function getGruposByGrado($grado,$cicloEscolar){
     	$conn = Doctrine_Manager::getInstance()->getConnection("default");
     	$sql = "select idgrupo,nombre 
-                from listagrupo WHERE idcicloescolar=".$cicloEscolar." AND grado='".$grado."'";
+                from listagrupo WHERE idcicloescolar=".$cicloEscolar." AND idgrado=".$grado;
     	$st = $conn->execute($sql);
     	return $st->fetchAll(PDO::FETCH_ASSOC);
     }  
