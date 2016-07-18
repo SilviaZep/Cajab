@@ -92,22 +92,16 @@
                     <form class="form-inline">
                         <div class="form-group">
                             <label for="exampleInputName2">Ciclo:</label>
-                            <select class="form-control" ng-model="selCiclo">
+                            <select class="form-control" ng-model="selCiclo" ng-change="cicloCambio()">
                                 <option value="0">TODOS</option>
-                                <option value="2">CICLO 1</option>
-                                <option value="3">CICLO 2</option>
-                                <option value="4">CICLO 3</option>
-                                <option value="5">CICLO 4</option>
+                                <option ng-repeat="lce in listaCiclos" value="{{lce.idcicloescolar}}">{{lce.nombre}}</option>
                             </select>
                         </div>
                         <div ng-show="selCiclo > 0" class="form-group">
                             <label for="exampleInputName2">Grado:</label>
-                            <select  class="form-control" ng-model="selGrado">
+                            <select  class="form-control" ng-model="selGrado" ng-change="gradoCambio()">
                                 <option value="0">TODOS</option>
-                                <option value="2">grado 1</option>
-                                <option value="3">grado 2</option>
-                                <option value="4">grado 3</option>
-                                <option value="5">grado 4</option>
+                                <option ng-repeat="lcg in listaGrados" value="{{lcg.idgrado}}">{{lcg.grado}}</option>
                             </select >
 
                         </div>
@@ -115,10 +109,7 @@
                             <label for="exampleInputName2">Grupo:</label>
                             <select  class="form-control" ng-model="selGrupo">
                                 <option value="0">TODOS</option>
-                                <option value="2">grupo 1</option>
-                                <option value="3">grupo 2</option>
-                                <option value="4">grupo 3</option>
-                                <option value="5">grupo 4</option>
+                                <option ng-repeat="lcgs in listaGrupos" value="{{lcgs.idgrupo}}">{{lcgs.nombre}}</option>
                             </select>
                         </div>
 
