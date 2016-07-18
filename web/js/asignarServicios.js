@@ -12,6 +12,13 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
         $scope.mostrarDivServicio = false;
 
 
+        //-----------inicio de consultas
+        $scope.selCiclo = "0";
+        $scope.selGrado = "0";
+
+        //----------------
+
+
         $scope.contraer = function (s) {
             $scope.idServicio = s.id;
             $scope.tipoTransporte = s.tipo_transporte;
@@ -53,7 +60,85 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
         };
         $scope.listadoCategoriasServicios();
 
+        //---------------CONSULTAS--------------------
+        $scope.cicloCambio = function () {
 
+            if ($scope.selCiclo != "0") {
+                $scope.selGrado = "0";
+                $scope.consultaGrados();
+            }
+
+        };
+        $scope.gradoCambio = function () {
+            if ($scope.selGrado != "0") {
+                $scope.selGrupo = "0";
+                $scope.consultaGrupos();
+            }
+
+        };
+
+        $scope.consultaCiclos = function () {
+            $http({
+                method: 'POST',
+                url: 'filtros-ciclos',
+                params: {
+                }
+            }).then(
+                    function (r) {
+                        $scope.listaCiclos = r.data.listaCiclos;
+                    }
+            );
+        };
+
+        $scope.consultaGrados = function () {
+            $http({
+                method: 'POST',
+                url: 'filtros-grados',
+                params: {
+                    idCiclo: $scope.selCiclo
+                }
+            }).then(
+                    function (r) {
+                        debugger;
+                        $scope.listaGrados = r.data.listaGrados;
+                    }
+            );
+        };
+
+        $scope.consultaGrupos = function () {
+            $http({
+                method: 'POST',
+                url: 'filtros-grupos',
+                params: {
+                    grado: $scope.selGrado,
+                    idCiclo: $scope.selCiclo
+                }
+            }).then(
+                    function (r) {
+                        debugger
+                        $scope.listaGrupos = r.data.listaGrupos;
+                    }
+            );
+        };
+        $scope.consultaAlumno = function () {
+            $http({
+                method: 'POST',
+                url: 'filtros-alumnos',
+                params: {
+                }
+            }).then(
+                    function (r) {
+                        $scope.listaCiclos = r.data.listaCiclos;
+                    }
+            );
+        };
+
+
+
+
+        $scope.consultaCiclos();
+
+        //------------FIN CONSULTAS--------------------
         //-----------------Listado de servicios--------------
 
         $scope.listadoServicios = function (pag) {
@@ -244,7 +329,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                     nombreAlumno: nombreAlumno,
                     idServicio: idServicio,
                     idCategoria: idCategoria,
-                    tipoTransporte:tipoTransporte
+                    tipoTransporte: tipoTransporte
 
                 }
             }).then(
@@ -397,7 +482,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
             var nombreCliente = $scope.nombreCliente;
             var idServicio = $scope.idServicio;
             var idCategoria = $scope.idCategoria;
-            var tipoTransporte=$scope.tipoTransporte;
+            var tipoTransporte = $scope.tipoTransporte;
 
             $http({
                 method: 'POST',
@@ -408,7 +493,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                     nombreCliente: nombreCliente,
                     idServicio: idServicio,
                     idCategoria: idCategoria,
-                    tipoTransporte:tipoTransporte
+                    tipoTransporte: tipoTransporte
                 }
             }).then(
                     function (r) {
