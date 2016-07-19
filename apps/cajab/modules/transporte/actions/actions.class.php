@@ -326,8 +326,8 @@ class transporteActions extends baseCajabProjectActions {
 
                 $listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $idRuta);
                 for ($i = 0; $i < sizeof($listaAlumnos); $i ++) {
-                        $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$i]['id_alumno']);
-                        $listaAlumnos[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
+                    $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$i]['id_alumno']);
+                    $listaAlumnos[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
                 }
 
 
@@ -519,6 +519,10 @@ class transporteActions extends baseCajabProjectActions {
 
         if (isset($idRuta) && $idRuta > 0) {
             $listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $idRuta);
+            for ($i = 0; $i < sizeof($listaAlumnos); $i ++) {
+                $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$i]['id_alumno']);
+                $listaAlumnos[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
+            }
             $rutaDetail = Doctrine::getTable('Ruta')->find((int) $idRuta);
             //print_r($listaAlumnos);die();    			
             $pdf->SetFont('Arial', '', 10);
@@ -537,6 +541,10 @@ class transporteActions extends baseCajabProjectActions {
                 $rutaDetail = Doctrine::getTable('Ruta')->find((int) $listaRutas[$i]['id']);
 
                 $listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $listaRutas[$i]['id']);
+                for ($i = 0; $i < sizeof($listaAlumnos); $i ++) {
+                        $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$i]['id_alumno']);
+                        $listaAlumnos[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
+                }
                 $pdf->SetFont('Arial', '', 18);
                 $pdf->SetTextColor(88, 89, 91);
                 $pdf->Cell(0, 8, utf8_decode(''), 'B', 0, 'C');
