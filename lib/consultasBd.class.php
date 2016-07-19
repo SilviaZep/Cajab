@@ -437,9 +437,9 @@ class consultasBd {
 
     //_--------------------------------HORARIOS
 
-    public static function getHorariosAlumnos($limit, $offset, $nombre) {
+    public static function getHorariosAlumnos($limit, $offset, $idsAlumno) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
-        $sql = "select a.nombre,a.grado,a.grupo,hr.*,
+        $sql = "select hr.*,
 ifnull((select r.nombre from ruta r where id=hr.r_lun_e),'No Asig.') as r_lun_e_nombre,
 ifnull((select r.nombre from ruta r where id=hr.r_lun_s),'No Asig.') as r_lun_s_nombre,
 ifnull((select r.nombre from ruta r where id=hr.r_mar_e),'No Asig.') as r_mar_e_nombre,
@@ -451,21 +451,17 @@ ifnull((select r.nombre from ruta r where id=hr.r_jue_s),'No Asig.') as r_jue_s_
 ifnull((select r.nombre from ruta r where id=hr.r_vie_e),'No Asig.') as r_vie_e_nombre,
 ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_nombre,
 (case hr.tipo when 1 then 'Completo' when 2 then 'Medio' else 'NA' end ) as tipo_transporte
-                from horario_ruta hr, alumno_pruebas a
-                where hr.id_alumno=a.id
-                and a.nombre like '%{$nombre}%'
+                from horario_ruta hr
                 limit {$limit} offset {$offset};";
 
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getTotalHorariosAlumnos($nombre) {
+    public static function getTotalHorariosAlumnos($idsAlumno) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select count(*) as total
-                from horario_ruta hr, alumno_pruebas a
-                where hr.id_alumno=a.id
-                and a.nombre like '%{$nombre}%' ;";
+                from horario_ruta hr;";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -655,7 +651,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
     public static function getServiciosPagandoAlumno($idAlumno) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "
-select s.nombre as servicio,s.aplica_parcialidad,cs.descripcion as categoria,a.nombre as cliente,
+select s.nombre as servicio,s.aplica_parcialidad,cs.descripcion as categoria,
 s.precio,
 ifnull((select sum(sp.monto) from servicio_pago sp 
 where sp.id_alumno=sc.id_alumno 
@@ -665,10 +661,9 @@ where sp.id_alumno=sc.id_alumno
 and sp.id_servicio=sc.id) as no_pagos,
 sc.*
 from 
-servicio_cliente sc,servicio s,categoria_servicio cs,alumno_pruebas a
+servicio_cliente sc,servicio s,categoria_servicio cs
 where sc.id_servicio=s.id 
 and s.categoria_id=cs.id
-and sc.id_alumno=a.id
 and sc.id_alumno={$idAlumno}
 and sc.estatus=1;";
 
