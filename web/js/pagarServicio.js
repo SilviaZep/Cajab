@@ -52,7 +52,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
             for (i = 0; i < $scope.listaServicios.length; i++) {
                 if (parseFloat($scope.listaServicios[i].pagara) > 0) {
-                  
+
                     if ((parseFloat($scope.listaServicios[i].abonado) + parseFloat($scope.listaServicios[i].pagara)) > parseFloat($scope.listaServicios[i].precio)) {
                         alert("No puedes pagar mas del precio que especifica el servicio: " +
                                 $scope.listaServicios[i].servicio);
@@ -60,7 +60,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                     }
                     if ($scope.listaServicios[i].aplica_parcialidad == '0') {//no hay parcialidades
                         if (parseFloat($scope.listaServicios[i].pagara) < parseFloat($scope.listaServicios[i].precio)) {//tiene que pagar completo
-                            alert("Tienes que pagar el monto completo ya que no aplica parcialidad el servicio: "+
+                            alert("Tienes que pagar el monto completo ya que no aplica parcialidad el servicio: " +
                                     $scope.listaServicios[i].servicio);
                             return;
                         }
@@ -81,14 +81,14 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                 url: 'pagos_pagos_servicios_alumno',
                 params: {
                     idAlumno: idAlumno,
-                    idServicios:idServicios,
-                    montosPagara:montosPagara,
-                    formaPagos:formaPagos
+                    idServicios: idServicios,
+                    montosPagara: montosPagara,
+                    formaPagos: formaPagos
                 }
             }).then(
                     function (r) {
-                       alert(r.data.mensaje);
-                       $scope.listadoServicios(parseInt(idAlumno));
+                        alert(r.data.mensaje);
+                        $scope.listadoServicios(parseInt(idAlumno));
                         $scope.totalPagara = 0;
                         $scope.numPagos = 0;
                     }
@@ -98,13 +98,13 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
 
         };
-        
-        
-        
-         $scope.listaPagos = function (idServicioCliente) {
 
-           $scope.listaPagosServicioCliente=[];
-           debugger
+
+
+        $scope.listaPagos = function (idServicioCliente) {
+
+            $scope.listaPagosServicioCliente = [];
+            debugger
 
             $http({
                 method: 'POST',
@@ -115,7 +115,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
             }).then(
                     function (r) {
                         debugger
-                       $scope.listaPagosServicioCliente=r.data.listaPagos;
+                        $scope.listaPagosServicioCliente = r.data.listaPagos;
                     }
             );
 
@@ -178,7 +178,6 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                 pag = 1;
             }
 
-
             $scope.paginaActualAlumnos = pag;
             var numRegistros = 10;//se cambio para que no salga el paginador
             var max = numRegistros;
@@ -187,18 +186,23 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
             var nombreAlumno = $scope.nombreAlumno;
 
 
-
+            var idCiclo = '';
+            var idGrado = '';
+            var idGrupo = '';
 
             $http({
                 method: 'POST',
-                url: 'servicios_listado_alumnos',
+                url: 'filtros-alumnos', //'servicios_listado_alumnos',
                 params: {
                     offset: offset,
                     limit: max,
-                    nombreAlumno: nombreAlumno,
-                    idServicio: 0,
-                    idCategoria: 0,
-                    tipoTransporte: 0
+                    alumno: nombreAlumno, //nombreAlumno: nombreAlumno,
+                    idCiclo: idCiclo,
+                    idGrado: idGrado,
+                    idGrupo: idGrupo,
+                    //idServicio: 0,
+                    //idCategoria: 0,
+                    //tipoTransporte: 0
 
                 }
             }).then(
