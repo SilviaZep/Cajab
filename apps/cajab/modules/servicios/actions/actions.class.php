@@ -28,7 +28,7 @@ class serviciosActions extends baseCajabProjectActions {
                 $categoria = $request->getParameter("mCategoria", 0);
                 $nombre = $request->getParameter("mNombre", 0);
                 $precio = $request->getParameter("mPrecio", 0);
-             //   $pagoObligarotio = $request->getParameter("mPagoObligarotio", 0);
+                //   $pagoObligarotio = $request->getParameter("mPagoObligarotio", 0);
                 $aplicaParcialidad = $request->getParameter("mAplicaParcialidad", 0);
                 $fechaEvento = $request->getParameter("mFechaEvento", 0);
                 $fechaIni = $request->getParameter("mFechaIni", 0);
@@ -387,6 +387,13 @@ class serviciosActions extends baseCajabProjectActions {
 
 
                 $listaAsignados = consultasBd::getListaAsignadosServicio((int) $idServicio, $nombreCliente, (int) $limit, (int) $offset);
+                for ($i = 0; $i < sizeof($listaAsignados); $i ++) {
+                    if($listaAsignados[$i]['cliente']=="na" && $listaAsignados[$i]['tipo_descripcion']=="Alumno") {
+                        $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAsignados[$i]['id_alumno']);
+                        $listaAsignados[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];                      
+                    }
+                }
+
                 $totalListaAsignados = consultasBd::getTotalListaAsignadosServicio((int) $idServicio, $nombreCliente);
                 $totalListaAsignados = $totalListaAsignados[0]['total'];
 
@@ -426,7 +433,5 @@ class serviciosActions extends baseCajabProjectActions {
             throw new sfException($e);
         }
     }
-    
-    
-    
+
 }
