@@ -176,6 +176,7 @@
 
                         <tr>
                             <th class="col-md-2">Nombre</th>
+                            <th class="col-md-1">Nivel</th> 
                             <th class="col-md-1">Grado</th>                        
                             <th class="col-md-1">Grupo</th>                        
                             <th class="col-md-1">
@@ -196,6 +197,7 @@
 
 
                                 <td>{{a.nombre}}</td>
+                                <td>{{a.nivel}}</td>  
                                 <td>{{a.grado}}</td>  
                                 <td>{{a.grupo}}</td>      
                                 <td>
