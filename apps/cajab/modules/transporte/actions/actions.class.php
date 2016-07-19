@@ -217,6 +217,11 @@ class transporteActions extends baseCajabProjectActions {
                 
                 $listaHorarios = consultasBd::getHorariosAlumnos((int) $limit, (int) $offset, $nombre);
                 $totalListaHorarios = consultasBd::getTotalHorariosAlumnos($nombre);
+                for ($i = 0; $i < sizeof($listaHorarios); $i ++) {
+                    $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaHorarios[$i]['id_alumno']);
+                    $listaHorarios[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
+                }
+                
                 $totalListaHorarios = $totalListaHorarios[0]['total'];
 
 
