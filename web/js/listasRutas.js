@@ -145,6 +145,10 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
                         cerrarModal('crearEventual');
                         alert(r.data.mensaje);
                         $scope.listadoAlumnosPorDiaRuta($scope.ruta);
+                        $scope.listadoRutas();
+                        for (i = 0; i < $scope.listaAlumnos.length; i++) {
+                            $scope.listaAlumnos[i].seleccionado = false;
+                        }
 
                     }
             );
@@ -155,7 +159,6 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
 
 
         $scope.listadoAlumnosPorDiaRuta = function (r) {
-
 
             var fecha = moment($scope.fechaIni).format('YYYY-MM-DD');
             $scope.idRuta = r.id;
@@ -254,13 +257,23 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
             var idCategoria = $scope.idCategoria;
 
 
+            var idCiclo = '';
+            var idGrado = '';
+            var idGrupo = '';
+
+
+
+
             $http({
                 method: 'POST',
-                url: 'servicios_listado_alumnos',
+                url: 'filtros-alumnos',
                 params: {
                     offset: offset,
                     limit: max,
-                    nombreAlumno: nombreAlumno,
+                    alumno: nombreAlumno, //nombreAlumno: nombreAlumno,
+                    idCiclo: idCiclo,
+                    idGrado: idGrado,
+                    idGrupo: idGrupo,
                     idServicio: idServicio,
                     idCategoria: idCategoria
 
