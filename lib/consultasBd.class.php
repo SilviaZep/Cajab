@@ -611,9 +611,8 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
     public static function getVerificarGuardado($fecha) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select count(*) as total
-                from lista_ruta lr,alumno_pruebas a
-                where lr.id_alumno=a.id 
-                and lr.fecha='{$fecha}'
+                from lista_ruta lr
+                where lr.fecha='{$fecha}'
                 and lr.estatus=1 and lr.tipo in(1,2);";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
