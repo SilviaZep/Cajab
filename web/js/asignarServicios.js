@@ -15,6 +15,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
         //-----------inicio de consultas
         $scope.selCiclo = "0";
         $scope.selGrado = "0";
+        $scope.selGrupo = "0";
 
         //----------------
 
@@ -98,8 +99,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                     idCiclo: $scope.selCiclo
                 }
             }).then(
-                    function (r) {
-                        debugger;
+                    function (r) {                        
                         $scope.listaGrados = r.data.listaGrados;
                     }
             );
@@ -114,24 +114,12 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                     idCiclo: $scope.selCiclo
                 }
             }).then(
-                    function (r) {
-                        debugger
+                    function (r) {                        
                         $scope.listaGrupos = r.data.listaGrupos;
                     }
             );
         };
-        $scope.consultaAlumno = function () {
-            $http({
-                method: 'POST',
-                url: 'filtros-alumnos',
-                params: {
-                }
-            }).then(
-                    function (r) {
-                        $scope.listaCiclos = r.data.listaCiclos;
-                    }
-            );
-        };
+
 
 
 
@@ -319,17 +307,34 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
             var idCategoria = $scope.idCategoria;
             var tipoTransporte = $scope.tipoTransporte;
 
+            var idCiclo = '';
+            var idGrado = '';
+            var idGrupo = '';
+
+            if ($scope.selCiclo != "0") {
+                idCiclo = $scope.selCiclo;
+            }
+            if ($scope.selGrado != "0") {
+                idGrado = $scope.selGrado;
+            }
+            if ($scope.selGrupo != "0") {
+                idGrupo = $scope.selGrupo;
+            }
 
             $http({
                 method: 'POST',
-                url: 'servicios_listado_alumnos',
+                url: 'filtros-alumnos', //servicios_listado_alumnos
                 params: {
                     offset: offset,
                     limit: max,
-                    nombreAlumno: nombreAlumno,
+                    alumno:nombreAlumno,//nombreAlumno: nombreAlumno,
+                    idCiclo: idCiclo,
+                    idGrado: idGrado,
+                    idGrupo: idGrupo,
                     idServicio: idServicio,
                     idCategoria: idCategoria,
                     tipoTransporte: tipoTransporte
+
 
                 }
             }).then(
@@ -344,7 +349,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
 
         $scope.paginadorAlumnos = function (max) {
             $scope.numPaginasAlumnos = Math.ceil($scope.numeroRegistrosAlumnos / max);
-            $scope.tamanioPaginadorAlumnos = 10;//estatico
+            $scope.tamanioPaginadorAlumnos = 4;//estatico
             $scope.primeraAlumnos = 1;//numero de pagina de inicioAlumnos
             $scope.ultimaAlumnos = $scope.numPaginasAlumnos;//numero de pagina de finAlumnos 
 
@@ -507,7 +512,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
 
         $scope.paginadorClientes = function (max) {
             $scope.numPaginasClientes = Math.ceil($scope.numeroRegistrosClientes / max);
-            $scope.tamanioPaginadorClientes = 10;//estatico
+            $scope.tamanioPaginadorClientes = 4;//estatico
             $scope.primeraClientes = 1;//numero de pagina de inicioClientes
             $scope.ultimaClientes = $scope.numPaginasClientes;//numero de pagina de finClientes 
 
@@ -659,7 +664,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
 
         $scope.paginadorAsignados = function (max) {
             $scope.numPaginasAsignados = Math.ceil($scope.numeroRegistrosAsignados / max);
-            $scope.tamanioPaginadorAsignados = 10;//estatico
+            $scope.tamanioPaginadorAsignados = 4;//estatico
             $scope.primeraAsignados = 1;//numero de pagina de inicioAsignados
             $scope.ultimaAsignados = $scope.numPaginasAsignados;//numero de pagina de finAsignados 
 
