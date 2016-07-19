@@ -486,9 +486,8 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
         }
         if ($fechaActual == $fecha) {//dia de hoy
             $qC = "select count(*) as total
-                    from lista_ruta lr,alumno_pruebas a
-                    where lr.id_alumno=a.id 
-                    and lr.fecha='{$fecha}'
+                    from lista_ruta lr
+                    where lr.fecha='{$fecha}'
                     and lr.estatus=1 and lr.tipo in(1,2)
                     and lr.id_ruta={$ruta};";
             $rC = $conn->execute($qC);
@@ -506,33 +505,32 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
 
         if ($flagQ == 1) {//Calculados
             $sql = "select * from (
-                    select a.nombre,sc.id as id_ref,0 as guardado,
-                    (case hr.tipo when 1 then 'Completo' when 2 then 'Medio' else 'NA' end ) as tipo_transporte
-                    from servicio_cliente sc,servicio s,horario_ruta hr,alumno_pruebas a
+                    select sc.id as id_ref,0 as guardado,
+                    (case hr.tipo when 1 then 'Completo' when 2 then 'Medio' else 'NA' end ) as tipo_transporte,
+                    sc.id_alumno
+                    from servicio_cliente sc,servicio s,horario_ruta hr
                     where sc.id_servicio=s.id
-                    and sc.id_alumno=hr.id_alumno
-                    and sc.id_alumno=a.id
+                    and sc.id_alumno=hr.id_alumno                   
                     and s.fecha_inicio<='{$fecha}'
                     and s.fecha_fin>='{$fecha}'
                     and s.tipo_transporte in (1,2)
                     and s.activo=1
                     and (hr.r_{$dia}_e={$ruta} or hr.r_{$dia}_s={$ruta})
                     union 
-                    select a.nombre,lr.id as id_ref,0 as guardado,
-                    (case lr.tipo when 1 then 'Completo' when 2 then 'Medio' when 3 then 'Eventual' else 'NA' end ) as tipo_transporte 
-                    from lista_ruta lr,alumno_pruebas a
-                    where lr.id_alumno=a.id
-                    and lr.fecha='{$fecha}'
+                    select lr.id as id_ref,0 as guardado,
+                    (case lr.tipo when 1 then 'Completo' when 2 then 'Medio' when 3 then 'Eventual' else 'NA' end ) as tipo_transporte,
+                    lr.id_alumno
+                    from lista_ruta lr
+                    where lr.fecha='{$fecha}'
                     and lr.id_ruta={$ruta}
-                    )t
-                    order by nombre;";
+                    )t                    ;";
         }
         if ($flagQ == 2) {//guardados
-            $sql = "select a.nombre,0 as id_ref,1 as guardado, 
-                    (case lr.tipo when 1 then 'Completo' when 2 then 'Medio' when 3 then 'Eventual' else 'NA' end ) as tipo_transporte
-                    from lista_ruta lr,alumno_pruebas a
-                    where lr.id_alumno=a.id 
-                    and fecha='{$fecha}'
+            $sql = "select 0 as id_ref,1 as guardado, 
+                    (case lr.tipo when 1 then 'Completo' when 2 then 'Medio' when 3 then 'Eventual' else 'NA' end ) as tipo_transporte,
+                    lr.id_alumno
+                    from lista_ruta lr
+                    where fecha='{$fecha}'
                     and estatus=1 
                     and id_ruta={$ruta};";
         }
@@ -552,9 +550,8 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
         }
         if ($fechaActual == $fecha) {//dia de hoy
             $qC = "select count(*) as total
-                    from lista_ruta lr,alumno_pruebas a
-                    where lr.id_alumno=a.id 
-                    and lr.fecha='{$fecha}'
+                    from lista_ruta lr
+                    where lr.fecha='{$fecha}'
                     and lr.estatus=1 and lr.tipo in(1,2)
                     and lr.id_ruta={$ruta};";
             $rC = $conn->execute($qC);
@@ -572,32 +569,28 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
 
         if ($flagQ == 1) {//Calculados
             $sql = "select count(*) as total from (
-                    select a.nombre,sc.id as id_ref,
+                    select sc.id as id_ref,
                     (case hr.tipo when 1 then 'Completo' when 2 then 'Medio' else 'NA' end ) as tipo_transporte
-                    from servicio_cliente sc,servicio s,horario_ruta hr,alumno_pruebas a
+                    from servicio_cliente sc,servicio s,horario_ruta hr
                     where sc.id_servicio=s.id
-                    and sc.id_alumno=hr.id_alumno
-                    and sc.id_alumno=a.id
+                    and sc.id_alumno=hr.id_alumno                   
                     and s.fecha_inicio<='{$fecha}'
                     and s.fecha_fin>='{$fecha}'
                     and s.tipo_transporte in (1,2)
                     and s.activo=1
                     and (hr.r_{$dia}_e={$ruta} or hr.r_{$dia}_s={$ruta})
                     union 
-                    select a.nombre,lr.id as id_ref,
+                    select lr.id as id_ref,
                     (case lr.tipo when 1 then 'Completo' when 2 then 'Medio' when 3 then 'Eventual' else 'NA' end ) as tipo_transporte 
-                    from lista_ruta lr,alumno_pruebas a
-                    where lr.id_alumno=a.id
-                    and lr.fecha='{$fecha}'
+                    from lista_ruta lr
+                    where lr.fecha='{$fecha}'
                     and lr.id_ruta={$ruta}
-                    )t
-                    order by nombre;";
+                    )t             ;";
         }
         if ($flagQ == 2) {//guardados
             $sql = "select count(*) as total
-                    from lista_ruta lr,alumno_pruebas a
-                    where lr.id_alumno=a.id 
-                    and fecha='{$fecha}'
+                    from lista_ruta lr
+                    where fecha='{$fecha}'
                     and estatus=1 
                     and id_ruta={$ruta};";
         }
