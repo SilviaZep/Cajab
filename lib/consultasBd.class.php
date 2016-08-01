@@ -439,6 +439,12 @@ class consultasBd {
 
     public static function getHorariosAlumnos($limit, $offset, $idsAlumno) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        
+        $filtroAlumnos="";
+        if($idsAlumno!=""){
+            $filtroAlumnos="where hr.id_alumno in (".$idsAlumno.")";
+        }
+        
         $sql = "select hr.*,
 ifnull((select r.nombre from ruta r where id=hr.r_lun_e),'No Asig.') as r_lun_e_nombre,
 ifnull((select r.nombre from ruta r where id=hr.r_lun_s),'No Asig.') as r_lun_s_nombre,
@@ -451,8 +457,8 @@ ifnull((select r.nombre from ruta r where id=hr.r_jue_s),'No Asig.') as r_jue_s_
 ifnull((select r.nombre from ruta r where id=hr.r_vie_e),'No Asig.') as r_vie_e_nombre,
 ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_nombre,
 (case hr.tipo when 1 then 'Completo' when 2 then 'Medio' else 'NA' end ) as tipo_transporte
-                from horario_ruta hr
-                limit {$limit} offset {$offset};";
+                from horario_ruta hr 
+                ".$filtroAlumnos." limit {$limit} offset {$offset};";              
 
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
@@ -460,8 +466,13 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
 
     public static function getTotalHorariosAlumnos($idsAlumno) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $filtroAlumnos="";
+        if($idsAlumno!=""){
+            $filtroAlumnos="where hr.id_alumno in (".$idsAlumno.")";
+        }
+        
         $sql = "select count(*) as total
-                from horario_ruta hr;";
+                from horario_ruta hr ".$filtroAlumnos."  ;";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
