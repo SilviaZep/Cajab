@@ -3,7 +3,7 @@ app.controller('horariosController', ['$http', '$scope', function ($http, $scope
 
 
         $scope.cambiarRuta = function (h) {
-            $scope.idHorario=h.id;
+            $scope.idHorario = h.id;
             $scope.alumno = h.nombre;
             $scope.tipoTransporte = h.tipo_transporte;
             $scope.ruta_lun_e = h.r_lun_e;
@@ -17,7 +17,53 @@ app.controller('horariosController', ['$http', '$scope', function ($http, $scope
             $scope.ruta_vie_e = h.r_vie_e;
             $scope.ruta_vie_s = h.r_vie_s;
         };
+        $scope.contarAsignadas = function () {
+            var count = 0;
+            if ($scope.ruta_lun_e == 0) {
+                count++;
+            }
+            if ($scope.ruta_lun_s == 0) {
+                count++;
+            }
+            if ($scope.ruta_mar_e == 0) {
+                count++;
+            }
+            if ($scope.ruta_mar_s == 0) {
+                count++;
+            }
+            if ($scope.ruta_mie_e == 0) {
+                count++;
+            }
+            if ($scope.ruta_mie_s == 0) {
+                count++;
+            }
+            if ($scope.ruta_jue_e == 0) {
+                count++;
+            }
+            if ($scope.ruta_jue_s == 0) {
+                count++;
+            }
+            if ($scope.ruta_vie_e == 0) {
+                count++;
+            }
+            if ($scope.ruta_vie_s == 0) {
+                count++;
+            }
+            return count;
+        };
+
+
         $scope.guardarCambios = function () {
+
+            if ($scope.tipoTransporte == "Medio") {
+                if ($scope.contarAsignadas() < 5) {
+                    alert("El Tipo de transporte es medio; debe asignar solo 5 o menos rutas.");
+                    return;
+                }
+
+
+            }
+
             $http({
                 method: 'POST',
                 url: 'transporte_cambiar_horario_alumno',
@@ -36,7 +82,7 @@ app.controller('horariosController', ['$http', '$scope', function ($http, $scope
                 }
             }).then(
                     function (r) {
-                       
+
                         $scope.listadoHorarios($scope.paginaActual);
                         cerrarModal('myModal');
                         alert(r.data.mensaje);
