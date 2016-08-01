@@ -3,10 +3,12 @@
 /*
   Clase para hacer consultas a la bd
  */
-
+$GLOBALS['instBD']="default";
+//$GLOBALS['instBD']="instituto";
 class consultasInstituto {
 
-    //SISE DESEA USAR EL LOCAL  CAMBIAR
+        //SISE DESEA USAR EL LOCAL  CAMBIAR
+      
     //'instutto' en $conn = Doctrine_Manager::getInstance()->getConnection("instituto"); por 'default'  
     public static function getListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo, $alumno, $limit, $offset) {
 
@@ -28,8 +30,8 @@ class consultasInstituto {
             $condicion = $condicion.= " AND (CONCAT(nombre,' ', appat,' ',apmat) LIKE '%" . $alumno . "%')";
         }
 
-        $conn = Doctrine_Manager::getInstance()->getConnection("default"); //nombre de mi conexion 
-        $sql = $campos . " FROM listaalumnob" . $condicion . "
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion 
+        $sql = $campos . " FROM ListaAlumnoB" . $condicion . "
           ORDER BY nombre ASC  limit " . $limit . " offset  " . $offset . "  ;";
         //ECHO $sql; die();
         $st = $conn->execute($sql);
@@ -55,32 +57,32 @@ class consultasInstituto {
         if (isset($alumno) && !empty($alumno)) {
            $condicion = $condicion.= " AND (CONCAT(nombre,' ', appat,' ',apmat) LIKE '%" . $alumno . "%')";
         }
-        $conn = Doctrine_Manager::getInstance()->getConnection("default"); //nombre de mi conexion 
-        $sql = $campos . " FROM listaalumnob " . $condicion . ";";
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion 
+        $sql = $campos . " FROM ListaAlumnoB " . $condicion . ";";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function getGradosByCiclo($cicloEscolar) {
-        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
         $sql = "select DISTINCT idgrado ,grado
-                from listagrupo WHERE idcicloescolar=" . $cicloEscolar;
+                from ListaGrupo WHERE idcicloescolar=" . $cicloEscolar;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function getGruposByGrado($grado, $cicloEscolar) {
-        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
         $sql = "select idgrupo,nombre 
-                from listagrupo WHERE idcicloescolar=" . $cicloEscolar . " AND idgrado=" . $grado;
+                from ListaGrupo WHERE idcicloescolar=" . $cicloEscolar . " AND idgrado=" . $grado;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function getCiclosEscolares() {
-        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
         $sql = "select idcicloescolar ,nombre,estatus 
-                from listacicloescolar WHERE estatus IN ('Activo','Programacion')";
+                from ListaCicloEscolar WHERE estatus IN ('Activo','Programacion')";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -89,8 +91,18 @@ class consultasInstituto {
 
     public static function getAlumnoXId($idAlumno) {
         $sql = "select ifnull(CONCAT(nombre,' ', appat,' ',apmat),'') as nombre 
-                   from listaalumnob where idalumno =".$idAlumno." limit 0,1;";
-        $conn = Doctrine_Manager::getInstance()->getConnection("default"); //nombre de mi conexion         
+                   from ListaAlumnoB where idalumno =".$idAlumno." limit 0,1;";
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+      public static function getIdsAlumnos($nombre) {
+        $sql = "select  idalumno
+                   from ListaAlumnoB 
+                   where CONCAT(nombre,' ', appat,' ',apmat) like'%".$nombre."%' ;";                
+        
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
