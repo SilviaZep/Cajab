@@ -392,7 +392,7 @@ class consultasBd {
                 from servicio_cliente sc,servicio s
                 where sc.id_servicio=s.id) t
                 where id_servicio={$idServicio}
-                and cliente like '%{$nombreCliente}%'  or cliente='na'                 
+                and (cliente like '%{$nombreCliente}%'  or cliente='na')                 
                 order by tipo_descripcion,cliente
                 limit {$limit} offset {$offset};";
 
@@ -421,9 +421,9 @@ class consultasBd {
                 from servicio_cliente sc,servicio s
                 where sc.id_servicio=s.id) t
                 where id_servicio={$idServicio}
-                and cliente like '%{$nombreCliente}%'  or cliente='na'                
+                and (cliente like '%{$nombreCliente}%'  or cliente='na')                
                 order by tipo_descripcion,cliente;";
-
+                
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
