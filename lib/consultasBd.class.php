@@ -387,11 +387,12 @@ class consultasBd {
                           WHEN 3 THEN 'Cancelado'
                           WHEN 4 THEN 'Condonado'
                       ELSE  'na' END as estatus_descripcion,
-                s.nombre as nombre_servicio
+                s.nombre as nombre_servicio,
+                ifnull((select cs.categoria from categoria_servicio cs where id=s.categoria_id),'na') as categoria_servicio                
                 from servicio_cliente sc,servicio s
                 where sc.id_servicio=s.id) t
                 where id_servicio={$idServicio}
-                and cliente like '%{$nombreCliente}%'                  
+                and cliente like '%{$nombreCliente}%'  or cliente='na'                 
                 order by tipo_descripcion,cliente
                 limit {$limit} offset {$offset};";
 
@@ -420,7 +421,7 @@ class consultasBd {
                 from servicio_cliente sc,servicio s
                 where sc.id_servicio=s.id) t
                 where id_servicio={$idServicio}
-                and cliente like '%{$nombreCliente}%'                  
+                and cliente like '%{$nombreCliente}%'  or cliente='na'                
                 order by tipo_descripcion,cliente;";
 
         $st = $conn->execute($sql);
