@@ -330,7 +330,10 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         
         $scope.imprimirAsignadosAServicio = function () {
 
-            var nombreCliente = $scope.nombreAsignado;
+            var nombreCliente = "";
+            if($scope.nombreAsignado!=undefined&&$scope.nombreAsignado!=null){
+                nombreCliente=$scope.nombreAsignado;
+            }
             var idServicio = $scope.idServicio;
 
             window.open('servicios_imprimir_asignados_a_servicio?limit=1000&offset=0&idServicio=' +
