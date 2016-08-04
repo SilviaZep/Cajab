@@ -20,6 +20,11 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
             debugger
 
         };
+        $scope.cambiarEstatusAsignado = function (a) {
+            debugger
+            $scope.idAlumnoListaCambio = a.id_lista;
+            $scope.estatusCambioA = a.observacion;
+        };
 
         $scope.compararFechas = function () {
 
@@ -103,7 +108,7 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
                 method: 'POST',
                 url: 'transporte_eliminar_alumno_eventual',
                 params: {
-                    idAlumnoEventual: a.id_ref,
+                    idAlumnoEventual: a.id_lista,
                 }
             }).then(
                     function (r) {
@@ -144,8 +149,8 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
                     function (r) {
                         cerrarModal('crearEventual');
                         alert(r.data.mensaje);
-                        $scope.listadoAlumnosPorDiaRuta($scope.ruta);
                         $scope.listadoRutas();
+                        $scope.listadoAlumnosPorDiaRuta($scope.ruta);
                         for (i = 0; i < $scope.listaAlumnos.length; i++) {
                             $scope.listaAlumnos[i].seleccionado = false;
                         }
@@ -348,6 +353,30 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
 
 
         //-----------------Fin listado Alumnos---------------
+
+        $scope.guardarCambioEstatus = function () {
+            var idAlumnoListaCambio = $scope.idAlumnoListaCambio;
+            var estatus = $scope.estatusCambioA;
+            
+
+            $http({
+                method: 'POST',
+                url: 'transporte_cambiar_estatus_alumno_lista_ruta',
+                params: {
+                    idAlumnoCambio: idAlumnoListaCambio,
+                    estatus: estatus
+                }
+            }).then(
+                    function (r) {
+                        cerrarModal('modalCambiarEstatus');
+                        alert(r.data.mensaje);                        
+                        $scope.listadoAlumnosPorDiaRuta($scope.ruta);
+                        for (i = 0; i < $scope.listaAlumnos.length; i++) {
+                            $scope.listaAlumnos[i].seleccionado = false;
+                        }
+                    }
+            );
+        };
 
 
 
