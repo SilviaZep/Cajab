@@ -180,6 +180,9 @@ transporte_verificar_guardado:
 transporte_imprimir_rutas_alumnos:
   url:   /transporte_imprimir_rutas_alumnos
   param: { module: transporte, action: imprimirRutasAlumnos } 
+transporte_cambiar_estatus_alumno_lista_ruta:
+  url:   /transporte_cambiar_estatus_alumno_lista_ruta
+  param: { module: transporte, action: cambiarEstatusAlumnoListaRuta } 
 
 
   
