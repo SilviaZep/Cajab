@@ -520,7 +520,9 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
             $sql = "select * from (
                     select sc.id as id_ref,0 as guardado,
                     (case hr.tipo when 1 then 'Completo' when 2 then 'Medio' else 'NA' end ) as tipo_transporte,
-                    sc.id_alumno
+                    sc.id_alumno,
+                    'asistencia' as observacion,
+                    0 as id_lista
                     from servicio_cliente sc,servicio s,horario_ruta hr
                     where sc.id_servicio=s.id
                     and sc.id_alumno=hr.id_alumno                   
@@ -532,7 +534,9 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
                     union 
                     select lr.id as id_ref,0 as guardado,
                     (case lr.tipo when 1 then 'Completo' when 2 then 'Medio' when 3 then 'Eventual' else 'NA' end ) as tipo_transporte,
-                    lr.id_alumno
+                    lr.id_alumno,
+                    ifnull(lr.observacion,'asistencia') as observacion,
+                    lr.id as id_lista
                     from lista_ruta lr
                     where lr.fecha='{$fecha}'
                     and lr.id_ruta={$ruta}
@@ -541,7 +545,9 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
         if ($flagQ == 2) {//guardados
             $sql = "select 0 as id_ref,1 as guardado, 
                     (case lr.tipo when 1 then 'Completo' when 2 then 'Medio' when 3 then 'Eventual' else 'NA' end ) as tipo_transporte,
-                    lr.id_alumno
+                    lr.id_alumno,
+                    ifnull(lr.observacion,'asistencia') as observacion,
+                    lr.id as id_lista
                     from lista_ruta lr
                     where fecha='{$fecha}'
                     and estatus=1 
