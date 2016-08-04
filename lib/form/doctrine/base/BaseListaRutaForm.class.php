@@ -22,6 +22,7 @@ abstract class BaseListaRutaForm extends BaseFormDoctrine {
             'estatus_s' => new sfWidgetFormInputText(),
             'estatus_b' => new sfWidgetFormInputText(),
             'tipo' => new sfWidgetFormInputText(),
+             'observacion' => new sfWidgetFormInputText(),
         ));
 
         $this->setValidators(array(
@@ -33,6 +34,7 @@ abstract class BaseListaRutaForm extends BaseFormDoctrine {
             'estatus_s' => new sfValidatorInteger(array('required' => false)),
             'estatus_b' => new sfValidatorInteger(array('required' => false)),
             'tipo' => new sfValidatorInteger(array('required' => false)),
+            'observacion' => new sfValidatorString(array('max_length' => 20, 'required' => false)),
         ));
 
         $this->widgetSchema->setNameFormat('lista_ruta[%s]');
