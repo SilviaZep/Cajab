@@ -62,7 +62,7 @@
                 <th class="col-xs-1"></th>              
                 <th class="col-md-4">Nombre</th>
                 <th class="col-md-4">Tipo Transporte</th>                
-                <th class="col-md-3"></th>
+                <th class="col-md-3">Estatus</th>
                 <th class="col-md-1"></th>
             </tr>
 
@@ -74,8 +74,14 @@
                     <td>{{a.nombre}}</td>
                     <td>{{a.tipo_transporte}}</td>
                     <td> 
-                        <button ng-show="a.tipo_transporte == 'Eventual'" type="button" class="btn btn-danger btn-xs" ng-click="eliminarEventual(a)"> 
-                            <i class="fa fa-trash-o" aria-hidden="true">Eliminar</i>
+                        <button ng-show="a.tipo_transporte == 'Eventual' && a.guardado==0" type="button" class="btn btn-danger btn-xs" ng-click="eliminarEventual(a)"> 
+                            <i class="fa fa-trash-o" aria-hidden="true"> Eliminar</i>
+                        </button>
+                        <button ng-show="a.observacion == 'asistencia' && a.guardado==1" type="button" class="btn btn-success btn-xs" ng-click="cambiarEstatusAsignado(a)" data-toggle="modal" data-target="#modalCambiarEstatus"> 
+                            <i class="fa fa-check-square-o" aria-hidden="true"> ASISTENCIA</i>
+                        </button>
+                        <button ng-show="a.observacion == 'inasistencia' && a.guardado==1" type="button" class="btn btn-default btn-xs" ng-click="cambiarEstatusAsignado(a)" data-toggle="modal" data-target="#modalCambiarEstatus"> 
+                            <i class="fa fa-times" aria-hidden="true"> INASISTENCIA</i>
                         </button>
                     </td>                  
                     <td>
@@ -193,6 +199,36 @@
         </div>
 
     </div>
+    
+    
+    
+     <div class="modal fade" id="modalCambiarEstatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Cambiar Estatus</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <form >
+                            <div class="form-group">
+                                <label>Estatus:</label>
+                                <select class="form-control" ng-model="estatusCambioA">
+                                    <option value="asistencia">ASISTENCIA</option>
+                                    <option value="inasistencia">INASISTENCIA</option>                                  
+                                </select>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-success" ng-click="guardarCambioEstatus()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
