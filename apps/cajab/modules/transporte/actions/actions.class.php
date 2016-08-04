@@ -612,13 +612,40 @@ class transporteActions extends baseCajabProjectActions {
         $pdf->SetTextColor(88, 89, 91);
         $y = 1;
         for ($x = 0; $x < sizeof($listaAlumnos); $x ++) {
+            if($listaAlumnos[$x]['observacion']=='asistencia'){
             $pdf->Cell(20, 8, utf8_decode($y), 'B', 0, 'L');
             $pdf->Cell(110, 8, utf8_decode($listaAlumnos[$x]['nombre']), 'B', 0, 'L');
             $pdf->Cell(30, 8, utf8_decode($listaAlumnos[$x]['tipo_transporte']), 'B', 0, 'L');
             $pdf->Cell(30, 8, utf8_decode(""), 'B', 0, 'L');
             $y++;
-            $pdf->Ln(8);
+            $pdf->Ln(8);            
+            }
         }
     }
+    
+    
+    public function executeCambiarEstatusAlumnoListaRuta(sfWebRequest $request) {
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+                $idAlumnoLista = $request->getParameter("idAlumnoCambio", 0);
+                $estatus = $request->getParameter("estatus", 0);
+
+
+                $alumnoListaForm = Doctrine::getTable('ListaRuta')->find((int) $idAlumnoLista);
+                if (!isset($alumnoListaForm) || empty($alumnoListaForm)) {
+                    $r = array("mensaje" => "No se encuentra el alumno en la Base de Datos", 'error' => true);
+                    return $this->sendJSON($r);
+                }
+                $alumnoListaForm->setObservacion($estatus);
+                $alumnoListaForm->save();
+
+                $r = array("mensaje" => "Actualizado correctamente", 'error' => false); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            throw new sfException($e);
+        }
+    }
+    
 
 }
