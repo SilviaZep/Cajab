@@ -21,8 +21,10 @@ abstract class BaseEgresosForm extends BaseFormDoctrine
       'id_concepto'    => new sfWidgetFormInputText(),
       'fecha_registro' => new sfWidgetFormDate(),
       'cantidad'       => new sfWidgetFormInputText(),
+      'referencia'       => new sfWidgetFormInputText(),
       'observaciones'  => new sfWidgetFormTextarea(),
       'estatus'        => new sfWidgetFormInputText(),
+      'tipo_pago'        => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
@@ -33,7 +35,9 @@ abstract class BaseEgresosForm extends BaseFormDoctrine
       'fecha_registro' => new sfValidatorDate(array('required' => false)),
       'cantidad'       => new sfValidatorNumber(array('required' => false)),
       'observaciones'  => new sfValidatorString(array('required' => false)),
+      'referencia'  => new sfValidatorString(array('required' => false)),
       'estatus'        => new sfValidatorInteger(array('required' => false)),
+      'tipo_pago'        => new sfValidatorInteger(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('egresos[%s]');

@@ -143,7 +143,7 @@ class egresosActions extends baseCajabProjectActions
               $reponse="";
             if ($request->isXmlHttpRequest()) {
                 $idServicio = $request->getParameter("servicio", 0);
-                $idProveedor = $request->getParameter("servicio", 0);
+                $idProveedor = $request->getParameter("proveedor", 0);
                 $idConcepto = $request->getParameter("concepto", 0);
                 $referencia = $request->getParameter("referencia", 0);
 				$cantidad = $request->getParameter("cantidad", 0);

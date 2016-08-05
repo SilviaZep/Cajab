@@ -105,6 +105,15 @@ abstract class BaseEgresos extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => '',
              ));
+        $this->hasColumn('referencia', 'string', null, array(
+        		'type' => 'string',
+        		'fixed' => 0,
+        		'unsigned' => false,
+        		'primary' => false,
+        		'notnull' => false,
+        		'autoincrement' => false,
+        		'length' => '',
+        ));
         $this->hasColumn('estatus', 'integer', 4, array(
              'type' => 'integer',
              'fixed' => 0,
@@ -114,6 +123,15 @@ abstract class BaseEgresos extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 4,
              ));
+        $this->hasColumn('tipo_pago', 'integer', 4, array(
+        		'type' => 'integer',
+        		'fixed' => 0,
+        		'unsigned' => false,
+        		'primary' => false,
+        		'notnull' => false,
+        		'autoincrement' => false,
+        		'length' => 4,
+        ));
     }
 
     public function setUp()
