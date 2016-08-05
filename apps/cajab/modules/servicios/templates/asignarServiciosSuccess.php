@@ -113,6 +113,12 @@
                             </select>
                         </div>
 
+                        <div  class="form-group">
+                            <button class="btn btn-default" ng-click="listadoAlumnos(1,1)" title="Actualizar">
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
+                            </button> 
+                        </div>
+
                     </form><br/>
                 </div>
             </div>
@@ -124,7 +130,7 @@
                             <label for="exampleInputName2">Nombre: </label>
                             <input type="text" ng-model="nombreAlumno" class="form-control" placeholder="Nombre del Alumno"><br/>
                         </div>
-                        <button class="btn btn-default" ng-click="listadoAlumnos()" title="Actualizar">
+                        <button class="btn btn-default" ng-click="listadoAlumnos(1,2)" title="Actualizar">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
                         </button> 
                     </form>

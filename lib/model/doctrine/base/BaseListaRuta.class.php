@@ -111,6 +111,15 @@ abstract class BaseListaRuta extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 4,
              ));
+          $this->hasColumn('observacion', 'string', 20, array(
+            'type' => 'string',
+            'fixed' => 0,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => false,
+            'autoincrement' => false,
+            'length' => 20,
+        ));
         
     }
 

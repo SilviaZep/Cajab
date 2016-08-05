@@ -20,6 +20,11 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
             debugger
 
         };
+        $scope.cambiarEstatusAsignado = function (a) {
+            debugger
+            $scope.idAlumnoListaCambio = a.id_lista;
+            $scope.estatusCambioA = a.observacion;
+        };
 
         $scope.compararFechas = function () {
 
@@ -103,7 +108,7 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
                 method: 'POST',
                 url: 'transporte_eliminar_alumno_eventual',
                 params: {
-                    idAlumnoEventual: a.id_ref,
+                    idAlumnoEventual: a.id_lista,
                 }
             }).then(
                     function (r) {
@@ -144,7 +149,11 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
                     function (r) {
                         cerrarModal('crearEventual');
                         alert(r.data.mensaje);
+                        $scope.listadoRutas();
                         $scope.listadoAlumnosPorDiaRuta($scope.ruta);
+                        for (i = 0; i < $scope.listaAlumnos.length; i++) {
+                            $scope.listaAlumnos[i].seleccionado = false;
+                        }
 
                     }
             );
@@ -155,7 +164,6 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
 
 
         $scope.listadoAlumnosPorDiaRuta = function (r) {
-
 
             var fecha = moment($scope.fechaIni).format('YYYY-MM-DD');
             $scope.idRuta = r.id;
@@ -254,13 +262,23 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
             var idCategoria = $scope.idCategoria;
 
 
+            var idCiclo = '';
+            var idGrado = '';
+            var idGrupo = '';
+
+
+
+
             $http({
                 method: 'POST',
-                url: 'servicios_listado_alumnos',
+                url: 'filtros-alumnos',
                 params: {
                     offset: offset,
                     limit: max,
-                    nombreAlumno: nombreAlumno,
+                    alumno: nombreAlumno, //nombreAlumno: nombreAlumno,
+                    idCiclo: idCiclo,
+                    idGrado: idGrado,
+                    idGrupo: idGrupo,
                     idServicio: idServicio,
                     idCategoria: idCategoria
 
@@ -335,6 +353,30 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
 
 
         //-----------------Fin listado Alumnos---------------
+
+        $scope.guardarCambioEstatus = function () {
+            var idAlumnoListaCambio = $scope.idAlumnoListaCambio;
+            var estatus = $scope.estatusCambioA;
+            
+
+            $http({
+                method: 'POST',
+                url: 'transporte_cambiar_estatus_alumno_lista_ruta',
+                params: {
+                    idAlumnoCambio: idAlumnoListaCambio,
+                    estatus: estatus
+                }
+            }).then(
+                    function (r) {
+                        cerrarModal('modalCambiarEstatus');
+                        alert(r.data.mensaje);                        
+                        $scope.listadoAlumnosPorDiaRuta($scope.ruta);
+                        for (i = 0; i < $scope.listaAlumnos.length; i++) {
+                            $scope.listaAlumnos[i].seleccionado = false;
+                        }
+                    }
+            );
+        };
 
 
 

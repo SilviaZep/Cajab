@@ -122,7 +122,10 @@ servicios_asignados_a_servicio:
   param: { module: servicios, action: asignadosAServicio }    
 servicios_cambiar_estatus_servicio_cliente:
   url:   /servicios_cambiar_estatus_servicio_cliente
-  param: { module: servicios, action:  cambiarEstatusServicioCliente }    
+  param: { module: servicios, action:  cambiarEstatusServicioCliente } 
+servicios_imprimir_asignados_a_servicio:
+  url:   /servicios_imprimir_asignados_a_servicio
+  param: { module: servicios, action:  imprimirAsignadosAServicio }   
   
   
 
@@ -177,6 +180,9 @@ transporte_verificar_guardado:
 transporte_imprimir_rutas_alumnos:
   url:   /transporte_imprimir_rutas_alumnos
   param: { module: transporte, action: imprimirRutasAlumnos } 
+transporte_cambiar_estatus_alumno_lista_ruta:
+  url:   /transporte_cambiar_estatus_alumno_lista_ruta
+  param: { module: transporte, action: cambiarEstatusAlumnoListaRuta } 
 
 
   

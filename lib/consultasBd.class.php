@@ -200,13 +200,14 @@ class consultasBd {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+
     public static function getListaRutasActivas() {
-    	$conn = Doctrine_Manager::getInstance()->getConnection("default");
-    
-    	$sql = "select
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        $sql = "select
     	* from ruta";
-    	$st = $conn->execute($sql);
-    	return $st->fetchAll(PDO::FETCH_ASSOC);
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function getTotalListadoRutas($nombreRuta) {
@@ -387,11 +388,12 @@ class consultasBd {
                           WHEN 3 THEN 'Cancelado'
                           WHEN 4 THEN 'Condonado'
                       ELSE  'na' END as estatus_descripcion,
-                s.nombre as nombre_servicio
+                s.nombre as nombre_servicio,
+                ifnull((select cs.categoria from categoria_servicio cs where id=s.categoria_id),'na') as categoria_servicio                
                 from servicio_cliente sc,servicio s
                 where sc.id_servicio=s.id) t
                 where id_servicio={$idServicio}
-                and cliente like '%{$nombreCliente}%'                  
+                and (cliente like '%{$nombreCliente}%'  or cliente='na')                 
                 order by tipo_descripcion,cliente
                 limit {$limit} offset {$offset};";
 
@@ -420,7 +422,7 @@ class consultasBd {
                 from servicio_cliente sc,servicio s
                 where sc.id_servicio=s.id) t
                 where id_servicio={$idServicio}
-                and cliente like '%{$nombreCliente}%'                  
+                and (cliente like '%{$nombreCliente}%'  or cliente='na')                
                 order by tipo_descripcion,cliente;";
 
         $st = $conn->execute($sql);
@@ -439,6 +441,12 @@ class consultasBd {
 
     public static function getHorariosAlumnos($limit, $offset, $idsAlumno) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        $filtroAlumnos = "";
+        if ($idsAlumno != "") {
+            $filtroAlumnos = "where hr.id_alumno in (" . $idsAlumno . ")";
+        }
+
         $sql = "select hr.*,
 ifnull((select r.nombre from ruta r where id=hr.r_lun_e),'No Asig.') as r_lun_e_nombre,
 ifnull((select r.nombre from ruta r where id=hr.r_lun_s),'No Asig.') as r_lun_s_nombre,
@@ -451,8 +459,8 @@ ifnull((select r.nombre from ruta r where id=hr.r_jue_s),'No Asig.') as r_jue_s_
 ifnull((select r.nombre from ruta r where id=hr.r_vie_e),'No Asig.') as r_vie_e_nombre,
 ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_nombre,
 (case hr.tipo when 1 then 'Completo' when 2 then 'Medio' else 'NA' end ) as tipo_transporte
-                from horario_ruta hr
-                limit {$limit} offset {$offset};";
+                from horario_ruta hr 
+                " . $filtroAlumnos . "order by fecha_registro desc limit {$limit} offset {$offset};";
 
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
@@ -460,8 +468,13 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
 
     public static function getTotalHorariosAlumnos($idsAlumno) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $filtroAlumnos = "";
+        if ($idsAlumno != "") {
+            $filtroAlumnos = "where hr.id_alumno in (" . $idsAlumno . ")";
+        }
+
         $sql = "select count(*) as total
-                from horario_ruta hr;";
+                from horario_ruta hr " . $filtroAlumnos . "  ;";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -507,7 +520,9 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
             $sql = "select * from (
                     select sc.id as id_ref,0 as guardado,
                     (case hr.tipo when 1 then 'Completo' when 2 then 'Medio' else 'NA' end ) as tipo_transporte,
-                    sc.id_alumno
+                    sc.id_alumno,
+                    'asistencia' as observacion,
+                    0 as id_lista
                     from servicio_cliente sc,servicio s,horario_ruta hr
                     where sc.id_servicio=s.id
                     and sc.id_alumno=hr.id_alumno                   
@@ -519,7 +534,9 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
                     union 
                     select lr.id as id_ref,0 as guardado,
                     (case lr.tipo when 1 then 'Completo' when 2 then 'Medio' when 3 then 'Eventual' else 'NA' end ) as tipo_transporte,
-                    lr.id_alumno
+                    lr.id_alumno,
+                    ifnull(lr.observacion,'asistencia') as observacion,
+                    lr.id as id_lista
                     from lista_ruta lr
                     where lr.fecha='{$fecha}'
                     and lr.id_ruta={$ruta}
@@ -528,7 +545,9 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
         if ($flagQ == 2) {//guardados
             $sql = "select 0 as id_ref,1 as guardado, 
                     (case lr.tipo when 1 then 'Completo' when 2 then 'Medio' when 3 then 'Eventual' else 'NA' end ) as tipo_transporte,
-                    lr.id_alumno
+                    lr.id_alumno,
+                    ifnull(lr.observacion,'asistencia') as observacion,
+                    lr.id as id_lista
                     from lista_ruta lr
                     where fecha='{$fecha}'
                     and estatus=1 
@@ -611,9 +630,8 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
     public static function getVerificarGuardado($fecha) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select count(*) as total
-                from lista_ruta lr,alumno_pruebas a
-                where lr.id_alumno=a.id 
-                and lr.fecha='{$fecha}'
+                from lista_ruta lr
+                where lr.fecha='{$fecha}'
                 and lr.estatus=1 and lr.tipo in(1,2);";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
@@ -711,5 +729,15 @@ and sc.estatus=1;";
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-//----------------------------------Fin Querys estado de cuenta--------------------------------------
+    //----------------------------------Fin Querys estado de cuenta--------------------------------------
+    //------------------------------------------------
+    public static function getIdsServicioCliente($idServicio) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "select distinct(id_alumno) as id_alumno
+from servicio_cliente where id_servicio={$idServicio};";
+
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

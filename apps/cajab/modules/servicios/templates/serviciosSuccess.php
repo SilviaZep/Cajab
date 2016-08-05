@@ -152,17 +152,17 @@
                                     <input type="number"  ng-model="mPrecio" class="form-control" >
                                 </div>
                             </div>
-                         <!--   <div class="form-group">                                
-                                <label class="col-sm-4 control-label "  style="text-align: left !important">Pago Obligatorio:</label>
-                                <div class="col-sm-4">
-                                    <label class="radio-inline">
-                                        <input type="radio"  ng-model="mPagoObligarotio" value="1" > SI
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio"  ng-model="mPagoObligarotio" value="0" > NO
-                                    </label>
-                                </div>
-                            </div>-->
+                            <!--   <div class="form-group">                                
+                                   <label class="col-sm-4 control-label "  style="text-align: left !important">Pago Obligatorio:</label>
+                                   <div class="col-sm-4">
+                                       <label class="radio-inline">
+                                           <input type="radio"  ng-model="mPagoObligarotio" value="1" > SI
+                                       </label>
+                                       <label class="radio-inline">
+                                           <input type="radio"  ng-model="mPagoObligarotio" value="0" > NO
+                                       </label>
+                                   </div>
+                               </div>-->
                             <div class="form-group">                                
                                 <label class="col-sm-4 control-label "  style="text-align: left !important">Aplica Parcialidades:</label>
                                 <div class="col-sm-4">
@@ -174,7 +174,7 @@
                                     </label>
                                 </div>
                             </div>
-                             <div ng-show="mCategoria==1" class="form-group">
+                            <div ng-show="mCategoria == 1" class="form-group">
                                 <label  class="col-sm-3 control-label "  style="text-align: left !important">Tipo Servicio</label>
                                 <div class="col-sm-9">
                                     <label class="radio-inline">
@@ -280,6 +280,9 @@
                             <thead>
 
                             <td colspan="8" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> Asignados al Servicio                           
+                                    <button ng-show="listaAsignados.length > 0"  type="button" class="btn btn-default pull-right" ng-click="imprimirAsignadosAServicio()">
+                                        <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
+                                    </button>
                                 </h4>
                             </td>
 
@@ -319,7 +322,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                       <!-- <button type="button" class="btn btn-success" ng-click="guardarCambioEstatus()">Guardar</button>-->
+                        <!-- <button type="button" class="btn btn-success" ng-click="guardarCambioEstatus()">Guardar</button>-->
                     </div>
                 </div>
             </div>

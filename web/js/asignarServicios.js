@@ -99,7 +99,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                     idCiclo: $scope.selCiclo
                 }
             }).then(
-                    function (r) {                        
+                    function (r) {
                         $scope.listaGrados = r.data.listaGrados;
                     }
             );
@@ -114,7 +114,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                     idCiclo: $scope.selCiclo
                 }
             }).then(
-                    function (r) {                        
+                    function (r) {
                         $scope.listaGrupos = r.data.listaGrupos;
                     }
             );
@@ -289,10 +289,14 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
 
 
 
-        $scope.listadoAlumnos = function (pag) {
+        $scope.listadoAlumnos = function (pag, tipoConsulta) {
             if (!pag) {
                 pag = 1;
             }
+            if (!tipoConsulta) {
+                tipoConsulta = 0;
+            }
+
             $scope.countSeleccionadosAlumnos = 0;
             $scope.todosAlumnos = false;
 
@@ -311,6 +315,16 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
             var idGrado = '';
             var idGrupo = '';
 
+            if (tipoConsulta == 1) {//por Ciclo
+                $scope.nombreAlumno="";
+                nombreAlumno="";
+            }
+            if (tipoConsulta == 2) {//por nombre
+                $scope.selCiclo = "0";
+                $scope.selGrado = "0";
+                $scope.selGrupo = "0";
+            }
+
             if ($scope.selCiclo != "0") {
                 idCiclo = $scope.selCiclo;
             }
@@ -321,13 +335,15 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                 idGrupo = $scope.selGrupo;
             }
 
+
+
             $http({
                 method: 'POST',
                 url: 'filtros-alumnos', //servicios_listado_alumnos
                 params: {
                     offset: offset,
                     limit: max,
-                    alumno:nombreAlumno,//nombreAlumno: nombreAlumno,
+                    alumno: nombreAlumno, //nombreAlumno: nombreAlumno,
                     idCiclo: idCiclo,
                     idGrado: idGrado,
                     idGrupo: idGrupo,

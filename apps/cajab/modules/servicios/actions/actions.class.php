@@ -385,17 +385,52 @@ class serviciosActions extends baseCajabProjectActions {
                 $offset = $request->getParameter("offset", 0);
                 $limit = $request->getParameter("limit", 0);
 
+                $tam = 0;
+                $count = 0;
+                $flagFiltroNombre = false;
+                $listaAsignadosFiltro = array();
+
+                $idsAlumnos = "";
+                if ($nombreCliente != "") {
+                    $buscados = consultasInstituto::getIdsAlumnos($nombreCliente);
+                    $tam = sizeof($buscados);
+                    //if ($tam > 0) {
+                        $flagFiltroNombre = true;
+                    //}
+                }
+
+
 
                 $listaAsignados = consultasBd::getListaAsignadosServicio((int) $idServicio, $nombreCliente, (int) $limit, (int) $offset);
                 for ($i = 0; $i < sizeof($listaAsignados); $i ++) {
-                    if($listaAsignados[$i]['cliente']=="na" && $listaAsignados[$i]['tipo_descripcion']=="Alumno") {
+                    if ($listaAsignados[$i]['cliente'] == "na" && $listaAsignados[$i]['tipo_descripcion'] == "Alumno") {
                         $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAsignados[$i]['id_alumno']);
-                        $listaAsignados[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];                      
+                        $listaAsignados[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
+                        if ($flagFiltroNombre) {
+                            for ($j = 0; $j < $tam; $j ++) {
+                                //echo "<br/>".$buscados[$j]['idalumno']."==".$listaAsignados[$i]['id_alumno'];
+                                if ($buscados[$j]['idalumno'] == $listaAsignados[$i]['id_alumno']) {
+                                    array_push($listaAsignadosFiltro, $listaAsignados[$i]);
+                                    $count++;
+                                }
+                            }
+                        }
+                    } else {
+                        if ($flagFiltroNombre && $listaAsignados[$i]['tipo_descripcion'] == "Cliente Externo") {
+                            array_push($listaAsignadosFiltro, $listaAsignados[$i]);
+                            $count++;
+                        }
                     }
                 }
 
                 $totalListaAsignados = consultasBd::getTotalListaAsignadosServicio((int) $idServicio, $nombreCliente);
                 $totalListaAsignados = $totalListaAsignados[0]['total'];
+
+
+                if ($flagFiltroNombre) {
+                    $listaAsignados = $listaAsignadosFiltro;
+                    $totalListaAsignados = $count;
+                }
 
 
                 $r = array("error" => false, "mensaje" => "Ok", "listaAsignados" => $listaAsignados, "total" => $totalListaAsignados); //a partir de php 5.4 es con corchetes[]
@@ -431,6 +466,113 @@ class serviciosActions extends baseCajabProjectActions {
             }
         } catch (Doctrine_Exception $e) {
             throw new sfException($e);
+        }
+    }
+
+    public function executeImprimirAsignadosAServicio(sfWebRequest $request) {
+        try {
+            
+
+                date_default_timezone_set('America/Mexico_City');
+
+
+                $nombreCliente = $request->getParameter("nombreCliente", "");
+                $idServicio = $request->getParameter("idServicio", 0);
+                $offset = $request->getParameter("offset", 0);
+                $limit = $request->getParameter("limit", 0);
+
+                $tam = 0;
+                $count = 0;
+                $flagFiltroNombre = false;
+                $listaAsignadosFiltro = array();
+
+                $idsAlumnos = "";
+                if ($nombreCliente != "") {
+                    $buscados = consultasInstituto::getIdsAlumnos($nombreCliente);
+                    $tam = sizeof($buscados);
+                   // if ($tam > 0) {
+                        $flagFiltroNombre = true;
+                  //  }
+                }
+
+
+
+                $listaAsignados = consultasBd::getListaAsignadosServicio((int) $idServicio, $nombreCliente, (int) $limit, (int) $offset);
+                for ($i = 0; $i < sizeof($listaAsignados); $i ++) {
+                    if ($listaAsignados[$i]['cliente'] == "na" && $listaAsignados[$i]['tipo_descripcion'] == "Alumno") {
+                        $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAsignados[$i]['id_alumno']);
+                        $listaAsignados[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
+                        if ($flagFiltroNombre) {
+                            for ($j = 0; $j < $tam; $j ++) {
+                                if ($buscados[$j]['idalumno'] == $listaAsignados[$i]['id_alumno']) {
+                                    array_push($listaAsignadosFiltro, $listaAsignados[$i]);
+                                    $count++;
+                                }
+                            }
+                        }
+                    } else {
+                        if ($flagFiltroNombre && $listaAsignados[$i]['tipo_descripcion'] == "Cliente Externo") {
+                            array_push($listaAsignadosFiltro, $listaAsignados[$i]);
+                            $count++;
+                        }
+                    }
+                }
+
+                $totalListaAsignados = consultasBd::getTotalListaAsignadosServicio((int) $idServicio, $nombreCliente);
+                $totalListaAsignados = $totalListaAsignados[0]['total'];
+
+
+                if ($flagFiltroNombre) {
+                    $listaAsignados = $listaAsignadosFiltro;
+                    $totalListaAsignados = $count;
+                }
+
+
+                $pdf = new FPDF ();
+                
+                $pdf->AddPage();
+                $pdf->Ln(10);
+                $pdf->SetFont('Arial', '', 18);
+                $pdf->SetTextColor(88, 89, 91);
+                $pdf->Cell(0, 8, utf8_decode($listaAsignados[0]['categoria_servicio']." - ".$listaAsignados[0]['nombre_servicio']), 'B', 0, 'C');
+                $pdf->Ln(15);
+
+                $this->pdfListaAsignados($pdf, $listaAsignados);
+
+               
+
+
+                $response = new sfWebResponse($pdf->Output());
+                $response->headers->set('Content-Type', 'application/pdf');
+                return $response;
+           
+        } catch (Doctrine_Exception $e) {
+            //throw new sfException($e);
+            $r = array("error" => true, "mensaje" => "Error Desconocido_02");
+            return $this->sendJSON($r);
+        }
+    }
+
+    private function pdfListaAsignados($pdf, $listaAsignados) {
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->SetFillColor(136, 138, 140);
+        $pdf->Cell(20, 8, utf8_decode("#"), 'B', 0, 'L', true);
+        $pdf->Cell(30, 8, utf8_decode("Tipo Cliente"), 'B', 0, 'L', true);
+        $pdf->Cell(110, 8, utf8_decode("Nombre"), 'B', 0, 'L', true);
+        $pdf->Cell(30, 8, utf8_decode("Estatus   "), 'B', 0, 'L', true);
+        $pdf->Ln(8);
+
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetTextColor(88, 89, 91);
+        $y = 1;
+        for ($x = 0; $x < sizeof($listaAsignados); $x ++) {
+            $pdf->Cell(20, 8, utf8_decode($y), 'B', 0, 'L');
+            $pdf->Cell(30, 8, utf8_decode($listaAsignados[$x]['tipo_descripcion']), 'B', 0, 'L');
+            $pdf->Cell(110, 8, utf8_decode($listaAsignados[$x]['cliente']), 'B', 0, 'L');
+            $pdf->Cell(30, 8, utf8_decode($listaAsignados[$x]['estatus_descripcion']), 'B', 0, 'L');
+            $y++;
+            $pdf->Ln(8);
         }
     }
 
