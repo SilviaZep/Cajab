@@ -75,6 +75,15 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                 }
 
             }
+            
+             if(idServicios.length==0){
+                alert("no se selecciono ningun servicio para pagar");                 
+                return;
+                
+            }
+            
+
+            inicioActualizarBoton('botonGuardarPago');
 
             $http({
                 method: 'POST',
@@ -91,6 +100,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                         $scope.listadoServicios(parseInt(idAlumno));
                         $scope.totalPagara = 0;
                         $scope.numPagos = 0;
+                        finActualizarBoton('botonGuardarPago');
                     }
             );
 
@@ -295,6 +305,24 @@ function finActualizar() {
     //$('#botonActualizar').removeClass('disabled');
     $("#botonActualizar").removeClass("fa-spinner fa-spin");
     $("#botonActualizar").addClass("fa-refresh");
+
+
+}
+
+
+function inicioActualizarBoton(idBoton) {
+
+  //  $("#" + idBoton).removeClass(clase);
+   // $("#" + idBoton).addClass("fa-refresh fa-spin fa-3x fa-fw");
+    $("#" + idBoton).prop("disabled", true);
+
+}
+
+function finActualizarBoton(idBoton) {
+    //$('#botonActualizar').removeClass('disabled');
+  //  $("#" + idBoton).removeClass("fa-refresh fa-spin fa-3x fa-fw");
+  //  $("#" + idBoton).addClass(clase);
+    $("#" + idBoton).prop("disabled", false);
 
 
 }
