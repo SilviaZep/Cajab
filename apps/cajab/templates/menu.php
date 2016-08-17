@@ -163,8 +163,8 @@
                                                                                 <b class="caret"></b>
                                                                             </a>
                                                                             <ul class="dropdown-menu">
-                                                                                <li id="mEcAlumno"><a href="<?php echo url_for("@homepage"); ?>"><i class="fa fa-university"> Estado de cuenta/Alumno</i></a></li>  
-                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@homepage"); ?>"><i class="fa fa-university"> Estado de cuenta/Servicio</i></a></li>  		  
+                                                                                <li id="mEcAlumno"><a href="<?php echo url_for("@estado_cuenta_servicios_estatus"); ?>"><i class="fa fa-bars" aria-hidden="true"> Estado de cuenta por servicio</i></a></li>  
+                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@homepage"); ?>"><i class="fa fa-newspaper-o" aria-hidden="true"> Reporte de faltantes de pago</i></a></li>  		  
 
                                                                             </ul>
                                                                         </li>
