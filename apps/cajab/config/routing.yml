@@ -223,7 +223,10 @@ pagos_servicios_pagando_cliente:
   param: { module: pagos, action: serviciosPagandoCliente } 
 pagos_pagos_servicios_cliente:
   url:   /pagos_pagos_servicios_cliente
-  param: { module: pagos, action: pagoServiciosCliente } 
+  param: { module: pagos, action: pagoServiciosCliente }   
+pagos_imprimir_ticket:
+  url:   /pagos_imprimir_ticket
+  param: { module: pagos, action: imprimirTicket }   
 
 
 #Fin pagos
