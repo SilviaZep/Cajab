@@ -20,9 +20,7 @@
                     <i class="fa fa-floppy-o" aria-hidden="true"> Guardar Listas</i> 
                 </button>
 
-                <button ng-show="flagGuardar == false && fechaIni<=fechaHoy" type="button" class="btn btn-default pull-right" ng-click="imprimirListasRutasAlumnos()">
-                    <i class="fa fa-print" aria-hidden="true"> Imprimir Listas</i>
-                </button>
+
 
 
 
@@ -55,7 +53,16 @@
             <thead>
 
             <td colspan="8" class="info"><b><i class="fa fa-bus" aria-hidden="true"></i> {{rutaNombre}} <br/> Listado Alumnos  </b>  &nbsp;&nbsp; {{fechaIni| date:'dd-MM-yyyy'}}
-                <button type="button" class="btn btn-success btn-xs pull-right" data-toggle="modal"  data-target="#crearEventual"><i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Alumno</button>
+                <div class="pull-right">
+                    <div class="btn-group ">
+                        <button type="button" class="btn btn-success btn-xs " data-toggle="modal"  data-target="#crearEventual"><i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Alumno</button>
+                    </div>
+                    <div class="btn-group ">
+                        <button ng-show="flagGuardar == false && fechaIni <= fechaHoy" type="button" class="btn btn-default" ng-click="imprimirListasRutasAlumnos()">
+                            <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
+                        </button>
+                    </div>
+                </div>
             </td>
 
             <tr>
@@ -74,19 +81,19 @@
                     <td>{{a.nombre}}</td>
                     <td>{{a.tipo_transporte}}</td>
                     <td> 
-                        <button ng-show="a.tipo_transporte == 'Eventual' && a.guardado==0" type="button" class="btn btn-danger btn-xs" ng-click="eliminarEventual(a)"> 
+                        <button ng-show="a.tipo_transporte == 'Eventual' && a.guardado == 0" type="button" class="btn btn-danger btn-xs" ng-click="eliminarEventual(a)"> 
                             <i class="fa fa-trash-o" aria-hidden="true"> Eliminar</i>
                         </button>
-                        <button ng-show="a.observacion == 'asistencia' && a.guardado==1" type="button" class="btn btn-success btn-xs" ng-click="cambiarEstatusAsignado(a)" data-toggle="modal" data-target="#modalCambiarEstatus"> 
+                        <button ng-show="a.observacion == 'asistencia' && a.guardado == 1" type="button" class="btn btn-success btn-xs" ng-click="cambiarEstatusAsignado(a)" data-toggle="modal" data-target="#modalCambiarEstatus"> 
                             <i class="fa fa-check-square-o" aria-hidden="true"> ASISTENCIA</i>
                         </button>
-                        <button ng-show="a.observacion == 'inasistencia' && a.guardado==1" type="button" class="btn btn-default btn-xs" ng-click="cambiarEstatusAsignado(a)" data-toggle="modal" data-target="#modalCambiarEstatus"> 
+                        <button ng-show="a.observacion == 'inasistencia' && a.guardado == 1" type="button" class="btn btn-default btn-xs" ng-click="cambiarEstatusAsignado(a)" data-toggle="modal" data-target="#modalCambiarEstatus"> 
                             <i class="fa fa-times" aria-hidden="true"> INASISTENCIA</i>
                         </button>
                     </td>                  
                     <td>
-                        <span ng-show="a.guardado==0" class="label label-warning">calculado</span>
-                        <span ng-show="a.guardado==1" class="label label-success">guardado</span>                        
+                        <span ng-show="a.guardado == 0" class="label label-warning">calculado</span>
+                        <span ng-show="a.guardado == 1" class="label label-success">guardado</span>                        
                     </td>
 
 
@@ -199,36 +206,36 @@
         </div>
 
     </div>
-    
-    
-    
-     <div class="modal fade" id="modalCambiarEstatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Cambiar Estatus</h4>
-                    </div>
-                    <div class="modal-body">
 
-                        <form >
-                            <div class="form-group">
-                                <label>Estatus:</label>
-                                <select class="form-control" ng-model="estatusCambioA">
-                                    <option value="asistencia">ASISTENCIA</option>
-                                    <option value="inasistencia">INASISTENCIA</option>                                  
-                                </select>
-                            </div>
-                        </form>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-success" ng-click="guardarCambioEstatus()">Guardar</button>
-                    </div>
+
+    <div class="modal fade" id="modalCambiarEstatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Cambiar Estatus</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form >
+                        <div class="form-group">
+                            <label>Estatus:</label>
+                            <select class="form-control" ng-model="estatusCambioA">
+                                <option value="asistencia">ASISTENCIA</option>
+                                <option value="inasistencia">INASISTENCIA</option>                                  
+                            </select>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-success" ng-click="guardarCambioEstatus()">Guardar</button>
                 </div>
             </div>
         </div>
+    </div>
 
 
 
