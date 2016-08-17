@@ -228,6 +228,15 @@ pagos_pagos_servicios_cliente:
 
 #Fin pagos
 
+#Estado de cuenta
+estado_cuenta_servicios_estatus:
+  url:   /estado_cuenta_servicios_estatus
+  param: { module: estadoCuenta, action: serviciosEstatus } 
+estado_cuenta_asignados_a_servicio:
+  url:   /estado_cuenta_asignados_a_servicio
+  param: { module: estadoCuenta, action: asignadosAServicio }   
+#fin estado de cuenta
+
 
 #SEGURIDAD  
 signin:
