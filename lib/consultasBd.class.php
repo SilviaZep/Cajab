@@ -742,12 +742,12 @@ from servicio_cliente where id_servicio={$idServicio};";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    //-------------------lo pagado a un servicio
-       public static function getPagadoClientesServicio($idServicio,$limit,$offset) {
-        $conn = Doctrine_Manager::getInstance()->getConnection("default");    
 
-$sql="select *,ifnull((abonado-precio),0) as saldo 
+    //-------------------lo pagado a un servicio
+    public static function getPagadoClientesServicio($idServicio, $limit, $offset) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        $sql = "select *,ifnull((abonado-precio),0) as saldo 
 from (
 select * ,
 (select ifnull(s.precio,0) from servicio s where s.id=sc.id_servicio) as precio,
@@ -785,12 +785,11 @@ limit {$limit} offset {$offset};";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    
-      public static function getTotalPagadoClientesServicio($idServicio) {
-        $conn = Doctrine_Manager::getInstance()->getConnection("default");    
 
-$sql="select count(*) as total
+    public static function getTotalPagadoClientesServicio($idServicio) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        $sql = "select count(*) as total
 from (
 select * ,
 (select ifnull(s.precio,0) from servicio s where s.id=sc.id_servicio) as precio,
@@ -827,7 +826,38 @@ where sc.id_servicio={$idServicio})t
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-     
+
+    public static function getConsecutivoPago() {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "select (ifnull(max(id_pago),0)+1) as consecutivo 
+from servicio_pago;";
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+     public static function getTicketPago($idPago) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "select 
+(select nombre 
+from servicio where id=
+(select sc.id_servicio from servicio_cliente sc where sc.id=sp.id_servicio)) as nombre_servicio,
+(CASE sp.tipo_cliente
+WHEN 1 THEN 'na'
+WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sp.id_cliente),'na')
+ELSE  'na' END) as cliente,
+(CASE sp.tipo_cliente
+WHEN 1 THEN 'Alumno'
+WHEN 2 THEN 'Cliente Externo'
+ELSE  'na' END) as tipo_descripcion,
+sp.monto,
+sp.forma_pago,sp.id_pago,sp.fecha_pago,sp.id_alumno
+from servicio_pago sp
+where id_pago={$idPago};";
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
     
     
 
