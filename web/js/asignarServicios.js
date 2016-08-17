@@ -271,12 +271,24 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                 return;
             }
 
+            var noRepeticion = 1;
+
+            if ($scope.idCategoria == 4 || ($scope.idCategoria == 1 && $scope.tipoTransporte == 3)) {
+                var numRep = prompt("Numero de compras", "1");
+                if (numRep != null) {
+                    noRepeticion = parseInt(numRep);
+                }else{
+                    return;
+                }
+            }
+
             $http({
                 method: 'POST',
                 url: 'servicios_asignar_alumnos_servicio',
                 params: {
                     idAlumnos: seleccionados,
-                    idServicio: $scope.idServicio
+                    idServicio: $scope.idServicio,
+                    noRepeticion: noRepeticion
                 }
             }).then(
                     function (r) {
@@ -316,8 +328,8 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
             var idGrupo = '';
 
             if (tipoConsulta == 1) {//por Ciclo
-                $scope.nombreAlumno="";
-                nombreAlumno="";
+                $scope.nombreAlumno = "";
+                nombreAlumno = "";
             }
             if (tipoConsulta == 2) {//por nombre
                 $scope.selCiclo = "0";
@@ -442,12 +454,25 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                 alert("no se han seleccionado clientes para guardar");
                 return;
             }
+
+            var noRepeticion = 1;
+
+            if ($scope.idCategoria == 4 || ($scope.idCategoria == 1 && $scope.tipoTransporte == 3)) {
+                var numRep = prompt("Numero de compras", "1");
+                if (numRep != null) {
+                    noRepeticion = parseInt(numRep);
+                }else{
+                    return;
+                }
+            }
+
             $http({
                 method: 'POST',
                 url: 'servicios_asignar_clientes_servicio',
                 params: {
                     idClientes: seleccionados,
-                    idServicio: $scope.idServicio
+                    idServicio: $scope.idServicio,
+                    noRepeticion:noRepeticion
                 }
             }).then(
                     function (r) {
