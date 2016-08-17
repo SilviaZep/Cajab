@@ -8,7 +8,7 @@
             <form class="form-inline">
 
                 <div class="form-group">
-                    <label for="exampleInputEmail2"> Eventos de:</label>
+                    <label for="exampleInputEmail2"> Inicio de eventos de:</label>
                     <input type="date" ng-model="fechaIni" class="form-control" id="exampleInputEmail2" >
                 </div>
                 <div class="form-group">
@@ -40,14 +40,15 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="13" class="info"><b>Listado De Servicios</b></td>
+            <td colspan="14" class="info"><b>Listado De Servicios</b></td>
 
             <tr>
-                <th class="col-md-2">Fecha Evento</th>
+                
                 <th class="col-md-2">Vigencia</th>
                 <th class="col-md-2">Categoria </th>
-                <th class="col-md-2">Nombre Servicio </th>
                 <th class="col-md-2">Servicio Padre </th>
+                <th class="col-md-2">Fecha Inicia</th>
+                <th class="col-md-2">Nombre Servicio </th>
                 <th class="col-md-1">Precio</th>               
                 <th class="col-md-1">Tipo Clientes</th>
                 <th class="col-md-1">Capacidad</th>
@@ -71,11 +72,12 @@
             <tbody>
                 <tr ng-repeat="s in listaServicios">
 
-                    <td><font color="#0B6121"><b>{{s.fecha_evento| date:"dd-MM-yyyy"}}</b></font></td>
-                    <td><font color="#04B431">{{s.fec_ini|  date:'dd-MM-yyyy' }}</font> - <font color="#FE642E">{{s.fec_fin|  date:'dd-MM-yyyy' }}</font></td>
+                    
+                    <td><font color="#04B431">{{s.fec_ini|  date:'dd/MM/yyyy' }}</font>  <font color="#FE642E">{{s.fec_fin|  date:'dd/MM/yyyy' }}</font></td>
                     <td>{{s.categoria}}</td>
-                    <td>{{s.nombre}}</td>
                     <td>{{s.servicio_padre}}</td>
+                    <td><font color="#0B6121"><b>{{s.fecha_evento| date:"dd/MM/yyyy"}}</b></font></td>
+                    <td>{{s.nombre}}</td>
                     <td>{{s.precio| currency}}</td>
 
                     <td>{{s.tip_cli}}</td>
