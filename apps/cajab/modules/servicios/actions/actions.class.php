@@ -302,20 +302,24 @@ class serviciosActions extends baseCajabProjectActions {
 
                 $idAlumnos = $request->getParameter("idAlumnos", "");
                 $idServicio = $request->getParameter("idServicio", 0);
+                $noRepeticion = $request->getParameter("noRepeticion", 1);
 
-                if (!empty($idAlumnos)) {
-                    $vecAlumnos = explode(",", $idAlumnos);
-                    $max = (sizeof($vecAlumnos) - 1); //agarra uno de mas   
+                for ($a = 0; $a < $noRepeticion; $a++) {
 
-                    for ($i = 0; $i < $max; $i++) {
-                        $instServicioCliente = new ServicioCliente();
-                        $instServicioCliente->setIdServicio((int) $idServicio);
-                        $instServicioCliente->setIdAlumno((int) $vecAlumnos[$i]);
-                        $instServicioCliente->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
-                        $instServicioCliente->setUsuarioRegistro($this->getUser()->getUserId());
-                        $instServicioCliente->setTipoCliente(1); //1.- Alumno; 2.- Cliente Externo
-                        $instServicioCliente->setEstatus(1); //1.- PAGANDO; 2.- PAGADO;3.-Cancelado; 4.-Condonado
-                        $instServicioCliente->save();
+                    if (!empty($idAlumnos)) {
+                        $vecAlumnos = explode(",", $idAlumnos);
+                        $max = (sizeof($vecAlumnos) - 1); //agarra uno de mas   
+
+                        for ($i = 0; $i < $max; $i++) {
+                            $instServicioCliente = new ServicioCliente();
+                            $instServicioCliente->setIdServicio((int) $idServicio);
+                            $instServicioCliente->setIdAlumno((int) $vecAlumnos[$i]);
+                            $instServicioCliente->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
+                            $instServicioCliente->setUsuarioRegistro($this->getUser()->getUserId());
+                            $instServicioCliente->setTipoCliente(1); //1.- Alumno; 2.- Cliente Externo
+                            $instServicioCliente->setEstatus(1); //1.- PAGANDO; 2.- PAGADO;3.-Cancelado; 4.-Condonado
+                            $instServicioCliente->save();
+                        }
                     }
                 }
 
@@ -341,20 +345,25 @@ class serviciosActions extends baseCajabProjectActions {
 
                 $idClientes = $request->getParameter("idClientes", "");
                 $idServicio = $request->getParameter("idServicio", 0);
+                $noRepeticion = $request->getParameter("noRepeticion", 1);
 
-                if (!empty($idClientes)) {
-                    $vecClientes = explode(",", $idClientes);
-                    $max = (sizeof($vecClientes) - 1); //agarra uno de mas   
+                for ($a = 0; $a < $noRepeticion; $a++) {
 
-                    for ($i = 0; $i < $max; $i++) {
-                        $instServicioCliente = new ServicioCliente();
-                        $instServicioCliente->setIdServicio((int) $idServicio);
-                        $instServicioCliente->setIdCliente((int) $vecClientes[$i]);
-                        $instServicioCliente->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
-                        $instServicioCliente->setUsuarioRegistro($this->getUser()->getUserId());
-                        $instServicioCliente->setTipoCliente(2); //1.- Alumno; 2.- Cliente Externo
-                        $instServicioCliente->setEstatus(1); //1.- PAGANDO; 2.- PAGADO;3.-Cancelado; 4.-Condonado
-                        $instServicioCliente->save();
+
+                    if (!empty($idClientes)) {
+                        $vecClientes = explode(",", $idClientes);
+                        $max = (sizeof($vecClientes) - 1); //agarra uno de mas   
+
+                        for ($i = 0; $i < $max; $i++) {
+                            $instServicioCliente = new ServicioCliente();
+                            $instServicioCliente->setIdServicio((int) $idServicio);
+                            $instServicioCliente->setIdCliente((int) $vecClientes[$i]);
+                            $instServicioCliente->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
+                            $instServicioCliente->setUsuarioRegistro($this->getUser()->getUserId());
+                            $instServicioCliente->setTipoCliente(2); //1.- Alumno; 2.- Cliente Externo
+                            $instServicioCliente->setEstatus(1); //1.- PAGANDO; 2.- PAGADO;3.-Cancelado; 4.-Condonado
+                            $instServicioCliente->save();
+                        }
                     }
                 }
 
@@ -395,7 +404,7 @@ class serviciosActions extends baseCajabProjectActions {
                     $buscados = consultasInstituto::getIdsAlumnos($nombreCliente);
                     $tam = sizeof($buscados);
                     //if ($tam > 0) {
-                        $flagFiltroNombre = true;
+                    $flagFiltroNombre = true;
                     //}
                 }
 
@@ -471,81 +480,80 @@ class serviciosActions extends baseCajabProjectActions {
 
     public function executeImprimirAsignadosAServicio(sfWebRequest $request) {
         try {
-            
-
-                date_default_timezone_set('America/Mexico_City');
 
 
-                $nombreCliente = $request->getParameter("nombreCliente", "");
-                $idServicio = $request->getParameter("idServicio", 0);
-                $offset = $request->getParameter("offset", 0);
-                $limit = $request->getParameter("limit", 0);
-
-                $tam = 0;
-                $count = 0;
-                $flagFiltroNombre = false;
-                $listaAsignadosFiltro = array();
-
-                $idsAlumnos = "";
-                if ($nombreCliente != "") {
-                    $buscados = consultasInstituto::getIdsAlumnos($nombreCliente);
-                    $tam = sizeof($buscados);
-                   // if ($tam > 0) {
-                        $flagFiltroNombre = true;
-                  //  }
-                }
+            date_default_timezone_set('America/Mexico_City');
 
 
+            $nombreCliente = $request->getParameter("nombreCliente", "");
+            $idServicio = $request->getParameter("idServicio", 0);
+            $offset = $request->getParameter("offset", 0);
+            $limit = $request->getParameter("limit", 0);
 
-                $listaAsignados = consultasBd::getListaAsignadosServicio((int) $idServicio, $nombreCliente, (int) $limit, (int) $offset);
-                for ($i = 0; $i < sizeof($listaAsignados); $i ++) {
-                    if ($listaAsignados[$i]['cliente'] == "na" && $listaAsignados[$i]['tipo_descripcion'] == "Alumno") {
-                        $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAsignados[$i]['id_alumno']);
-                        $listaAsignados[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
-                        if ($flagFiltroNombre) {
-                            for ($j = 0; $j < $tam; $j ++) {
-                                if ($buscados[$j]['idalumno'] == $listaAsignados[$i]['id_alumno']) {
-                                    array_push($listaAsignadosFiltro, $listaAsignados[$i]);
-                                    $count++;
-                                }
+            $tam = 0;
+            $count = 0;
+            $flagFiltroNombre = false;
+            $listaAsignadosFiltro = array();
+
+            $idsAlumnos = "";
+            if ($nombreCliente != "") {
+                $buscados = consultasInstituto::getIdsAlumnos($nombreCliente);
+                $tam = sizeof($buscados);
+                // if ($tam > 0) {
+                $flagFiltroNombre = true;
+                //  }
+            }
+
+
+
+            $listaAsignados = consultasBd::getListaAsignadosServicio((int) $idServicio, $nombreCliente, (int) $limit, (int) $offset);
+            for ($i = 0; $i < sizeof($listaAsignados); $i ++) {
+                if ($listaAsignados[$i]['cliente'] == "na" && $listaAsignados[$i]['tipo_descripcion'] == "Alumno") {
+                    $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAsignados[$i]['id_alumno']);
+                    $listaAsignados[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
+                    if ($flagFiltroNombre) {
+                        for ($j = 0; $j < $tam; $j ++) {
+                            if ($buscados[$j]['idalumno'] == $listaAsignados[$i]['id_alumno']) {
+                                array_push($listaAsignadosFiltro, $listaAsignados[$i]);
+                                $count++;
                             }
                         }
-                    } else {
-                        if ($flagFiltroNombre && $listaAsignados[$i]['tipo_descripcion'] == "Cliente Externo") {
-                            array_push($listaAsignadosFiltro, $listaAsignados[$i]);
-                            $count++;
-                        }
+                    }
+                } else {
+                    if ($flagFiltroNombre && $listaAsignados[$i]['tipo_descripcion'] == "Cliente Externo") {
+                        array_push($listaAsignadosFiltro, $listaAsignados[$i]);
+                        $count++;
                     }
                 }
+            }
 
-                $totalListaAsignados = consultasBd::getTotalListaAsignadosServicio((int) $idServicio, $nombreCliente);
-                $totalListaAsignados = $totalListaAsignados[0]['total'];
-
-
-                if ($flagFiltroNombre) {
-                    $listaAsignados = $listaAsignadosFiltro;
-                    $totalListaAsignados = $count;
-                }
+            $totalListaAsignados = consultasBd::getTotalListaAsignadosServicio((int) $idServicio, $nombreCliente);
+            $totalListaAsignados = $totalListaAsignados[0]['total'];
 
 
-                $pdf = new FPDF ();
-                
-                $pdf->AddPage();
-                $pdf->Ln(10);
-                $pdf->SetFont('Arial', '', 18);
-                $pdf->SetTextColor(88, 89, 91);
-                $pdf->Cell(0, 8, utf8_decode($listaAsignados[0]['categoria_servicio']." - ".$listaAsignados[0]['nombre_servicio']), 'B', 0, 'C');
-                $pdf->Ln(15);
-
-                $this->pdfListaAsignados($pdf, $listaAsignados);
-
-               
+            if ($flagFiltroNombre) {
+                $listaAsignados = $listaAsignadosFiltro;
+                $totalListaAsignados = $count;
+            }
 
 
-                $response = new sfWebResponse($pdf->Output());
-                $response->headers->set('Content-Type', 'application/pdf');
-                return $response;
-           
+            $pdf = new FPDF ();
+
+            $pdf->AddPage();
+            $pdf->Ln(10);
+            $pdf->SetFont('Arial', '', 18);
+            $pdf->SetTextColor(88, 89, 91);
+            $pdf->Cell(0, 8, utf8_decode($listaAsignados[0]['categoria_servicio'] . " - " . $listaAsignados[0]['nombre_servicio']), 'B', 0, 'C');
+            $pdf->Ln(15);
+
+            $this->pdfListaAsignados($pdf, $listaAsignados);
+
+
+
+
+            $response = new sfWebResponse($pdf->Output());
+            $response->headers->set('Content-Type', 'application/pdf');
+            return $response;
         } catch (Doctrine_Exception $e) {
             //throw new sfException($e);
             $r = array("error" => true, "mensaje" => "Error Desconocido_02");
