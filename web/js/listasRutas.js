@@ -52,19 +52,8 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
 
         $scope.imprimirListasRutasAlumnos = function () {
 
-            var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');
-            /* $http({
-             method: 'POST',
-             url: 'transporte_imprimir_rutas_alumnos',
-             params: {
-             fecha: fechaIni
-             }
-             }).then(
-             function (r) {
-             
-             }
-             );*/
-            window.open('transporte_imprimir_rutas_alumnos?fecha=' + fechaIni, '_blank');
+            var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');           
+            window.open('transporte_imprimir_rutas_alumnos?fecha=' + fechaIni+"&idRuta="+ $scope.idRuta, '_blank');
             return;
 
 
