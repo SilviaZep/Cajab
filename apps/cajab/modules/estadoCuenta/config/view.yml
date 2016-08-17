@@ -1,0 +1,4 @@
+all:
+  layout: menu
+serviciosEstatusSuccess:
+  javascripts: [moment.min.js,estadoCuentaServicios.js]
