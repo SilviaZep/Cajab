@@ -52,7 +52,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
 
             for (i = 0; i < $scope.listaServicios.length; i++) {
                 if (parseFloat($scope.listaServicios[i].pagara) > 0) {
-                  
+
                     if ((parseFloat($scope.listaServicios[i].abonado) + parseFloat($scope.listaServicios[i].pagara)) > parseFloat($scope.listaServicios[i].precio)) {
                         alert("No puedes pagar mas del precio que especifica el servicio: " +
                                 $scope.listaServicios[i].servicio);
@@ -60,7 +60,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                     }
                     if ($scope.listaServicios[i].aplica_parcialidad == '0') {//no hay parcialidades
                         if (parseFloat($scope.listaServicios[i].pagara) < parseFloat($scope.listaServicios[i].precio)) {//tiene que pagar completo
-                            alert("Tienes que pagar el monto completo ya que no aplica parcialidad el servicio: "+
+                            alert("Tienes que pagar el monto completo ya que no aplica parcialidad el servicio: " +
                                     $scope.listaServicios[i].servicio);
                             return;
                         }
@@ -75,22 +75,32 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                 }
 
             }
+            
+            if(idServicios.length==0){
+                alert("no se selecciono ningun servicio para pagar");                 
+                return;
+                
+            }
+            
+
+            inicioActualizarBoton('botonGuardarPago');
 
             $http({
                 method: 'POST',
                 url: 'pagos_pagos_servicios_cliente',
                 params: {
                     idCliente: idCliente,
-                    idServicios:idServicios,
-                    montosPagara:montosPagara,
-                    formaPagos:formaPagos
+                    idServicios: idServicios,
+                    montosPagara: montosPagara,
+                    formaPagos: formaPagos
                 }
             }).then(
                     function (r) {
-                       alert(r.data.mensaje);
-                       $scope.listadoServicios(parseInt(idCliente));
+                        alert(r.data.mensaje);
+                        $scope.listadoServicios(parseInt(idCliente));
                         $scope.totalPagara = 0;
                         $scope.numPagos = 0;
+                        finActualizarBoton('botonGuardarPago');
                     }
             );
 
@@ -98,13 +108,13 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
 
 
         };
-        
-        
-        
-         $scope.listaPagos = function (idServicioCliente) {
 
-           $scope.listaPagosServicioCliente=[];
-           debugger
+
+
+        $scope.listaPagos = function (idServicioCliente) {
+
+            $scope.listaPagosServicioCliente = [];
+            debugger
 
             $http({
                 method: 'POST',
@@ -115,7 +125,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
             }).then(
                     function (r) {
                         debugger
-                       $scope.listaPagosServicioCliente=r.data.listaPagos;
+                        $scope.listaPagosServicioCliente = r.data.listaPagos;
                     }
             );
 
@@ -211,7 +221,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
 
         };
 
-         $scope.paginadorClientes = function (max) {
+        $scope.paginadorClientes = function (max) {
             $scope.numPaginasClientes = Math.ceil($scope.numeroRegistrosClientes / max);
             $scope.tamanioPaginadorClientes = 10;//estatico
             $scope.primeraClientes = 1;//numero de pagina de inicioClientes
@@ -291,6 +301,23 @@ function finActualizar() {
     //$('#botonActualizar').removeClass('disabled');
     $("#botonActualizar").removeClass("fa-spinner fa-spin");
     $("#botonActualizar").addClass("fa-refresh");
+
+
+}
+
+function inicioActualizarBoton(idBoton) {
+
+  //  $("#" + idBoton).removeClass(clase);
+   // $("#" + idBoton).addClass("fa-refresh fa-spin fa-3x fa-fw");
+    $("#" + idBoton).prop("disabled", true);
+
+}
+
+function finActualizarBoton(idBoton) {
+    //$('#botonActualizar').removeClass('disabled');
+  //  $("#" + idBoton).removeClass("fa-refresh fa-spin fa-3x fa-fw");
+  //  $("#" + idBoton).addClass(clase);
+    $("#" + idBoton).prop("disabled", false);
 
 
 }
