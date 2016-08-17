@@ -152,7 +152,7 @@
                     <td align="right" class="success"><h4><b>{{totalAdeuda| currency}}</b></h4></td>
                     <td align="right" class="success"><h4><b>{{totalPagara| currency}}</b></h4></td>
                     <td align="center" class="success">
-                        <button type="button" class="btn btn-success" ng-click="guardarPago()"><i class="fa fa-usd" aria-hidden="true"></i> Guardar Pago <span class="badge ng-binding" >{{numPagos}}</span> </button>
+                        <button type="button" id="botonGuardarPago" class="btn btn-success" ng-click="guardarPago()"><i class="fa fa-usd" ></i> Guardar Pago <span class="badge ng-binding" >{{numPagos}}</span> </button>
                     </td>
 
 
