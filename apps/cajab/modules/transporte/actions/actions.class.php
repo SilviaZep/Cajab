@@ -497,7 +497,7 @@ class transporteActions extends baseCajabProjectActions {
         $fechaActual = new DateTime();
 
         $fecha = $request->getParameter("fecha", 0);
-        $idRuta = $request->getParameter("idRuta");
+        $idRuta = $request->getParameter("idRuta", 0);
         //$idRuta=0;
         //$fecha=date('Y-m-d');
 
@@ -535,7 +535,7 @@ class transporteActions extends baseCajabProjectActions {
         $pdf->Ln(10);
         $pdf->SetFont('Arial', '', 18);
         $pdf->SetTextColor(88, 89, 91);
-        $pdf->Cell(0, 8, utf8_decode('Listado de Rutas'), 'B', 0, 'C');
+        $pdf->Cell(0, 8, utf8_decode('Transporte Escolar'), 'B', 0, 'C');
         $pdf->Ln(15);
 
         if (isset($idRuta) && $idRuta > 0) {
@@ -544,14 +544,16 @@ class transporteActions extends baseCajabProjectActions {
                 $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$i]['id_alumno']);
                 $listaAlumnos[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
             }
-            //  $rutaDetail = Doctrine::getTable('Ruta')->find((int) $idRuta);
+            $rutaDetail = Doctrine::getTable('Ruta')->find((int) $idRuta);
             //print_r($listaAlumnos);die();    			
-            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetFont('Arial', '', 14);
             $pdf->SetTextColor(88, 89, 91);
-            $pdf->Cell(50, 8, utf8_decode('Ruta: ' . $listaRutas[$i]['nombre']), 'B', 0, 'L');
-            $pdf->Cell(50, 8, utf8_decode('Horario: ' . $listaRutas[$i]['horario']), 'B', 0, 'L');
+            $pdf->Cell(50, 8, utf8_decode('Ruta: ' . $rutaDetail->getNombre()), 'B', 0, 'C');
+            $pdf->Ln(8);
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(50, 8, utf8_decode('Horario: ' . $rutaDetail->getHorario()), 'B', 0, 'L');
             $pdf->Cell(40, 8, utf8_decode('Fecha: ' . $fecha), 'B', 0, 'L');
-            $pdf->Cell(50, 8, utf8_decode('Conductor: ' . $listaRutas[$i]['chofer']), 'B', 0, 'L');
+            $pdf->Cell(50, 8, utf8_decode('Conductor: ' . $rutaDetail->getChofer()), 'B', 0, 'L');
             $pdf->Ln(8);
             $this->pdfListaAlumnos($pdf, $listaAlumnos);
         } else {
@@ -612,18 +614,17 @@ class transporteActions extends baseCajabProjectActions {
         $pdf->SetTextColor(88, 89, 91);
         $y = 1;
         for ($x = 0; $x < sizeof($listaAlumnos); $x ++) {
-            if($listaAlumnos[$x]['observacion']=='asistencia'){
-            $pdf->Cell(20, 8, utf8_decode($y), 'B', 0, 'L');
-            $pdf->Cell(110, 8, utf8_decode($listaAlumnos[$x]['nombre']), 'B', 0, 'L');
-            $pdf->Cell(30, 8, utf8_decode($listaAlumnos[$x]['tipo_transporte']), 'B', 0, 'L');
-            $pdf->Cell(30, 8, utf8_decode(""), 'B', 0, 'L');
-            $y++;
-            $pdf->Ln(8);            
+            if ($listaAlumnos[$x]['observacion'] == 'asistencia') {
+                $pdf->Cell(20, 8, utf8_decode($y), 'B', 0, 'L');
+                $pdf->Cell(110, 8, utf8_decode($listaAlumnos[$x]['nombre']), 'B', 0, 'L');
+                $pdf->Cell(30, 8, utf8_decode($listaAlumnos[$x]['tipo_transporte']), 'B', 0, 'L');
+                $pdf->Cell(30, 8, utf8_decode(""), 'B', 0, 'L');
+                $y++;
+                $pdf->Ln(8);
             }
         }
     }
-    
-    
+
     public function executeCambiarEstatusAlumnoListaRuta(sfWebRequest $request) {
         try {
             if ($request->isMethod(sfWebRequest::POST)) {
@@ -646,6 +647,5 @@ class transporteActions extends baseCajabProjectActions {
             throw new sfException($e);
         }
     }
-    
 
 }
