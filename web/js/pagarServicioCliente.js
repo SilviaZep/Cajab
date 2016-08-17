@@ -75,13 +75,13 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                 }
 
             }
-            
-            if(idServicios.length==0){
-                alert("no se selecciono ningun servicio para pagar");                 
+
+            if (idServicios.length == 0) {
+                alert("no se selecciono ningun servicio para pagar");
                 return;
-                
+
             }
-            
+
 
             inicioActualizarBoton('botonGuardarPago');
 
@@ -101,6 +101,10 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                         $scope.totalPagara = 0;
                         $scope.numPagos = 0;
                         finActualizarBoton('botonGuardarPago');
+
+                        window.open('pagos_imprimir_ticket?idPago=' +
+                                r.data.idPago, '_blank');
+                        return;
                     }
             );
 
@@ -307,16 +311,16 @@ function finActualizar() {
 
 function inicioActualizarBoton(idBoton) {
 
-  //  $("#" + idBoton).removeClass(clase);
-   // $("#" + idBoton).addClass("fa-refresh fa-spin fa-3x fa-fw");
+    //  $("#" + idBoton).removeClass(clase);
+    // $("#" + idBoton).addClass("fa-refresh fa-spin fa-3x fa-fw");
     $("#" + idBoton).prop("disabled", true);
 
 }
 
 function finActualizarBoton(idBoton) {
     //$('#botonActualizar').removeClass('disabled');
-  //  $("#" + idBoton).removeClass("fa-refresh fa-spin fa-3x fa-fw");
-  //  $("#" + idBoton).addClass(clase);
+    //  $("#" + idBoton).removeClass("fa-refresh fa-spin fa-3x fa-fw");
+    //  $("#" + idBoton).addClass(clase);
     $("#" + idBoton).prop("disabled", false);
 
 
