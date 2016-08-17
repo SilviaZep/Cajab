@@ -20,7 +20,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.mCategoria = "";
             $scope.mNombre = "";
             $scope.mPrecio = "";
-         //   $scope.mPagoObligarotio = null;
+            //   $scope.mPagoObligarotio = null;
             $scope.mAplicaParcialidad = null;
             $scope.mTipoClientes = null;
             $scope.mCapacidad = null;
@@ -39,7 +39,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
 
             var mNombre = $scope.mNombre;
             var mPrecio = $scope.mPrecio;
-           // var mPagoObligarotio = $scope.mPagoObligarotio;
+            // var mPagoObligarotio = $scope.mPagoObligarotio;
             var mAplicaParcialidad = $scope.mAplicaParcialidad;
             var mFechaEvento = moment($scope.mFechaEvento).format('YYYY-MM-DD');
             var mFechaIni = moment($scope.mFechaIni).format('YYYY-MM-DD');
@@ -94,8 +94,8 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
                     mTipoClientes: mTipoClientes,
                     mCapacidad: mCapacidad,
                     mIdServicioReferencia: mIdServicioReferencia, //para clonar
-                    mIdServicioPadre: mIdServicioPadre,//para hacer su hijo
-                    mTipoServicio:mTipoServicio
+                    mIdServicioPadre: mIdServicioPadre, //para hacer su hijo
+                    mTipoServicio: mTipoServicio
                 }
             }).then(
                     function (r) {
@@ -121,14 +121,14 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.mIdServicio = s.id;
             $scope.mNombre = s.nombre;
             $scope.mPrecio = parseFloat(s.precio);
-          //  $scope.mPagoObligarotio = s.pago_obligatorio;
+            //  $scope.mPagoObligarotio = s.pago_obligatorio;
             $scope.mAplicaParcialidad = s.aplica_parcialidad;
             $scope.mTipoClientes = s.tipo_cliente;
             $scope.mCapacidad = parseInt(s.capacidad);
             $scope.mFechaEvento = new Date(s.fecha_evento + ' 00:00:00');
             $scope.mFechaIni = new Date(s.fecha_inicio);
             $scope.mFechaFin = new Date(s.fecha_fin);
-            $scope.mTipoServicio=s.tipo_transporte;
+            $scope.mTipoServicio = s.tipo_transporte;
             $scope.estatus = "DETALLE";
         };
 
@@ -139,14 +139,14 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.mIdServicio = s.id;
             $scope.mNombre = s.nombre;
             $scope.mPrecio = parseFloat(s.precio);
-        //    $scope.mPagoObligarotio = s.pago_obligatorio;
+            //    $scope.mPagoObligarotio = s.pago_obligatorio;
             $scope.mAplicaParcialidad = s.aplica_parcialidad;
             $scope.mTipoClientes = s.tipo_cliente;
             $scope.mCapacidad = parseInt(s.capacidad);
             $scope.mFechaEvento = new Date(s.fecha_evento + ' 00:00:00');
             $scope.mFechaIni = new Date(s.fecha_inicio);
             $scope.mFechaFin = new Date(s.fecha_fin);
-            $scope.mTipoServicio=s.tipo_transporte;
+            $scope.mTipoServicio = s.tipo_transporte;
             $scope.estatus = "EDITAR";
         };
 
@@ -155,7 +155,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.mCategoria = s.categoria_id;
             $scope.mNombre = s.nombre;
             $scope.mPrecio = parseFloat(s.precio);
-         //   $scope.mPagoObligarotio = s.pago_obligatorio;
+            //   $scope.mPagoObligarotio = s.pago_obligatorio;
             $scope.mAplicaParcialidad = s.aplica_parcialidad;
             $scope.mTipoClientes = s.tipo_cliente;
             $scope.mCapacidad = parseInt(s.capacidad);
@@ -164,7 +164,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.mFechaFin = new Date(s.fecha_fin);
             $scope.estatus = "CLONAR";
             $scope.mIdServicioReferencia = s.id;//id del servicio que estamos clonando
-            $scope.mTipoServicio=s.tipo_transporte;
+            $scope.mTipoServicio = s.tipo_transporte;
 
 
         };
@@ -178,6 +178,14 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         $scope.eliminarServicio = function (id) {
 
             var idServicio = id;
+
+            var r = confirm("Confirma la Eliminacion del servicio");
+            
+            debugger;
+            if (r == false) {                
+                return ;
+            }
+
 
             $http({
                 method: 'POST',
@@ -327,12 +335,12 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
 
 
         };
-        
+
         $scope.imprimirAsignadosAServicio = function () {
 
             var nombreCliente = "";
-            if($scope.nombreAsignado!=undefined&&$scope.nombreAsignado!=null){
-                nombreCliente=$scope.nombreAsignado;
+            if ($scope.nombreAsignado != undefined && $scope.nombreAsignado != null) {
+                nombreCliente = $scope.nombreAsignado;
             }
             var idServicio = $scope.idServicio;
 
