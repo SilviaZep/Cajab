@@ -140,7 +140,7 @@
                                                                             <ul class="dropdown-menu">
                                                                                 <li><a href="<?php echo url_for("@pagos_pagar_servicio"); ?>"> <i class="fa fa-usd" aria-hidden="true"> Pagar Servicio Alumno</i></a></li> 
                                                                                 <li><a href="<?php echo url_for("@pagos_pagar_servicio_cliente"); ?>"> <i class="fa fa-usd" aria-hidden="true"> Pagar Servicio Cliente</i></a></li>
-                                                                                <li><a href="<?php echo url_for("@transporte_listas_rutas"); ?>"> <i class="fa fa-list"> EstadoCuentaAlumno</i> </a></li>                                                      
+                                                                                <!--<li><a href="<?php echo url_for("@transporte_listas_rutas"); ?>"> <i class="fa fa-list"> EstadoCuentaAlumno</i> </a></li>                                                      -->
                                                                                 <li id="mClientes"><a href="<?php echo url_for("@egresos_list"); ?>"><i class="fa fa-users"> Registro de Egresos</i></a></li>    
 
                                                                             </ul>
@@ -164,7 +164,7 @@
                                                                             </a>
                                                                             <ul class="dropdown-menu">
                                                                                 <li id="mEcAlumno"><a href="<?php echo url_for("@estado_cuenta_servicios_estatus"); ?>"><i class="fa fa-bars" aria-hidden="true"> Estado de cuenta por servicio</i></a></li>  
-                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@homepage"); ?>"><i class="fa fa-newspaper-o" aria-hidden="true"> Reporte de faltantes de pago</i></a></li>  		  
+                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_dias_mora"); ?>"><i class="fa fa-newspaper-o" aria-hidden="true"> Reporte faltantes de pago</i></a></li>  		  
 
                                                                             </ul>
                                                                         </li>
