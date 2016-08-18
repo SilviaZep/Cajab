@@ -2,3 +2,5 @@ all:
   layout: menu
 serviciosEstatusSuccess:
   javascripts: [moment.min.js,estadoCuentaServicios.js]
+serviciosDiasMoraSuccess:
+  javascripts: [moment.min.js,serviciosDiasMora.js]  
