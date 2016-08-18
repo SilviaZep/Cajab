@@ -858,6 +858,99 @@ where id_pago={$idPago};";
     }
     
     
+     public static function getListadoDiasMora($limit,$offset) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "select *,ifnull((abonado-precio),0) as saldo   
+from (
+SELECT 
+s.nombre as servicio,
+(CASE sc.tipo_cliente
+WHEN 1 THEN 'Alumno'
+WHEN 2 THEN 'Cliente Externo'
+ELSE  'na' END) as tipo_descripcion,
+(CASE sc.tipo_cliente
+WHEN 1 THEN 'na'
+WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
+ELSE  'na' END) as cliente,
+s.precio,
+(case sc.tipo_cliente
+when 1 then (select ifnull(sum(sp.monto),0) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+when 2 then (select ifnull(sum(monto),0) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+end) as abonado,
+(case sc.tipo_cliente
+when 1 then (select count(*) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+when 2 then (select count(*) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+end) as no_abonos,
+date(s.fecha_fin) as fecha_fin,
+date(now()) as hoy,
+DATEDIFF(now(),s.fecha_fin) as dias_mora,
+(CASE sc.estatus
+WHEN 1 THEN 'Activo'
+WHEN 2 THEN 'Pagado'
+WHEN 3 THEN 'Cancelado'
+WHEN 4 THEN 'Condonado'
+ELSE  'na' END) as estatus_descripcion,
+sc.id_alumno,sc.id
+FROM servicio_cliente sc,servicio s
+where sc.id_servicio=s.id and sc.estatus=1)t 
+order by dias_mora desc,saldo asc
+limit {$offset},{$limit} ;
+";
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    
+    
+     public static function getTotalListadoDiasMora() {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "select count(*) as total
+from (
+SELECT 
+s.nombre as servicio,
+(CASE sc.tipo_cliente
+WHEN 1 THEN 'Alumno'
+WHEN 2 THEN 'Cliente Externo'
+ELSE  'na' END) as tipo_descripcion,
+(CASE sc.tipo_cliente
+WHEN 1 THEN 'na'
+WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
+ELSE  'na' END) as cliente,
+s.precio,
+(case sc.tipo_cliente
+when 1 then (select ifnull(sum(sp.monto),0) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+when 2 then (select ifnull(sum(monto),0) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+end) as abonado,
+(case sc.tipo_cliente
+when 1 then (select count(*) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+when 2 then (select count(*) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+end) as no_abonos,
+s.fecha_fin,
+now() as hoy,
+DATEDIFF(now(),s.fecha_fin) as dias_mora,
+(CASE sc.estatus
+WHEN 1 THEN 'Activo'
+WHEN 2 THEN 'Pagado'
+WHEN 3 THEN 'Cancelado'
+WHEN 4 THEN 'Condonado'
+ELSE  'na' END) as estatus_descripcion,
+sc.id_alumno
+FROM servicio_cliente sc,servicio s
+where sc.id_servicio=s.id and sc.estatus=1)t ;
+
+";
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     
     
 
