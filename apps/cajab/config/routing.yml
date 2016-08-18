@@ -234,10 +234,17 @@ pagos_imprimir_ticket:
 #Estado de cuenta
 estado_cuenta_servicios_estatus:
   url:   /estado_cuenta_servicios_estatus
-  param: { module: estadoCuenta, action: serviciosEstatus } 
+  param: { module: estadoCuenta, action: serviciosEstatus }   
 estado_cuenta_asignados_a_servicio:
   url:   /estado_cuenta_asignados_a_servicio
   param: { module: estadoCuenta, action: asignadosAServicio }   
+estado_cuenta_servicios_dias_mora:
+  url:   /estado_cuenta_servicios_dias_mora
+  param: { module: estadoCuenta, action: serviciosDiasMora }
+estado_cuenta_listado_dias_mora:
+  url:   /estado_cuenta_listado_dias_mora
+  param: { module: estadoCuenta, action: listadoDiasMora } 
+  
 #fin estado de cuenta
 
 
