@@ -22,7 +22,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
     public function executeServiciosEstatus(sfWebRequest $request) {
         $this->setTemplate('serviciosEstatus');
     }
-    
+
     public function executeAsignadosAServicio(sfWebRequest $request) {
         try {
             if ($request->isMethod(sfWebRequest::POST)) {
@@ -45,7 +45,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
                     $buscados = consultasInstituto::getIdsAlumnos($nombreCliente);
                     $tam = sizeof($buscados);
                     //if ($tam > 0) {
-                        $flagFiltroNombre = true;
+                    $flagFiltroNombre = true;
                     //}
                 }
 
@@ -95,7 +95,49 @@ class estadoCuentaActions extends baseCajabProjectActions {
             return $this->sendJSON($r);
         }
     }
-    
 
+    public function executeServiciosDiasMora(sfWebRequest $request) {
+        $this->setTemplate('serviciosDiasMora');
+    }
+
+    public function executeListadoDiasMora(sfWebRequest $request) {
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                date_default_timezone_set('America/Mexico_City');
+
+
+                
+                $offset = $request->getParameter("offset", 0);
+                $limit = $request->getParameter("limit", 0);
+
+
+
+                $listaDiasMora = consultasBd::getListadoDiasMora((int) $limit, (int) $offset);
+                for ($i = 0; $i < sizeof($listaDiasMora); $i ++) {
+                    if ($listaDiasMora[$i]['cliente'] == "na" && $listaDiasMora[$i]['tipo_descripcion'] == "Alumno") {
+                        $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaDiasMora[$i]['id_alumno']);
+                        $listaDiasMora[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
+                    }
+                }
+
+                $totalListaDiasMora = consultasBd::getTotalListadoDiasMora();
+                $totalListaDiasMora = $totalListaDiasMora[0]['total'];
+
+
+
+
+                $r = array("error" => false, "mensaje" => "Ok", "listaDiasMora" => $listaDiasMora, "total" => $totalListaDiasMora); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {                
+                $r = array("error" => true, "mensaje" => "Error Desconocido_01");
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            throw new sfException($e);
+            $r = array("error" => true, "mensaje" => "Error Desconocido_02");
+            return $this->sendJSON($r);
+        }
+    }
 
 }
