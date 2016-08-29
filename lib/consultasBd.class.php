@@ -834,8 +834,8 @@ from servicio_pago;";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-     public static function getTicketPago($idPago) {
+
+    public static function getTicketPago($idPago) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select 
 (select nombre 
@@ -856,9 +856,8 @@ where id_pago={$idPago};";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    
-     public static function getListadoDiasMora($limit,$offset) {
+
+    public static function getListadoDiasMora($limit, $offset) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select *,ifnull((abonado-precio),0) as saldo   
 from (
@@ -904,9 +903,7 @@ limit {$offset},{$limit} ;
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    
-    
-     public static function getTotalListadoDiasMora() {
+    public static function getTotalListadoDiasMora() {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select count(*) as total
 from (
@@ -950,8 +947,62 @@ where sc.id_servicio=s.id and sc.estatus=1)t ;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function getEstadoCuentaAlumno($idAlumno,$fechaIni,$fechaFin) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "select * from (
+select sc.id as id_sc,sc.fecha_registro,s.nombre,
+s.precio as adeuda, 0 as pago
+from servicio_cliente sc,servicio s
+where  sc.id_servicio=s.id
+and sc.id_alumno={$idAlumno}
+union 
+select sp.id_servicio as id_sc,sp.fecha_pago,s.nombre,
+0 as adeuda,sp.monto as pago
+from servicio_pago sp,servicio_cliente sc,servicio s
+where sp.id_servicio=sc.id
+and sc.id_servicio=s.id
+and sp.id_servicio in (select sc.id
+from servicio_cliente sc,servicio s
+where  sc.id_servicio=s.id
+and sc.id_alumno={$idAlumno})
+)t
+where date(fecha_registro)>='{$fechaIni}'
+and date(fecha_registro)<='{$fechaFin}'
+order by fecha_registro
+;
+";
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
     
     
-    
+    public static function getEstadoCuentaCliente($idCliente,$fechaIni,$fechaFin) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = "select * from (
+select sc.id as id_sc,sc.fecha_registro,s.nombre,
+s.precio as adeuda, 0 as pago
+from servicio_cliente sc,servicio s
+where  sc.id_servicio=s.id
+and sc.id_cliente={$idCliente}
+union 
+select sp.id_servicio as id_sc,sp.fecha_pago,s.nombre,
+0 as adeuda,sp.monto as pago
+from servicio_pago sp,servicio_cliente sc,servicio s
+where sp.id_servicio=sc.id
+and sc.id_servicio=s.id
+and sp.id_servicio in (select sc.id
+from servicio_cliente sc,servicio s
+where  sc.id_servicio=s.id
+and sc.id_cliente={$idCliente})
+)t
+where date(fecha_registro)>='{$fechaIni}'
+and date(fecha_registro)<='{$fechaFin}'
+order by fecha_registro
+;
+";
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }
