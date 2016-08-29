@@ -8,6 +8,39 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
         $scope.globalFormaPago = "EFECTIVO";
         $scope.numPagos = 0;
 
+        $scope.flagEC = false;//flag estado de cuenta
+        $scope.totalPagado = 0;
+        $scope.totalAdeuda = 0;
+        var date = new Date();
+        var primerDia = new Date(date.getFullYear(), 0, 1);
+        var ultimoDia = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+        $scope.fechaIniEC = primerDia;
+        $scope.fechaFinEC = ultimoDia;
+
+
+        $scope.sumTotal = function (listaFiltro) {
+            $scope.totalPagado = 0;
+            $scope.totalAdeuda = 0;
+            if (listaFiltro != undefined) {
+                for (var i = 0; i < listaFiltro.length; i++) {
+                    $scope.totalPagado += parseFloat(listaFiltro[i].pago);
+                    $scope.totalAdeuda += parseFloat(listaFiltro[i].adeuda);
+                }
+            }
+        };
+
+
+        $scope.contraerEC = function (idCliente, nombre) {
+            $scope.nombreClienteEC = nombre;
+            $scope.idClienteEC = idCliente;
+            $scope.listaMovimientos(idCliente);
+            $scope.flagEC = true;
+        };
+        $scope.expandirEC = function () {
+            $scope.flagEC = false;
+        };
+
 
 
 
@@ -286,6 +319,32 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
 
         //-----------------Fin listado Alumnos---------------
 
+
+        $scope.listaMovimientos = function (idCliente) {
+
+            if (!idCliente) {
+                idCliente = $scope.idClienteEC;
+            }
+
+            $scope.listadoMovimientos = [];
+            var fechaIni = moment($scope.fechaIniEC).format('YYYY-MM-DD');
+            var fechaFin = moment($scope.fechaFinEC).format('YYYY-MM-DD');
+
+            $http({
+                method: 'POST',
+                url: 'pagos_estado_cuenta_cliente',
+                params: {
+                    idCliente: idCliente,
+                    fechaIni: fechaIni,
+                    fechaFin: fechaFin
+                }
+            }).then(
+                    function (r) {
+                        $scope.listadoMovimientos = r.data.listadoMovimientos;
+                    }
+            );
+
+        };
 
 
 
