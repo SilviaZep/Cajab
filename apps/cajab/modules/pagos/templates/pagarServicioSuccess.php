@@ -2,7 +2,7 @@
 
 <div ng-app="pagarServicio" ng-controller="pagarServicioController">      
 
-    <div ng-show="detalle == false">
+    <div ng-show="detalle == false && flagEC == false">
         <div class="panel panel-default">
             <div class="panel-body">
                 <form class="form-inline">
@@ -25,7 +25,7 @@
             <table  class="table table-striped table-bordered">
                 <thead>
 
-                <td colspan="4" class="info"><h4><span class="label label-primary">{{numeroRegistrosAlumnos}}</span> Alumnos
+                <td colspan="5" class="info"><h4><span class="label label-primary">{{numeroRegistrosAlumnos}}</span> Alumnos
 
 
                     </h4>
@@ -37,6 +37,7 @@
                     <th class="col-md-1">Grado</th>                        
                     <th class="col-md-1">Grupo</th>                        
                     <th class="col-md-1"></th>
+                    <th class="col-md-1"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,10 +48,16 @@
                         <td>{{a.grado}}</td>  
                         <td>{{a.grupo}}</td>      
                         <td>
-                            <span >
-                                <button type="button" class="btn btn-info btn-xs" ng-click="contraer(a.id)">
-                                    <i class="fa fa-angle-double-right" aria-hidden="true"></i> Detalles
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="contraerEC(a.id, a.nombre)">
+                                <i class="fa fa-balance-scale" aria-hidden="true"></i> Estado de Cuenta
+                            </button>
+                        </td>
+                        <td>
+                            <span >                            
+                                <button type="button" class="btn btn-warning btn-xs" ng-click="contraer(a.id)">
+                                    <i class="fa fa-angle-double-right" aria-hidden="true"></i> Servicios Adeuda
                                 </button>
+
                             </span>
 
                         </td>
@@ -121,7 +128,7 @@
                         {{s.abonado| currency}}
                     </td>
                     <td >
-                        <button ng-show="s.no_pagos>0" type="button" class="btn btn-info btn-xs" ng-click="listaPagos(s.id)" data-toggle="modal" data-target="#mListaPagos">
+                        <button ng-show="s.no_pagos > 0" type="button" class="btn btn-info btn-xs" ng-click="listaPagos(s.id)" data-toggle="modal" data-target="#mListaPagos">
                             Detalle <span class="badge">{{s.no_pagos}}</span>
                         </button>
 
@@ -169,6 +176,83 @@
 
 
     </div>
+
+    <!-- Estado de Cuenta    -->
+
+    <div ng-show="flagEC == true">
+        <table class="table table-striped table-bordered" style="font-size: 14px !important" ng-init="invoice = listadoMovimientos">
+            <thead>
+
+            <td colspan="4" class="info"><h3>Estado de Cuenta: <small> <b>{{nombreAlumno}}</b></small><button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandirEC()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="exampleInputEmail2"> Inicio de eventos de:</label>
+                        <input type="date" ng-model="fechaIniEC" class="form-control" id="exampleInputEmail2" >
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail2"> a :</label>
+                        <input type="date" ng-model="fechaFinEC" class="form-control" id="exampleInputEmail2" >
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputName2">Nombre: </label>
+                        <input type="text" ng-model="search.nombre" class="form-control" placeholder="nombre del servicio">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" ng-click="listaMovimientos()" class="btn btn-default">
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                        </button>    
+                    </div>
+                </form>
+
+            </td>
+
+            <tr>
+                <th class="col-md-1">Fecha</th>
+                <th class="col-md-2">Servicio</th>
+                <th class="col-md-1">Adeudo </th>
+                <th class="col-md-1">Pago </th>
+            </tr>
+
+
+            </thead>
+            <tbody>
+                <tr ng-repeat="m in listadoMovimientos| filter:search" class="{{colorRow(m.pago)}}" ng-init="setTotals(m)">
+
+                    <td>{{m.fecha_registro}}</td>
+                    <td><b>{{m.nombre}}</b></td>
+                    <td>
+                        <span ng-if="m.adeuda != 0">{{m.adeuda|currency}}</span>
+                        <span ng-if="m.adeuda == 0"></span>
+                    </td>
+                    <td>
+                        <span ng-if="m.pago != 0">{{m.pago|currency}}</span>
+                        <span ng-if="m.pago == 0"></span>
+                    </td>                 
+
+
+
+
+
+                </tr>
+
+                <tr >
+
+                    <td>{{sumTotal((listadoMovimientos | filter: search))}}</td>
+                    <td><b>TOTAL:</b></td>
+                    <td><h4>{{totalAdeuda|currency}}</h4></td>
+                    <td><h4>{{totalPagado|currency}}</h4></td>                    
+                </tr>
+
+
+            </tbody>
+        </table>      
+
+
+    </div>
+
+
+
+    <!--Fin estado de cuenta-->
 
 
 
@@ -220,7 +304,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cerrar</button>
-                    
+
                 </div>
             </div>
         </div>
