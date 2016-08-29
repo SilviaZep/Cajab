@@ -183,7 +183,7 @@ class pagosActions extends baseCajabProjectActions {
                     }
                 }
 
-                $r = array("mensaje" => "Pagos Realizados correctamente","idPago" => $consecutivo); //a partir de php 5.4 es con corchetes[]
+                $r = array("mensaje" => "Pagos Realizados correctamente", "idPago" => $consecutivo); //a partir de php 5.4 es con corchetes[]
                 return $this->sendJSON($r);
             } else {
                 $r = array("mensaje" => "Error Desconocido", "valor" => "0"); //a partir de php 5.4 es con corchetes[]
@@ -270,6 +270,46 @@ class pagosActions extends baseCajabProjectActions {
             return $response;
         } else {
             return "";
+        }
+    }
+
+    //Estado Cuenta Alumno
+
+    public function executeEstadoCuentaAlumno(sfWebRequest $request) {
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                $idAlumno = $request->getParameter("idAlumno", 0);
+                $fechaIni = $request->getParameter("fechaIni", 0);
+                $fechaFin = $request->getParameter("fechaFin", 0);
+                $listadoMovimientos = consultasBd::getEstadoCuentaAlumno((int) $idAlumno, $fechaIni, $fechaFin);
+                $r = array("mensaje" => "Ok", "listadoMovimientos" => $listadoMovimientos); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("mensaje" => "Error Desconocido", "valor" => "0"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            throw new sfException($e);
+        }
+    }
+    
+     public function executeEstadoCuentaCliente(sfWebRequest $request) {
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                $idCliente = $request->getParameter("idCliente", 0);
+                $fechaIni = $request->getParameter("fechaIni", 0);
+                $fechaFin = $request->getParameter("fechaFin", 0);
+                $listadoMovimientos = consultasBd::getEstadoCuentaCliente((int) $idCliente, $fechaIni, $fechaFin);
+                $r = array("mensaje" => "Ok", "listadoMovimientos" => $listadoMovimientos); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("mensaje" => "Error Desconocido", "valor" => "0"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            throw new sfException($e);
         }
     }
 
