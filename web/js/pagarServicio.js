@@ -1,5 +1,6 @@
 var app = angular.module('pagarServicio', []);
 
+
 app.controller('pagarServicioController', ['$http', '$scope', function ($http, $scope) {
 
         $scope.paginaActualAlumnos = 1;
@@ -8,9 +9,27 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
         $scope.globalFormaPago = "EFECTIVO";
         $scope.numPagos = 0;
 
+        $scope.flagEC = false;//flag estado de cuenta
+        $scope.totalPagado = 0;
+        $scope.totalAdeuda = 0;
+        var date = new Date();
+        var primerDia = new Date(date.getFullYear(), 0, 1);
+        var ultimoDia = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+        $scope.fechaIniEC = primerDia;
+        $scope.fechaFinEC = ultimoDia;
 
 
-
+        $scope.sumTotal = function (listaFiltro) {
+            $scope.totalPagado = 0;
+            $scope.totalAdeuda = 0;
+            if (listaFiltro != undefined) {
+                for (var i = 0; i < listaFiltro.length; i++) {
+                    $scope.totalPagado += parseFloat(listaFiltro[i].pago);
+                    $scope.totalAdeuda += parseFloat(listaFiltro[i].adeuda);
+                }
+            }
+        };
 
         $scope.contraer = function (idAlumno) {
             $scope.listadoServicios(idAlumno);
@@ -24,6 +43,16 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
             //contraerElemento('edicionServiciosDiv');
             //expandirElemento('serviciosVigentesDiv');
         };
+        $scope.contraerEC = function (idAlumno, nombre) {
+            $scope.nombreAlumno = nombre;
+            $scope.idAlumnoEC = idAlumno;
+            $scope.listaMovimientos(idAlumno);
+            $scope.flagEC = true;
+        };
+        $scope.expandirEC = function () {
+            $scope.flagEC = false;
+        };
+
 
 
         $scope.totalPagaraCalculo = function () {
@@ -99,8 +128,8 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                 }
             }).then(
                     function (r) {
-                      
-                        alert(r.data.mensaje);                      
+
+                        alert(r.data.mensaje);
 
                         $scope.listadoServicios(parseInt(idAlumno));
                         $scope.totalPagara = 0;
@@ -109,7 +138,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
 
                         window.open('pagos_imprimir_ticket?idPago=' +
-                                r.data.idPago , '_blank');
+                                r.data.idPago, '_blank');
                         return;
 
 
@@ -130,7 +159,6 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
         $scope.listaPagos = function (idServicioCliente) {
 
             $scope.listaPagosServicioCliente = [];
-            debugger
 
             $http({
                 method: 'POST',
@@ -140,13 +168,36 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                 }
             }).then(
                     function (r) {
-                        debugger
                         $scope.listaPagosServicioCliente = r.data.listaPagos;
                     }
             );
 
+        };
 
 
+        $scope.listaMovimientos = function (idAlumno) {
+
+            if (!idAlumno) {
+                idAlumno=$scope.idAlumnoEC;
+            }
+
+            $scope.listadoMovimientos = [];
+            var fechaIni = moment($scope.fechaIniEC).format('YYYY-MM-DD');
+            var fechaFin = moment($scope.fechaFinEC).format('YYYY-MM-DD');
+
+            $http({
+                method: 'POST',
+                url: 'pagos_estado_cuenta_alumno',
+                params: {
+                    idAlumno: idAlumno,
+                    fechaIni: fechaIni,
+                    fechaFin: fechaFin
+                }
+            }).then(
+                    function (r) {
+                        $scope.listadoMovimientos = r.data.listadoMovimientos;
+                    }
+            );
 
         };
 
@@ -302,7 +353,15 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
         //-----------------Fin listado Alumnos---------------
 
-
+        $scope.colorRow = function (cantidad) {
+            if (cantidad <= 0) {
+                return 'danger';
+            }
+            if (cantidad > 0) {
+                return 'success';
+            }
+            return '';
+        };
 
 
 
