@@ -52,7 +52,7 @@
                         </td>
                         <td>
                             <span >
-                                <button type="button" class="btn btn-info btn-xs" ng-click="contraer(a.id)">
+                                <button type="button" class="btn btn-warning btn-xs" ng-click="contraer(a.id)">
                                     <i class="fa fa-angle-double-right" aria-hidden="true"></i> Servicios Adeuda
                                 </button>
                             </span>
