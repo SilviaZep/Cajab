@@ -116,6 +116,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
 
             inicioActualizarBoton('botonGuardarPago');
+            var myWindow = window.open('', '_blank');
 
             $http({
                 method: 'POST',
@@ -136,9 +137,9 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                         $scope.numPagos = 0;
                         finActualizarBoton('botonGuardarPago');
 
-
-                        window.open('pagos_imprimir_ticket?idPago=' +
-                                r.data.idPago, '_blank');
+                        myWindow.location = 'pagos_imprimir_ticket?idPago=' + r.data.idPago;
+                        //window.open('pagos_imprimir_ticket?idPago=' +
+                          //      r.data.idPago, '_blank');
                         return;
 
 
@@ -178,7 +179,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
         $scope.listaMovimientos = function (idAlumno) {
 
             if (!idAlumno) {
-                idAlumno=$scope.idAlumnoEC;
+                idAlumno = $scope.idAlumnoEC;
             }
 
             $scope.listadoMovimientos = [];
