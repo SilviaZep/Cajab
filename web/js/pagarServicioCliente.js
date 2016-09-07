@@ -117,6 +117,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
 
 
             inicioActualizarBoton('botonGuardarPago');
+            var myWindow = window.open('', '_blank');
 
             $http({
                 method: 'POST',
@@ -134,9 +135,9 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                         $scope.totalPagara = 0;
                         $scope.numPagos = 0;
                         finActualizarBoton('botonGuardarPago');
-
-                        window.open('pagos_imprimir_ticket?idPago=' +
-                                r.data.idPago, '_blank');
+                        myWindow.location = 'pagos_imprimir_ticket?idPago=' + r.data.idPago;
+                        //window.open('pagos_imprimir_ticket?idPago=' +
+                        //      r.data.idPago, '_blank');
                         return;
                     }
             );
