@@ -237,16 +237,16 @@ class pagosActions extends baseCajabProjectActions {
             $pdf->Cell(175, 6, utf8_decode($pagos[0]['cliente']), 1, 0, 'L');
             $pdf->Ln(8);
 
-            $pdf->Cell(60, 8, utf8_decode('Servicio'), 'B', 0, 'L');
-            $pdf->Cell(90, 8, utf8_decode('Monto'), 'B', 0, 'L');
-            $pdf->Cell(40, 8, utf8_decode('Forma de Pago'), 'B', 0, 'L');
+            $pdf->Cell(120, 8, utf8_decode('Servicio'), 'B', 0, 'L');
+            $pdf->Cell(35, 8, utf8_decode('Monto'), 'B', 0, 'L');
+            $pdf->Cell(35, 8, utf8_decode('Forma de Pago'), 'B', 0, 'L');
             $pdf->Ln(8);
             $pdf->SetFont('Arial', '', 10);
 
             for ($i = 0; $i < sizeof($pagos); $i ++) {
-                $pdf->Cell(60, 8, utf8_decode($pagos[$i]['nombre_servicio']), 0, 0, 'L');
-                $pdf->Cell(90, 8, utf8_decode('$' . $pagos[$i]['monto']), 0, 0, 'L');
-                $pdf->Cell(40, 8, utf8_decode($pagos[$i]['forma_pago']), 0, 0, 'L');
+                $pdf->Cell(120, 8, utf8_decode($pagos[$i]['nombre_servicio']), 0, 0, 'L');
+                $pdf->Cell(35, 8, utf8_decode('$' . $pagos[$i]['monto']), 0, 0, 'L');
+                $pdf->Cell(35, 8, utf8_decode($pagos[$i]['forma_pago']), 0, 0, 'L');
                 $pdf->Ln(8);
                 $total+=(double) $pagos[$i]['monto'];
             }
