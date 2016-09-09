@@ -158,16 +158,23 @@
                     <td align="right" class="success"><h4><b>{{totalPrecio| currency}}</b></h4></td>
                     <td align="right" class="success"><h4><b>{{totalAbonado| currency}}</b></h4></td>
                     <td></td>
-                    <td align="right" class="success"><h4><b>{{totalAdeuda| currency}}</b></h4></td>
+                    <td align="right" class="success"><h4><b>{{(totalPrecio-totalAbonado)| currency}}</b></h4></td>
                     <td align="right" class="success"><h4><b>{{totalPagara| currency}}</b></h4></td>
+
+
+                </tr>
+                <tr >
+                    <td colspan="7"></td>
+                    <td><h4><b>Total Pagado:</b></h4></td>  
+                    <td align="right" class="success"><input type="number" step="any" min="0" class="form-control" ng-model="totalIngresado" ></td>                   
+                </tr>
+                <tr >
+                    <td colspan="7"></td>
+                    <td><h4><b>Cambio:</b></h4></td>  
+                    <td align="right" class="warning"><h4><b>{{(totalIngresado - totalPagara)| currency}}</b></h4></td>
                     <td align="center" class="success">
                         <button type="button" class="btn btn-success" id="botonGuardarPago" ng-click="guardarPago()"><i class="fa fa-usd" aria-hidden="true"></i> Guardar Pago <span class="badge ng-binding" >{{numPagos}}</span> </button>
                     </td>
-
-
-
-
-
                 </tr>
 
 
