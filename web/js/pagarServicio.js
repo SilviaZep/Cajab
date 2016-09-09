@@ -12,6 +12,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
         $scope.flagEC = false;//flag estado de cuenta
         $scope.totalPagado = 0;
         $scope.totalAdeuda = 0;
+        $scope.totalIngresado = 0;
         var date = new Date();
         var primerDia = new Date(date.getFullYear(), 0, 1);
         var ultimoDia = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -113,6 +114,10 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                 return;
 
             }
+            if ($scope.totalIngresado < $scope.totalPagara) {
+                alert("El monto ingresado no cubre el total que se pagara");
+                return;
+            }
 
 
             inicioActualizarBoton('botonGuardarPago');
@@ -136,10 +141,10 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                         $scope.totalPagara = 0;
                         $scope.numPagos = 0;
                         finActualizarBoton('botonGuardarPago');
-
-                        myWindow.location = 'pagos_imprimir_ticket?idPago=' + r.data.idPago;
+                        myWindow.location = 'pagos_imprimir_ticket?idPago=' + r.data.idPago + '&totalIngresado=' + $scope.totalIngresado;
+                        $scope.totalIngresado = 0;
                         //window.open('pagos_imprimir_ticket?idPago=' +
-                          //      r.data.idPago, '_blank');
+                        //      r.data.idPago, '_blank');
                         return;
 
 
@@ -215,6 +220,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
             $scope.totalAbonado = 0;
             $scope.totalAdeuda = 0;
             $scope.totalPagara = 0;
+            $scope.listaServicios=[];
 
             $http({
                 method: 'POST',
