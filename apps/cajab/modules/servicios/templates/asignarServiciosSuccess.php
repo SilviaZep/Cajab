@@ -54,7 +54,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="s in listaServicios">
-                    
+
                     <td><font color="#04B431">{{s.fec_ini|  date:'dd/MM/yyyy' }}</font>  <font color="#FE642E">{{s.fec_fin|  date:'dd/MM/yyyy' }}</font></td>
                     <td>{{s.categoria}}</td>
                     <td>{{s.servicio_padre}}</td>
@@ -64,8 +64,8 @@
 
                     <td>{{s.tip_cli}}</td>
                     <td>{{s.capacidad}}</td>
-                    
-                    
+
+
                     <td>  <button type="button" class="btn btn-success btn-xs pull-right" ng-click="contraer(s)"><i class="fa fa-list" aria-hidden="true"></i> Modificar</button></td>
                 </tr>
             </tbody>
@@ -177,18 +177,29 @@
                     <table  class="table table-striped table-bordered">
                         <thead>
 
-                        <td colspan="8" class="info"><h4><span class="label label-primary">{{numeroRegistrosAlumnos}}</span> Alumnos
-                                <button class="btn btn-info pull-right" ng-click="guardarAlumnos()"
-                                        title="Asignar servicio a los Alumnos seleccionados">
-                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosAlumnos}}</span>
-                                </button>
-
+                        <td colspan="5" class="info"><h4><span class="label label-primary">{{numeroRegistrosAlumnos}}</span> Alumnos
+                                <div class="btn-group">
+                                    <button ng-show="mostrarMasA" class="btn btn-warning btn-xs " ng-click="llamarLista(false)"
+                                            title="Mostrar solo 10 registros">
+                                        <i  class="fa fa-sort-numeric-asc" aria-hidden="true"></i> Solo 10</i> 
+                                    </button>
+                                    <button ng-show="!mostrarMasA" class="btn btn-primary btn-sm" ng-click="llamarLista(true)"
+                                            title="Mostrar mas de 10 registros">                                    
+                                        <i class="fa fa-sort-amount-asc" aria-hidden="true"> Todos</i>
+                                    </button>
+                                </div>
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-info " ng-click="guardarAlumnos()"
+                                            title="Asignar servicio a los Alumnos seleccionados">
+                                        <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosAlumnos}}</span>
+                                    </button>
+                                </div>
                             </h4>
 
                         </td>
 
                         <tr>
-                            <th class="col-md-2">Nombre</th>
+                            <th class="col-md-1">Nombre</th>
                             <th class="col-md-1">Nivel</th> 
                             <th class="col-md-1">Grado</th>                        
                             <th class="col-md-1">Grupo</th>                        
@@ -210,9 +221,9 @@
 
 
                                 <td>{{a.nombre}}</td>
-                                <td>{{a.nivel}}</td>  
-                                <td>{{a.grado}}</td>  
-                                <td>{{a.grupo}}</td>      
+                                <td style="font-size: 11px !important">{{a.nivel}}</td>  
+                                <td style="font-size: 11px !important">{{a.grado}}</td>  
+                                <td style="font-size: 11px !important">{{a.grupo}}</td>      
                                 <td>
                                     <span ng-show="!a.seleccionado">
                                         <button type="button" class="btn btn-success btn-xs" ng-click="seleccionarAlumno(a, true)">
@@ -250,11 +261,26 @@
                     <table class="table table-striped table-bordered">
                         <thead>
 
-                        <td colspan="8" class="info"><h4><span class="label label-primary">{{numeroRegistrosClientes}}</span> Clientes
-                                <button class="btn btn-info pull-right" ng-click="guardarClientes()"
-                                        title="Asignar servicio a los clientes seleccionados">
-                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosClientes}}</span>
-                                </button>
+                        <td colspan="2" class="info"><h4><span class="label label-primary">{{numeroRegistrosClientes}}</span> Clientes
+
+                                <div class="btn-group">
+                                    <button ng-show="mostrarMasCE" class="btn btn-warning btn-xs " ng-click="llamarListaCE(false)"
+                                            title="Mostrar solo 10 registros">
+                                        <i  class="fa fa-sort-numeric-asc" aria-hidden="true"></i> Solo 10</i> 
+                                    </button>
+                                    <button ng-show="!mostrarMasCE" class="btn btn-primary btn-sm" ng-click="llamarListaCE(true)"
+                                            title="Mostrar mas de 10 registros">                                    
+                                        <i class="fa fa-sort-amount-asc" aria-hidden="true"> Todos</i>
+                                    </button>
+                                </div>
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-info pull-right" ng-click="guardarClientes()"
+                                            title="Asignar servicio a los clientes seleccionados">
+                                        <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosClientes}}</span>
+                                    </button>
+                                </div>
+
+
                             </h4>
                         </td>
 
@@ -311,7 +337,7 @@
                 <table class="table table-striped table-bordered">
                     <thead>
 
-                    <td colspan="8" class="info"><h4> Asignados al Servicio <span class="label label-warning">Cap: {{capacidadS}} </span> <span class="label label-primary">Asig: {{numeroRegistrosAsignados}} </span>                         
+                    <td colspan="3" class="info"><h4> Asignados al Servicio <span class="label label-warning">Cap: {{capacidadS}} </span> <span class="label label-primary">Asig: {{numeroRegistrosAsignados}} </span>                         
                         </h4>
                     </td>
 
@@ -323,7 +349,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="a in listaAsignados">
-                            <td>{{a.tipo_descripcion}}</td>
+                            <td style="font-size: 11px !important">{{a.tipo_descripcion}}</td>
                             <td>{{a.cliente}}</td>
 
                             <td>                        
