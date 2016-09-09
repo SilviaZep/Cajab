@@ -200,6 +200,7 @@ class pagosActions extends baseCajabProjectActions {
         //$pagos= $request->getParameter("pagos", 0);    
         //$alumno= $request->getParameter("alumno", 0);
         $no_pago = $request->getParameter("idPago", 0);
+        $totalIngresado = $request->getParameter("totalIngresado", 0);
 
         $total = 0;
 
@@ -255,14 +256,19 @@ class pagosActions extends baseCajabProjectActions {
 
             $pdf->Ln(8);
             //   $pdf->Cell(160, 8, utf8_decode('Sub-Total: ' . "$"), 0, 0, 'R');
-            $pdf->Ln(8);
+            //  $pdf->Ln(8);
             //   $pdf->Cell(160, 8, utf8_decode('IVA: ' . "$"), 0, 0, 'R');
-            $pdf->Ln(8);
+            //  $pdf->Ln(8);
             $pdf->Cell(160, 8, utf8_decode('Total: ' . "$" . $total), 0, 0, 'L');
             $pdf->Ln(8);
+            $pdf->Cell(160, 8, utf8_decode('Total Pagado: ' . "$" . $totalIngresado), 0, 0, 'L');
+            $pdf->Ln(8);
+            $pdf->Cell(160, 8, utf8_decode('Cambio: ' . "$" . ($totalIngresado - $total)), 0, 0, 'L');
+             $pdf->Ln(8);
             $pdf->Cell(160, 8, utf8_decode('Importe con letra:'), 0, 0, 'L');
             $pdf->Ln(8);
             $pdf->Cell(160, 8, utf8_decode($importeLetra), 0, 0, 'L');
+
             $x = $pdf->GetX();
             $y = $pdf->GetY();
             $pdf->Rect(115, $y - 22, 90, 40, 'D');
