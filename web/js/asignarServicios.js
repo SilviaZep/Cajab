@@ -17,6 +17,10 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
         $scope.selGrado = "0";
         $scope.selGrupo = "0";
 
+        $scope.mostrarMasA = false;
+        $scope.mostrarMasCE = false;
+
+
         //----------------
 
 
@@ -277,7 +281,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                 var numRep = prompt("Numero de compras", "1");
                 if (numRep != null) {
                     noRepeticion = parseInt(numRep);
-                }else{
+                } else {
                     return;
                 }
             }
@@ -299,7 +303,10 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
             );
         };
 
-
+        $scope.llamarLista = function (flag) {
+            $scope.mostrarMasA = flag;
+            $scope.listadoAlumnos();
+        };
 
         $scope.listadoAlumnos = function (pag, tipoConsulta) {
             if (!pag) {
@@ -314,6 +321,9 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
 
             $scope.paginaActualAlumnos = pag;
             var numRegistros = 10;//se cambio para que no salga el paginador
+            if ($scope.mostrarMasA) {//si es true
+                numRegistros = 10000;
+            }
             var max = numRegistros;
             var offset = numRegistros * ($scope.paginaActualAlumnos - 1);
 
@@ -461,7 +471,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                 var numRep = prompt("Numero de compras", "1");
                 if (numRep != null) {
                     noRepeticion = parseInt(numRep);
-                }else{
+                } else {
                     return;
                 }
             }
@@ -472,7 +482,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                 params: {
                     idClientes: seleccionados,
                     idServicio: $scope.idServicio,
-                    noRepeticion:noRepeticion
+                    noRepeticion: noRepeticion
                 }
             }).then(
                     function (r) {
@@ -511,6 +521,10 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
             }
 
         };
+         $scope.llamarListaCE = function (flag) {
+            $scope.mostrarMasCE = flag;
+            $scope.listadoClientes();
+        };
 
 
         $scope.listadoClientes = function (pag) {
@@ -522,6 +536,9 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
 
             $scope.paginaActualClientes = pag;
             var numRegistros = 10;//se cambio para que no salga el paginador
+            if ($scope.mostrarMasCE) {//si es true
+                numRegistros = 10000;
+            }
             var max = numRegistros;
             var offset = numRegistros * ($scope.paginaActualClientes - 1);
 
