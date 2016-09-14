@@ -2,6 +2,12 @@ var app = angular.module('pagarServicioCliente', []);
 
 app.controller('pagarServicioClienteController', ['$http', '$scope', function ($http, $scope) {
 
+        var x = getCookie('nombre');        
+        if (x.length > 0) {            
+            $scope.nombreCliente = x;
+            delete_cookie('nombre');
+        }         
+
         $scope.paginaActualClientes = 1;
         $scope.detalle = false;
         $scope.hoy = new Date();
@@ -141,7 +147,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                         $scope.totalPagara = 0;
                         $scope.numPagos = 0;
                         finActualizarBoton('botonGuardarPago');
-                        myWindow.location = 'pagos_imprimir_ticket?idPago=' + r.data.idPago + '&totalIngresado=' + $scope.totalIngresado;
+                        myWindow.location = 'http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_imprimir_ticket?idPago=' + r.data.idPago + '&totalIngresado=' + $scope.totalIngresado;
                         $scope.totalIngresado = 0;
                         //window.open('pagos_imprimir_ticket?idPago=' +
                         //      r.data.idPago, '_blank');
@@ -408,3 +414,20 @@ function cerrarModal(idModal) {
     $("#" + idModal).modal("hide");
 }
 
+function delete_cookie(name) {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
