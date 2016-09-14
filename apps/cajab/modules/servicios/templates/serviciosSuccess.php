@@ -43,7 +43,7 @@
             <td colspan="14" class="info"><b>Listado De Servicios</b></td>
 
             <tr>
-                
+
                 <th class="col-md-2">Vigencia</th>
                 <th class="col-md-2">Categoria </th>
                 <th class="col-md-2">Servicio Padre </th>
@@ -72,7 +72,7 @@
             <tbody>
                 <tr ng-repeat="s in listaServicios">
 
-                    
+
                     <td><font color="#04B431">{{s.fec_ini|  date:'dd/MM/yyyy' }}</font>  <font color="#FE642E">{{s.fec_fin|  date:'dd/MM/yyyy' }}</font></td>
                     <td>{{s.categoria}}</td>
                     <td>{{s.servicio_padre}}</td>
@@ -239,10 +239,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        <button ng-show="estatus == 'NUEVO'" type="button" class="btn btn-success" ng-click="guardarServicio()">Guardar</button>
-                        <button ng-show="estatus == 'EDITAR'" type="button" class="btn btn-success" ng-click="guardarServicio()">Guardar Cambios</button>
-                        <button ng-show="estatus == 'CLONAR'" type="button" class="btn btn-success" ng-click="guardarServicio()">Guarda Servicio Clonado</button>
-                        <button ng-show="estatus == 'HIJO'" type="button" class="btn btn-success" ng-click="guardarServicio()">Guardar Servicio Hijo</button>
+                        <button ng-show="estatus == 'NUEVO'" id="botonGuardar" type="button" class="btn btn-success" ng-click="guardarServicio()">Guardar</button>
+                        <button ng-show="estatus == 'EDITAR'" id="botonGuardar" type="button" class="btn btn-success" ng-click="guardarServicio()">Guardar Cambios</button>
+                        <button ng-show="estatus == 'CLONAR'" id="botonGuardar" type="button" class="btn btn-success" ng-click="guardarServicio()">Guarda Servicio Clonado</button>
+                        <button ng-show="estatus == 'HIJO'" id="botonGuardar" type="button" class="btn btn-success" ng-click="guardarServicio()">Guardar Servicio Hijo</button>
                     </div>
                 </div>
             </div>
@@ -281,7 +281,7 @@
                         <table class="table table-striped table-bordered">
                             <thead>
 
-                            <td colspan="8" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> Asignados al Servicio                           
+                            <td colspan="4" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> Asignados al Servicio                           
                                     <button ng-show="listaAsignados.length > 0"  type="button" class="btn btn-default pull-right" ng-click="imprimirAsignadosAServicio()">
                                         <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
                                     </button>
@@ -292,6 +292,7 @@
                                 <th class="col-md-1">Tipo Cliente</th>                      
                                 <th class="col-md-2">Nombre</th>                      
                                 <th class="col-md-1">Estatus</th>  
+                                <th class="col-md-1"></th>  
                             </tr>
                             </thead>
                             <tbody>
@@ -303,6 +304,12 @@
                                         <span ng-if="a.estatus_descripcion == 'Cancelado'" class="label label-danger">{{a.estatus_descripcion}}</span>
                                         <span ng-if="a.estatus_descripcion == 'Activo'" class="label label-success">{{a.estatus_descripcion}}</span>
                                         <span ng-if="a.estatus_descripcion == 'Pagado'" class="label label-primary">{{a.estatus_descripcion}}</span>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(a.tipo_descripcion, a.cliente)">
+                                            <i class="fa fa-share" aria-hidden="true"></i> Caja
+                                        </button>
+
                                     </td>
                                 </tr>
                             </tbody>
