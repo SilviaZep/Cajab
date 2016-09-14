@@ -548,7 +548,7 @@ class transporteActions extends baseCajabProjectActions {
             //print_r($listaAlumnos);die();    			
             $pdf->SetFont('Arial', '', 14);
             $pdf->SetTextColor(88, 89, 91);
-            $pdf->Cell(50, 8, utf8_decode('Ruta: ' . $rutaDetail->getNombre()), 'B', 0, 'C');
+            $pdf->Cell(0, 8, utf8_decode('Ruta: ' . $rutaDetail->getNombre()), 'B', 0, 'C');
             $pdf->Ln(8);
             $pdf->SetFont('Arial', '', 10);
             $pdf->Cell(50, 8, utf8_decode('Horario: ' . $rutaDetail->getHorario()), 'B', 0, 'L');
