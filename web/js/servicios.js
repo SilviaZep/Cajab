@@ -1,7 +1,7 @@
 var app = angular.module('servicio', []);
 
 app.controller('servicioController', ['$http', '$scope', function ($http, $scope) {
-
+       
         $scope.paginaActual = 1;
 
         var date = new Date();
@@ -76,6 +76,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             if ($scope.estatus == "HIJO") {
                 mIdServicioPadre = $scope.mIdServicioPadre;
             }
+            inicioActualizarBoton('botonGuardar');
 
             $http({
                 method: 'POST',
@@ -99,6 +100,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
                 }
             }).then(
                     function (r) {
+                        finActualizarBoton('botonGuardar');
                         cerrarModal('crearServicio');
                         if (r.data.error) {
                             alert(r.data.mensaje);
@@ -440,6 +442,18 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
 
 //----------------------------------
 
+//Funcion relocate
+
+        $scope.llamarPagos = function (tipo, nombre) {            
+            var myWindow = window.open('');//, '_blank');
+            if (tipo == 'Alumno') {
+                myWindow.location = 'pagos_pagar_servicio';
+            } else {
+                myWindow.location = 'pagos_pagar_servicio_cliente';
+            }
+            document.cookie = "nombre=" + nombre;
+        };
+
 
     }]);
 
@@ -461,4 +475,12 @@ function finActualizar() {
 
 function cerrarModal(idModal) {
     $("#" + idModal).modal("hide");
+}
+
+function inicioActualizarBoton(idBoton) {
+    $("#" + idBoton).prop("disabled", true);
+}
+
+function finActualizarBoton(idBoton) {    
+    $("#" + idBoton).prop("disabled", false);
 }
