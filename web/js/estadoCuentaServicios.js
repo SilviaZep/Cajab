@@ -14,13 +14,10 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         $scope.fechaIni = primerDia;
         $scope.fechaFin = ultimoDia;
         $scope.categoria = "0";
-        
-        $scope.flagVentanaPrincipal=true;//flag para mostrar o esconder ventana
 
-debugger
-     
+        $scope.flagVentanaPrincipal = true;//flag para mostrar o esconder ventana
 
-     
+
         $scope.listadoCategoriasServicios = function () {
             $http({
                 method: 'POST',
@@ -148,22 +145,22 @@ debugger
         $scope.asignadosServicio = function (s) {
 
             $scope.idServicio = s.id;
-            $scope.flagVentanaPrincipal=false;
-            $scope.tituloTabla=s.nombre;
+            $scope.flagVentanaPrincipal = false;
+            $scope.tituloTabla = s.nombre;
             $scope.listadoAsignados();
 
 
         };
-        
+
         $scope.expandir = function () {
-            $scope.flagVentanaPrincipal=true;
+            $scope.flagVentanaPrincipal = true;
         };
-        
+
         $scope.imprimirAsignadosAServicio = function () {
 
             var nombreCliente = "";
-            if($scope.nombreAsignado!=undefined&&$scope.nombreAsignado!=null){
-                nombreCliente=$scope.nombreAsignado;
+            if ($scope.nombreAsignado != undefined && $scope.nombreAsignado != null) {
+                nombreCliente = $scope.nombreAsignado;
             }
             var idServicio = $scope.idServicio;
 
@@ -261,13 +258,13 @@ debugger
             $scope.paginaActualAsignados = $scope.ultimaAsignados;
             $scope.listadoAsignados($scope.paginaActualAsignados);
         };
-     
-     
-     
-     $scope.listaPagos = function (idServicioCliente) {
 
-           $scope.listaPagosServicioCliente=[];
-           debugger
+
+
+        $scope.listaPagos = function (idServicioCliente) {
+
+            $scope.listaPagosServicioCliente = [];
+            debugger
 
             $http({
                 method: 'POST',
@@ -278,30 +275,38 @@ debugger
             }).then(
                     function (r) {
                         debugger
-                       $scope.listaPagosServicioCliente=r.data.listaPagos;
+                        $scope.listaPagosServicioCliente = r.data.listaPagos;
                     }
             );
         };
-        
-        $scope.colorRow=function(saldo){
-          if(saldo==0){
-              return 'success';
-          }
-          if(saldo>0){
-              return 'warning';
-          }  
-          if(saldo<0){
-              return 'danger';
-          }  
-          
-          return '';
-          
-          
-          
+
+        $scope.colorRow = function (saldo) {
+            if (saldo == 0) {
+                return 'success';
+            }
+            if (saldo > 0) {
+                return 'warning';
+            }
+            if (saldo < 0) {
+                return 'danger';
+            }
+
+            return '';
+
+
+
         };
 
-//----------------------------------
-
+//----------------Funcion llevar a pagos
+        $scope.llamarPagos = function (tipo, nombre) {
+            var myWindow = window.open('');//, '_blank');
+            if (tipo == 'Alumno') {
+                myWindow.location = 'pagos_pagar_servicio';
+            } else {
+                myWindow.location = 'pagos_pagar_servicio_cliente';
+            }
+            document.cookie = "nombre=" + nombre;
+        };
 
     }]);
 
