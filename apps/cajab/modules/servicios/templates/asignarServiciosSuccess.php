@@ -337,7 +337,7 @@
                 <table class="table table-striped table-bordered">
                     <thead>
 
-                    <td colspan="3" class="info"><h4> Asignados al Servicio <span class="label label-warning">Cap: {{capacidadS}} </span> <span class="label label-primary">Asig: {{numeroRegistrosAsignados}} </span>                         
+                    <td colspan="4" class="info"><h4> Asignados al Servicio <span class="label label-warning">Cap: {{capacidadS}} </span> <span class="label label-primary">Asig: {{numeroRegistrosAsignados}} </span>                         
                         </h4>
                     </td>
 
@@ -345,6 +345,7 @@
                         <th class="col-md-1">Tipo Cliente</th>                      
                         <th class="col-md-2">Nombre</th>                      
                         <th class="col-md-1">Estatus</th>  
+                        <th class="col-md-1"></th>  
                     </tr>
                     </thead>
                     <tbody>
@@ -360,6 +361,12 @@
                                     {{a.estatus_descripcion}}
                                 </button>
                                 <span ng-if="a.estatus_descripcion == 'Pagado'" class="label label-primary">{{a.estatus_descripcion}}</span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(a.tipo_descripcion,a.cliente)">
+                                    <i class="fa fa-share" aria-hidden="true"></i> Caja
+                                </button>
+
                             </td>
                         </tr>
                     </tbody>
