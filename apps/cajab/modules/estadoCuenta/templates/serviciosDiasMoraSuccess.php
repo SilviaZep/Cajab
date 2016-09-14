@@ -51,8 +51,9 @@
                     <th class="col-md-1">No.Abonos</th> 
                     <th class="col-md-1">Saldo</th> 
                     <th class="col-md-1">Ultimo dia (Pagar)</th>
-                
+
                     <th class="col-md-1">Dias de mora </th>
+                    <th class="col-md-1"></th>
                 </tr>
 
 
@@ -75,8 +76,13 @@
                         </td>
                         <td><b>{{s.saldo| currency}}</b></td>
                         <td>{{s.fecha_fin| date:"dd/MM/yyyy"}}</td>
-                        
+
                         <td>{{s.dias_mora}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(s.tipo_descripcion, s.cliente)">
+                                <i class="fa fa-share" aria-hidden="true"></i> Caja
+                            </button>
+                        </td>
 
 
 
@@ -112,7 +118,7 @@
         </div>
     </div>
 
-    
+
     <div class="modal fade" id="mListaPagos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
