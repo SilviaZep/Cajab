@@ -521,7 +521,7 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
             }
 
         };
-         $scope.llamarListaCE = function (flag) {
+        $scope.llamarListaCE = function (flag) {
             $scope.mostrarMasCE = flag;
             $scope.listadoClientes();
         };
@@ -802,7 +802,19 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
 
 //**************Fin listado Asignados
 
+//Funcion relocate
 
+        $scope.llamarPagos = function (tipo, nombre) {
+            var myWindow = window.open('');//, '_blank');
+            if (tipo == 'Alumno') {
+                myWindow.location = 'pagos_pagar_servicio';
+            } else {
+                myWindow.location = 'pagos_pagar_servicio_cliente';
+            }
+            document.cookie = "nombre=" + nombre;
+
+
+        };
 
 
 
