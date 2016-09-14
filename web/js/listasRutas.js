@@ -51,13 +51,9 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
 
 
         $scope.imprimirListasRutasAlumnos = function () {
-
             var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');           
-            window.open('transporte_imprimir_rutas_alumnos?fecha=' + fechaIni+"&idRuta="+ $scope.idRuta, '_blank');
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/transporte_imprimir_rutas_alumnos?fecha='+fechaIni+'&idRuta='+ $scope.idRuta, '_blank');
             return;
-
-
-
         };
 
 
