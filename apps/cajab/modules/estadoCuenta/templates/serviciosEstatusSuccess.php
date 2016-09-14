@@ -114,7 +114,7 @@
         <table class="table table-striped table-bordered">
             <thead>
 
-            <td colspan="8" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> <b>{{tituloTabla}}</b>                          
+            <td colspan="9" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> <b>{{tituloTabla}}</b>                          
                     <!--<button ng-show="listaAsignados.length > 0"  type="button" class="btn btn-default pull-right" ng-click="imprimirAsignadosAServicio()">
                         <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
                     </button>-->
@@ -131,6 +131,7 @@
                 <th class="col-md-1">No.Abonos</th>
                 <th class="col-md-1">Adeuda</th>
                 <th class="col-md-1">Estatus</th>  
+                <th class="col-md-1"></th>  
             </tr>
             </thead>
             <tbody>
@@ -146,7 +147,7 @@
                         <button ng-show="a.no_abonos > 0" type="button" class="btn btn-info btn-xs" ng-click="listaPagos(a.id)" data-toggle="modal" data-target="#mListaPagos">
                             Detalle <span class="badge">{{a.no_abonos}}</span>
                         </button>
-                        <p ng-show="a.no_abonos<=0"><span class="badge">0</span></p>
+                        <p ng-show="a.no_abonos <= 0"><span class="badge">0</span></p>
                     </td>
                     <td>{{a.saldo| currency}}</td>
 
@@ -155,6 +156,12 @@
                         <span ng-if="a.estatus_descripcion == 'Activo'" class="label label-success">{{a.estatus_descripcion}}</span>
                         <span ng-if="a.estatus_descripcion == 'Pagado'" class="label label-primary">{{a.estatus_descripcion}}</span>
                     </td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(a.tipo_descripcion,a.cliente)">
+                            <i class="fa fa-share" aria-hidden="true"></i> Caja
+                        </button>
+                    </td>
+
                 </tr>
             </tbody>
         </table>
