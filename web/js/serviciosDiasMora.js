@@ -170,6 +170,15 @@ app.controller('servicioDiasMoraController', ['$http', '$scope', function ($http
         };
 
 //----------------------------------
+        $scope.llamarPagos = function (tipo, nombre) {
+            var myWindow = window.open('');//, '_blank');
+            if (tipo == 'Alumno') {
+                myWindow.location = 'pagos_pagar_servicio';
+            } else {
+                myWindow.location = 'pagos_pagar_servicio_cliente';
+            }
+            document.cookie = "nombre=" + nombre;
+        };
 
 
     }]);
