@@ -346,7 +346,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             }
             var idServicio = $scope.idServicio;
 
-            window.open('servicios_imprimir_asignados_a_servicio?limit=1000&offset=0&idServicio=' +
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/servicios_imprimir_asignados_a_servicio?limit=1000&offset=0&idServicio=' +
                     idServicio + '&nombreCliente=' + nombreCliente, '_blank');
             return;
 
