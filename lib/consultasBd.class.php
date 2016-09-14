@@ -392,12 +392,13 @@ class consultasBd {
                           WHEN 4 THEN 'Condonado'
                       ELSE  'na' END as estatus_descripcion,
                 s.nombre as nombre_servicio,
-                ifnull((select cs.categoria from categoria_servicio cs where id=s.categoria_id),'na') as categoria_servicio                
+                ifnull((select cs.categoria from categoria_servicio cs where id=s.categoria_id),'na') as categoria_servicio,
+                sc.fecha_registro
                 from servicio_cliente sc,servicio s
                 where sc.id_servicio=s.id) t
                 where id_servicio={$idServicio}
                 and (cliente like '%{$nombreCliente}%'  or cliente='na')                 
-                order by tipo_descripcion,cliente
+                order by fecha_registro desc
                 limit {$limit} offset {$offset};";
 
         $st = $conn->execute($sql);
