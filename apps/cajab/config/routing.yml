@@ -250,6 +250,12 @@ estado_cuenta_servicios_dias_mora:
 estado_cuenta_listado_dias_mora:
   url:   /estado_cuenta_listado_dias_mora
   param: { module: estadoCuenta, action: listadoDiasMora } 
+estado_cuenta_servicios_activos_alumnos:
+  url:   /estado_cuenta_servicios_activos_alumnos
+  param: { module: estadoCuenta, action: serviciosActivosAlumnos }   
+estado_cuenta_servicios_activos_alumnos_lista:
+  url:   /estado_cuenta_servicios_activos_alumnos_lista
+  param: { module: estadoCuenta, action: serviciosActivosAlumnosLista }     
   
 #fin estado de cuenta
 
