@@ -52,33 +52,33 @@
 
 
     <div>
-        <table class="table table-striped table-bordered" style="font-size: 14px !important;">
+        <table class="table table-striped table-bordered" style="font-size: 13px !important;">
             <thead>
 
-            <td colspan="12" class="info"><b>Listado Alumnos</b></td>
+            <td colspan="13" class="info"><b>Listado Alumnos</b></td>
             <tr>
-                <th rowspan="2">Alumno</th>
-                <th rowspan="2">Tipo Transporte</th>
+                <th class="col-md-1" rowspan="2">Alumno</th>
+                <th class="col-md-1" rowspan="2">Tipo Transporte</th>
 
-                <th colspan="2">Lunes</th>
-                <th colspan="2">Martes</th>
-                <th colspan="2">Miercoles</th>
-                <th colspan="2">Jueves</th>
-                <th colspan="2">Viernes</th>
-                <th rowspan="2">Editar</th>
+                <th class="col-md-1" colspan="2">Lunes</th>
+                <th class="col-md-1" colspan="2">Martes</th>
+                <th class="col-md-1" colspan="2">Miercoles</th>
+                <th class="col-md-1" colspan="2">Jueves</th>
+                <th class="col-md-1" colspan="2">Viernes</th>
+                <th class="col-md-1" rowspan="2">Editar</th>
 
             </tr>
             <tr>
-                <th><h4> Entrada</h4></th>
-            <th><h4> Salida</h4></th>
-            <th><h4> Entrada</h4></th>
-            <th><h4> Salida</h4></th>
-            <th><h4> Entrada</h4></th>
-            <th><h4> Salida</h4></th>
-            <th><h4> Entrada</h4></th>
-            <th><h4> Salida</h4></th>
-            <th><h4> Entrada</h4></th>
-            <th><h4> Salida</h4></th>
+                <th class="col-md-1" ><h4> Entrada</h4></th>
+            <th class="col-md-1"  ><h4> Salida</h4></th>
+            <th class="col-md-1" ><h4> Entrada</h4></th>
+            <th class="col-md-1" ><h4> Salida</h4></th>
+            <th class="col-md-1" ><h4> Entrada</h4></th>
+            <th class="col-md-1" ><h4> Salida</h4></th>
+            <th class="col-md-1" ><h4> Entrada</h4></th>
+            <th class="col-md-1" ><h4> Salida</h4></th>
+            <th class="col-md-1" ><h4> Entrada</h4></th>
+            <th class="col-md-1" ><h4> Salida</h4></th>
 
 
 
@@ -93,30 +93,30 @@
                     <td >{{lh.nombre}}</td>
                     <td >{{lh.tipo_transporte}}</td>
 
-                    <td ng-if="lh.r_lun_e_nombre != 'No Asig.'" class="success" ><span class="label label-pill label-success" ><i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_lun_e_nombre}}</td>
-                    <td ng-if="lh.r_lun_e_nombre == 'No Asig.'" class="success" ><span class="label label-pill label-danger" > {{lh.r_lun_e_nombre}} </td>
-                    <td ng-if="lh.r_lun_s_nombre != 'No Asig.'" class="warning" ><span class="label label-pill label-warning" ><i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_lun_s_nombre}} </td>
-                    <td ng-if="lh.r_lun_s_nombre == 'No Asig.'" class="warning" ><span class="label label-pill label-danger" >  {{lh.r_lun_s_nombre}} </td>
+                    <td ng-if="lh.r_lun_e_nombre != 'No Asig.'" ><i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_lun_e_nombre}}</font></td>
+                    <td ng-if="lh.r_lun_e_nombre == 'No Asig.'"  > <font color="red">{{lh.r_lun_e_nombre}}</font></td>
+                    <td ng-if="lh.r_lun_s_nombre != 'No Asig.'" class="warning" ><i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_lun_s_nombre}}</font> </td>
+                    <td ng-if="lh.r_lun_s_nombre == 'No Asig.'" class="warning" ><font color="red">  {{lh.r_lun_s_nombre}}</font> </td>
 
-                    <td ng-if="lh.r_mar_e_nombre != 'No Asig.'" class="success" ><span class="label label-pill label-success" > <i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_mar_e_nombre}} </td>
-                    <td ng-if="lh.r_mar_e_nombre == 'No Asig.'" class="success" ><span class="label label-pill label-danger" >  {{lh.r_mar_e_nombre}} </td>
-                    <td ng-if="lh.r_mar_s_nombre != 'No Asig.'" class="warning" ><span class="label label-pill label-warning" > <i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_mar_s_nombre}} </td>
-                    <td ng-if="lh.r_mar_s_nombre == 'No Asig.'" class="warning" ><span class="label label-pill label-danger" >  {{lh.r_mar_s_nombre}} </td>
+                    <td ng-if="lh.r_mar_e_nombre != 'No Asig.'"  > <i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_mar_e_nombre}}</font> </td>
+                    <td ng-if="lh.r_mar_e_nombre == 'No Asig.'"  > <font color="red"> {{lh.r_mar_e_nombre}}</font> </td>
+                    <td ng-if="lh.r_mar_s_nombre != 'No Asig.'" class="warning" > <i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_mar_s_nombre}}</font> </td>
+                    <td ng-if="lh.r_mar_s_nombre == 'No Asig.'" class="warning" >  <font color="red">{{lh.r_mar_s_nombre}}</font> </td>
 
-                    <td ng-if="lh.r_mie_e_nombre != 'No Asig.'" class="success" ><span class="label label-pill label-success" > <i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_mie_e_nombre}} </td>
-                    <td ng-if="lh.r_mie_e_nombre == 'No Asig.'" class="success" ><span class="label label-pill label-danger" > {{lh.r_mie_e_nombre}} </td>
-                    <td ng-if="lh.r_mie_s_nombre != 'No Asig.'" class="warning" ><span class="label label-pill label-warning" > <i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_mie_s_nombre}} </td>
-                    <td ng-if="lh.r_mie_s_nombre == 'No Asig.'" class="warning" ><span class="label label-pill label-danger" >  {{lh.r_mie_s_nombre}} </td>
+                    <td ng-if="lh.r_mie_e_nombre != 'No Asig.'"  > <i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_mie_e_nombre}}</font> </td>
+                    <td ng-if="lh.r_mie_e_nombre == 'No Asig.'"  > <font color="red">{{lh.r_mie_e_nombre}}</font> </td>
+                    <td ng-if="lh.r_mie_s_nombre != 'No Asig.'" class="warning" > <i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_mie_s_nombre}}</font> </td>
+                    <td ng-if="lh.r_mie_s_nombre == 'No Asig.'" class="warning" >  <font color="red">{{lh.r_mie_s_nombre}}</font> </td>
 
-                    <td ng-if="lh.r_jue_e_nombre != 'No Asig.'" class="success" ><span class="label label-pill label-success" > <i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_jue_e_nombre}} </td>
-                    <td ng-if="lh.r_jue_e_nombre == 'No Asig.'" class="success" ><span class="label label-pill label-danger" >  {{lh.r_jue_e_nombre}} </td>
-                    <td ng-if="lh.r_jue_s_nombre != 'No Asig.'" class="warning" ><span class="label label-pill label-warning" > <i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_jue_s_nombre}} </td>
-                    <td ng-if="lh.r_jue_s_nombre == 'No Asig.'" class="warning" ><span class="label label-pill label-danger" >  {{lh.r_jue_s_nombre}} </td>
+                    <td ng-if="lh.r_jue_e_nombre != 'No Asig.'"  > <i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_jue_e_nombre}}</font> </td>
+                    <td ng-if="lh.r_jue_e_nombre == 'No Asig.'"  >  <font color="red">{{lh.r_jue_e_nombre}}</font> </td>
+                    <td ng-if="lh.r_jue_s_nombre != 'No Asig.'" class="warning" > <i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_jue_s_nombre}}</font> </td>
+                    <td ng-if="lh.r_jue_s_nombre == 'No Asig.'" class="warning" >  <font color="red">{{lh.r_jue_s_nombre}}</font> </td>
 
-                    <td ng-if="lh.r_vie_e_nombre != 'No Asig.'" class="success" ><span class="label label-pill label-success" > <i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_vie_e_nombre}} </td>
-                    <td ng-if="lh.r_vie_e_nombre == 'No Asig.'" class="success" ><span class="label label-pill label-danger" >{{lh.r_vie_e_nombre}} </td>
-                    <td ng-if="lh.r_vie_s_nombre != 'No Asig.'" class="warning" ><span class="label label-pill label-warning" > <i class="fa fa-bus" aria-hidden="true"></i> {{lh.r_vie_s_nombre}} </td>
-                    <td ng-if="lh.r_vie_s_nombre == 'No Asig.'" class="warning" ><span class="label label-pill label-danger" >  {{lh.r_vie_s_nombre}} </td>
+                    <td ng-if="lh.r_vie_e_nombre != 'No Asig.'"  > <i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_vie_e_nombre}}</font> </td>
+                    <td ng-if="lh.r_vie_e_nombre == 'No Asig.'"  ><font color="red">{{lh.r_vie_e_nombre}}</font> </td>
+                    <td ng-if="lh.r_vie_s_nombre != 'No Asig.'" class="warning" > <i class="fa fa-bus" aria-hidden="true"></i> <font color="green">{{lh.r_vie_s_nombre}}</font> </td>
+                    <td ng-if="lh.r_vie_s_nombre == 'No Asig.'" class="warning" >  <font color="red">{{lh.r_vie_s_nombre}}</font> </td>
 
 
 
