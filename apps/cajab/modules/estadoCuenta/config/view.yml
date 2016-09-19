@@ -3,4 +3,6 @@ all:
 serviciosEstatusSuccess:
   javascripts: [moment.min.js,estadoCuentaServicios.js]
 serviciosDiasMoraSuccess:
-  javascripts: [moment.min.js,serviciosDiasMora.js]  
+  javascripts: [moment.min.js,serviciosDiasMora.js] 
+serviciosActivosAlumnosSuccess:
+  javascripts: [moment.min.js,serviciosActivosAlumnos.js]
