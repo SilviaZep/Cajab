@@ -1022,7 +1022,7 @@ order by fecha_registro
         }
 
         $sql = "select * from 
-(select sc.id_alumno,sum(1) as no_servicios,GROUP_CONCAT('>',concat('[',cs.categoria,'-',s.nombre,']')) as servicios,
+(select sc.id_alumno,sum(1) as no_servicios,GROUP_CONCAT(concat('[',cs.categoria,'-',s.nombre,']')) as servicios,
 GROUP_CONCAT(if(s.categoria_id=1 and s.tipo_transporte<>3,'SI','NO')) transporte
 from servicio_cliente sc,servicio s,categoria_servicio cs
 where sc.id_servicio=s.id
@@ -1059,7 +1059,7 @@ limit {$offset},{$limit};
         }
 
         $sql = "select count(*) as total from            
-(select sc.id_alumno,sum(1) as no_servicios,GROUP_CONCAT('>',concat('[',cs.categoria,'-',s.nombre,']')) as servicios,
+(select sc.id_alumno,sum(1) as no_servicios,GROUP_CONCAT(concat('[',cs.categoria,'-',s.nombre,']')) as servicios,
 GROUP_CONCAT(if(s.categoria_id=1 and s.tipo_transporte<>3,'SI','NO')) transporte
 from servicio_cliente sc,servicio s,categoria_servicio cs
 where sc.id_servicio=s.id
