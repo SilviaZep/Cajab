@@ -281,7 +281,7 @@
                         <table class="table table-striped table-bordered">
                             <thead>
 
-                            <td colspan="4" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> Asignados al Servicio                           
+                            <td colspan="5" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> Asignados al Servicio                           
                                     <button ng-show="listaAsignados.length > 0"  type="button" class="btn btn-default pull-right" ng-click="imprimirAsignadosAServicio()">
                                         <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
                                     </button>
@@ -293,6 +293,7 @@
                                 <th class="col-md-2">Nombre</th>                      
                                 <th class="col-md-1">Estatus</th>  
                                 <th class="col-md-1"></th>  
+                                <th class="col-md-1">Fecha de registro</th>  
                             </tr>
                             </thead>
                             <tbody>
@@ -311,6 +312,7 @@
                                         </button>
 
                                     </td>
+                                    <td>{{a.fecha_registro | date:"dd/MM/yyyy"}}</td>
                                 </tr>
                             </tbody>
                         </table>
