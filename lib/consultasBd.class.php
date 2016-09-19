@@ -393,7 +393,7 @@ class consultasBd {
                       ELSE  'na' END as estatus_descripcion,
                 s.nombre as nombre_servicio,
                 ifnull((select cs.categoria from categoria_servicio cs where id=s.categoria_id),'na') as categoria_servicio,
-                sc.fecha_registro
+                date(sc.fecha_registro) as fecha_registro
                 from servicio_cliente sc,servicio s
                 where sc.id_servicio=s.id) t
                 where id_servicio={$idServicio}
@@ -949,7 +949,7 @@ where sc.id_servicio=s.id and sc.estatus=1)t ;
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getEstadoCuentaAlumno($idAlumno,$fechaIni,$fechaFin) {
+    public static function getEstadoCuentaAlumno($idAlumno, $fechaIni, $fechaFin) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select * from (
 select sc.id as id_sc,sc.fecha_registro,s.nombre,
@@ -976,9 +976,8 @@ order by fecha_registro
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    
-    public static function getEstadoCuentaCliente($idCliente,$fechaIni,$fechaFin) {
+
+    public static function getEstadoCuentaCliente($idCliente, $fechaIni, $fechaFin) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select * from (
 select sc.id as id_sc,sc.fecha_registro,s.nombre,
@@ -1000,6 +999,77 @@ and sc.id_cliente={$idCliente})
 where date(fecha_registro)>='{$fechaIni}'
 and date(fecha_registro)<='{$fechaFin}'
 order by fecha_registro
+;
+";
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getServiciosActivosAlumnos($limit, $offset, $transporte, $mayores) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $filtroTransporte = "";
+        $filtroMayores = "";
+        if ($transporte == 'true') {//si es true
+            $filtroTransporte = "where transporte like '%SI%'";
+        } else {
+            $filtroTransporte = "where transporte like '%%'";
+        }
+
+        if ($mayores == 'true') {
+            $filtroMayores = "and no_servicios>1";
+        }else{
+            $filtroMayores = "and no_servicios>0";
+        }
+
+        $sql = "select * from 
+(select sc.id_alumno,sum(1) as no_servicios,GROUP_CONCAT('>',concat('[',cs.categoria,'-',s.nombre,']')) as servicios,
+GROUP_CONCAT(if(s.categoria_id=1 and s.tipo_transporte<>3,'SI','NO')) transporte
+from servicio_cliente sc,servicio s,categoria_servicio cs
+where sc.id_servicio=s.id
+and s.categoria_id=cs.id
+and sc.id_alumno is not null
+and date(fecha_fin)>=date(now())
+group by sc.id_alumno
+order by no_servicios)t
+{$filtroTransporte}
+{$filtroMayores}
+limit {$offset},{$limit};
+";
+
+
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getTotalServiciosActivosAlumnos($transporte, $mayores) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        $filtroTransporte = "";
+        $filtroMayores = "";
+        if ($transporte == 'true') {//si es true
+            $filtroTransporte = "where transporte like '%SI%'";
+        } else {
+            $filtroTransporte = "where transporte like '%%'";
+        }
+
+        if ($mayores == 'true') {
+            $filtroMayores = "and no_servicios>1";
+        }else{
+            $filtroMayores = "and no_servicios>0";
+        }
+
+        $sql = "select count(*) as total from            
+(select sc.id_alumno,sum(1) as no_servicios,GROUP_CONCAT('>',concat('[',cs.categoria,'-',s.nombre,']')) as servicios,
+GROUP_CONCAT(if(s.categoria_id=1 and s.tipo_transporte<>3,'SI','NO')) transporte
+from servicio_cliente sc,servicio s,categoria_servicio cs
+where sc.id_servicio=s.id
+and s.categoria_id=cs.id
+and sc.id_alumno is not null
+and date(fecha_fin)>=date(now())
+group by sc.id_alumno
+order by no_servicios)t
+{$filtroTransporte}
+{$filtroMayores}
 ;
 ";
         $st = $conn->execute($sql);
