@@ -62,6 +62,7 @@ class pagosActions extends baseCajabProjectActions {
                 $idAlumno = $request->getParameter("idAlumno", 0);
                 $idServicios = $request->getParameter("idServicios", 0);
                 $montosPagara = $request->getParameter("montosPagara", 0);
+                $montosDescuento = $request->getParameter("montosDescuento", 0);
                 $formaPagos = $request->getParameter("formaPagos", 0);
 
 
@@ -70,6 +71,7 @@ class pagosActions extends baseCajabProjectActions {
                 if (!empty($idServicios)) {
                     $vecServicios = explode(",", $idServicios);
                     $vecMontosPagara = explode(",", $montosPagara);
+                    $vecMontosDescuento = explode(",", $montosDescuento);
                     $vecFormaPagos = explode(",", $formaPagos);
                     $max = (sizeof($vecServicios) - 1); //agarra uno de mas
                     $consecutivo = consultasBd::getConsecutivoPago();
@@ -84,6 +86,7 @@ class pagosActions extends baseCajabProjectActions {
                         $instServicioPago->setUsuarioRegistro($this->getUser()->getUserId());
                         $instServicioPago->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
                         $instServicioPago->setMonto((double) $vecMontosPagara[$i]);
+                        $instServicioPago->setDescuento((double) $vecMontosDescuento[$i]);
                         $instServicioPago->setTipoPago(1); //1.- ABONO 2.-DEVOLUCION                        
                         $instServicioPago->setFormaPago($vecFormaPagos[$i]);
                         $instServicioPago->setIdPago($consecutivo); //1.- ABONO 2.-DEVOLUCION   
@@ -151,6 +154,7 @@ class pagosActions extends baseCajabProjectActions {
                 $idCliente = $request->getParameter("idCliente", 0);
                 $idServicios = $request->getParameter("idServicios", 0);
                 $montosPagara = $request->getParameter("montosPagara", 0);
+                $montosDescuento = $request->getParameter("montosDescuento", 0);
                 $formaPagos = $request->getParameter("formaPagos", 0);
 
 
@@ -159,6 +163,7 @@ class pagosActions extends baseCajabProjectActions {
                 if (!empty($idServicios)) {
                     $vecServicios = explode(",", $idServicios);
                     $vecMontosPagara = explode(",", $montosPagara);
+                    $vecMontosDescuento = explode(",", $montosDescuento);
                     $vecFormaPagos = explode(",", $formaPagos);
                     $max = (sizeof($vecServicios) - 1); //agarra uno de mas   
                     $consecutivo = consultasBd::getConsecutivoPago();
@@ -173,6 +178,7 @@ class pagosActions extends baseCajabProjectActions {
                         $instServicioPago->setUsuarioRegistro($this->getUser()->getUserId());
                         $instServicioPago->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
                         $instServicioPago->setMonto((double) $vecMontosPagara[$i]);
+                        $instServicioPago->setDescuento((double) $vecMontosDescuento[$i]);
                         $instServicioPago->setTipoPago(1); //1.- ABONO 2.-DEVOLUCION                        
                         $instServicioPago->setFormaPago($vecFormaPagos[$i]);
                         $instServicioPago->setIdPago($consecutivo); //1.- ABONO 2.-DEVOLUCION   
@@ -218,7 +224,7 @@ class pagosActions extends baseCajabProjectActions {
             $pdf = new FPDF ();
             $pdf->AddPage();
             $pdf->Ln(6);
-            $pdf->SetFont('Arial', '', 14);
+            $pdf->SetFont('Arial', '', 11);
             $pdf->SetTextColor(88, 89, 91);
             $pdf->Cell(0, 8, utf8_decode('RECIBO POR CUOTA DE TERCEROS'), 'B', 0, 'C');
             $pdf->Ln(12);
@@ -231,22 +237,24 @@ class pagosActions extends baseCajabProjectActions {
             $pdf->Ln(7);
             $pdf->Cell(0, 7, utf8_decode($pagos[0]['fecha_pago']), 0, 0, 'R');
             $pdf->Ln(10);
-            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetFont('Arial', '', 9);
             $pdf->SetTextColor(88, 89, 91);
             $pdf->Cell(15, 8, utf8_decode('Nombre:'), 0, 0, 'L');
-            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->SetFont('Arial', 'B', 9);
             $pdf->Cell(175, 6, utf8_decode($pagos[0]['cliente']), 1, 0, 'L');
             $pdf->Ln(8);
 
-            $pdf->Cell(120, 8, utf8_decode('Servicio'), 'B', 0, 'L');
+            $pdf->Cell(90, 8, utf8_decode('Servicio'), 'B', 0, 'L');
             $pdf->Cell(35, 8, utf8_decode('Monto'), 'B', 0, 'L');
+            $pdf->Cell(35, 8, utf8_decode('Descuento'), 'B', 0, 'L');
             $pdf->Cell(35, 8, utf8_decode('Forma de Pago'), 'B', 0, 'L');
             $pdf->Ln(8);
-            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetFont('Arial', '', 9);
 
             for ($i = 0; $i < sizeof($pagos); $i ++) {
-                $pdf->Cell(120, 8, utf8_decode($pagos[$i]['nombre_servicio']), 0, 0, 'L');
+                $pdf->Cell(90, 8, utf8_decode($pagos[$i]['nombre_servicio']), 0, 0, 'L');
                 $pdf->Cell(35, 8, utf8_decode('$' . $pagos[$i]['monto']), 0, 0, 'L');
+                $pdf->Cell(35, 8, utf8_decode('$' . $pagos[$i]['descuento']), 0, 0, 'L');
                 $pdf->Cell(35, 8, utf8_decode($pagos[$i]['forma_pago']), 0, 0, 'L');
                 $pdf->Ln(8);
                 $total+=(double) $pagos[$i]['monto'];
@@ -264,7 +272,7 @@ class pagosActions extends baseCajabProjectActions {
             $pdf->Cell(160, 8, utf8_decode('Total Pagado: ' . "$" . $totalIngresado), 0, 0, 'L');
             $pdf->Ln(8);
             $pdf->Cell(160, 8, utf8_decode('Cambio: ' . "$" . ($totalIngresado - $total)), 0, 0, 'L');
-             $pdf->Ln(8);
+            $pdf->Ln(8);
             $pdf->Cell(160, 8, utf8_decode('Importe con letra:'), 0, 0, 'L');
             $pdf->Ln(8);
             $pdf->Cell(160, 8, utf8_decode($importeLetra), 0, 0, 'L');
