@@ -159,6 +159,15 @@ abstract class BaseServicioPago extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 4,
              ));
+          $this->hasColumn('descuento', 'float', null, array(
+             'type' => 'float',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => '',
+             ));
     }
 
     public function setUp()
