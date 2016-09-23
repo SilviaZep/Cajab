@@ -2,7 +2,7 @@
 
 <div ng-app="pagarServicioCliente" ng-controller="pagarServicioClienteController">      
 
-    <div ng-show="detalle == false && flagEC==false">
+    <div ng-show="detalle == false && flagEC == false">
         <div class="panel panel-default">
             <div class="panel-body">
                 <form class="form-inline">
@@ -84,7 +84,7 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="10" class="info"><h3>Servicios del Cliente <small>(Pagando)</small><button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3></td>
+            <td colspan="11" class="info"><h3>Servicios del Cliente <small>(Pagando)</small><button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3></td>
 
             <tr>
                 <th class="col-md-2">Categoria</th>
@@ -96,6 +96,7 @@
                 <th >No.Abonos</th>
                 <th >Adeuda</th>               
                 <th class="col-md-2">Pagara</th>
+                <th class="col-md-2">Descuento</th>
                 <th class="col-md-2">Forma Pago<br/>
                     <select class="form-control" ng-model="globalFormaPago" ng-change="actualizarFormaPago()">
                         <option value="EFECTIVO">EFECTIVO</option>
@@ -137,6 +138,10 @@
                     <td>
                         <input type="number" step="any" min="0" class="form-control" ng-model="s.pagara" ng-change="totalPagaraCalculo()">
                     </td>
+                    <td>
+                        <input type="number" step="any" min="0" class="form-control" ng-model="s.descuento" ng-change="totalPagaraCalculo()">
+                    </td>
+
                     <td >
                         <select class="form-control" ng-model="s.formaPago">
                             <option value="EFECTIVO">EFECTIVO</option>
@@ -155,10 +160,11 @@
                     <td align="right" class="success"><h4><b>{{totalPrecio| currency}}</b></h4></td>
                     <td align="right" class="success"><h4><b>{{totalAbonado| currency}}</b></h4></td>
                     <td class="success"></td>                    
-                    <td align="right" class="danger"><h4><b>{{(totalPrecio-totalAbonado)| currency}}</b></h4></td>
-                    <td align="right" class="danger"><h4><b>{{totalPagara| currency}}</b></h4></td>                  
+                    <td align="right" class="danger"><h4><b>{{(totalPrecio - totalAbonado)| currency}}</b></h4></td>
+                    <td align="right" class="danger"><h4><b>{{totalPagara| currency}}</b></h4></td> 
+                    <td align="right" class="info"><h4><b>{{totalDescuento| currency}}</b></h4></td>
                 </tr>
-                
+
                 <tr >
                     <td colspan="7"></td>
                     <td><h4><b>Total Pagado:</b></h4></td>  
@@ -167,7 +173,7 @@
                 <tr >
                     <td colspan="7"></td>
                     <td><h4><b>Cambio:</b></h4></td>  
-                     <td align="right" class="warning"><h4><b>{{(totalIngresado-totalPagara)| currency}}</b></h4></td>
+                    <td align="right" class="warning"><h4><b>{{(totalIngresado - totalPagara)| currency}}</b></h4></td>
                     <td align="center" class="success">
                         <button type="button" id="botonGuardarPago" class="btn btn-success" ng-click="guardarPago()"><i class="fa fa-usd" ></i> Guardar Pago <span class="badge ng-binding" >{{numPagos}}</span> </button>
                     </td>
@@ -284,6 +290,7 @@
                             <tr>
                                 <th >Fecha Pago</th>
                                 <th >Monto</th>
+                                <th >Descuento</th>
                                 <th >Forma Pago</th>
                             </tr>
 
@@ -293,6 +300,7 @@
                                 <tr ng-repeat="lp in listaPagosServicioCliente">
                                     <td >{{lp.fecha_pago| date:'dd/MM/yyyy'}}</td>
                                     <td align="right" >{{lp.monto| currency}}</td>
+                                    <td align="right" >{{lp.descuento| currency}}</td>
                                     <td >{{lp.forma_pago}}</td>
                                 </tr>
 
