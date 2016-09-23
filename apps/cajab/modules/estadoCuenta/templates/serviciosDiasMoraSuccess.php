@@ -40,7 +40,7 @@
             <table class="table table-striped table-bordered" style="font-size: 14px !important">
                 <thead>
 
-                <td colspan="10" class="info"><b>Listado Dias de mora al dia de : {{fechaHoy| date:"dd/MM/yyyy"}}</b></td>
+                <td colspan="11" class="info"><b>Listado Dias de mora al dia de : {{fechaHoy| date:"dd/MM/yyyy"}}</b></td>
 
                 <tr>                    
                     <th class="col-md-1">Tipo Cliente </th>
@@ -48,6 +48,7 @@
                     <th class="col-md-2">Servicio</th>
                     <th class="col-md-1">Precio</th>
                     <th class="col-md-1">Abonado </th>
+                    <th class="col-md-1">Descuento </th>
                     <th class="col-md-1">No.Abonos</th> 
                     <th class="col-md-1">Saldo</th> 
                     <th class="col-md-1">Ultimo dia (Pagar)</th>
@@ -68,6 +69,7 @@
                         <td>{{s.servicio}}</td>
                         <td>{{s.precio| currency}}</td>
                         <td>{{s.abonado| currency}}</td>
+                        <td>{{s.descuento| currency}}</td>
                         <td>
                             <button ng-show="s.no_abonos > 0" type="button" class="btn btn-info btn-xs" ng-click="listaPagos(s.id)" data-toggle="modal" data-target="#mListaPagos">
                                 Detalle <span class="badge">{{s.no_abonos}}</span>
@@ -137,6 +139,7 @@
                             <tr>
                                 <th >Fecha Pago</th>
                                 <th >Monto</th>
+                                <th >Descuento</th>
                                 <th >Forma Pago</th>
                             </tr>
 
@@ -146,6 +149,7 @@
                                 <tr ng-repeat="lp in listaPagosServicioCliente">
                                     <td >{{lp.fecha_pago| date:'dd/MM/yyyy'}}</td>
                                     <td align="right" >{{lp.monto| currency}}</td>
+                                    <td align="right" >{{lp.descuento| currency}}</td>
                                     <td >{{lp.forma_pago}}</td>
                                 </tr>
 
