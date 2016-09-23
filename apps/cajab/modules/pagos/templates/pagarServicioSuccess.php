@@ -87,7 +87,7 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="10" class="info"><h3>Servicios del alumno <small>(Pagando)</small><button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3></td>
+            <td colspan="11" class="info"><h3>Servicios del alumno <small>(Pagando)</small><button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3></td>
 
             <tr>
                 <th class="col-md-2">Categoria</th>
@@ -99,6 +99,7 @@
                 <th >No.Abonos</th>
                 <th >Adeuda</th>               
                 <th class="col-md-2">Pagara</th>
+                <th class="col-md-2">Descuento</th>
                 <th class="col-md-2">Forma Pago<br/>
                     <select class="form-control" ng-model="globalFormaPago" ng-change="actualizarFormaPago()">
                         <option value="EFECTIVO">EFECTIVO</option>
@@ -140,6 +141,9 @@
                     <td>
                         <input type="number" step="any" min="0" class="form-control" ng-model="s.pagara" ng-change="totalPagaraCalculo()">
                     </td>
+                    <td>
+                        <input type="number" step="any" min="0" class="form-control" ng-model="s.descuento" ng-change="totalPagaraCalculo()">
+                    </td>
                     <td >
                         <select class="form-control" ng-model="s.formaPago">
                             <option value="EFECTIVO">EFECTIVO</option>
@@ -158,9 +162,9 @@
                     <td align="right" class="success"><h4><b>{{totalPrecio| currency}}</b></h4></td>
                     <td align="right" class="success"><h4><b>{{totalAbonado| currency}}</b></h4></td>
                     <td></td>
-                    <td align="right" class="success"><h4><b>{{(totalPrecio-totalAbonado)| currency}}</b></h4></td>
+                    <td align="right" class="success"><h4><b>{{(totalPrecio - totalAbonado)| currency}}</b></h4></td>
                     <td align="right" class="success"><h4><b>{{totalPagara| currency}}</b></h4></td>
-
+                    <td align="right" class="info"><h4><b>{{totalDescuento| currency}}</b></h4></td>
 
                 </tr>
                 <tr >
@@ -288,6 +292,7 @@
                             <tr>
                                 <th >Fecha Pago</th>
                                 <th >Monto</th>
+                                <th >Descuento</th>
                                 <th >Forma Pago</th>
                             </tr>
 
@@ -297,6 +302,7 @@
                                 <tr ng-repeat="lp in listaPagosServicioCliente">
                                     <td >{{lp.fecha_pago| date:'dd/MM/yyyy'}}</td>
                                     <td align="right" >{{lp.monto| currency}}</td>
+                                    <td align="right" >{{lp.descuento| currency}}</td>
                                     <td >{{lp.forma_pago}}</td>
                                 </tr>
 
