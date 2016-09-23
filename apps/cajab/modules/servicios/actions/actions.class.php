@@ -541,7 +541,7 @@ class serviciosActions extends baseCajabProjectActions {
 
             $pdf->AddPage();
             $pdf->Ln(10);
-            $pdf->SetFont('Arial', '', 18);
+            $pdf->SetFont('Arial', '', 12);
             $pdf->SetTextColor(88, 89, 91);
             $pdf->Cell(0, 8, utf8_decode($listaAsignados[0]['categoria_servicio'] . " - " . $listaAsignados[0]['nombre_servicio']), 'B', 0, 'C');
             $pdf->Ln(15);
@@ -562,7 +562,7 @@ class serviciosActions extends baseCajabProjectActions {
     }
 
     private function pdfListaAsignados($pdf, $listaAsignados) {
-        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->SetFont('Arial', 'B', 9);
         $pdf->SetTextColor(255, 255, 255);
         $pdf->SetFillColor(136, 138, 140);
         $pdf->Cell(20, 8, utf8_decode("#"), 'B', 0, 'L', true);
@@ -571,7 +571,7 @@ class serviciosActions extends baseCajabProjectActions {
         $pdf->Cell(30, 8, utf8_decode("Estatus   "), 'B', 0, 'L', true);
         $pdf->Ln(8);
 
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '', 9);
         $pdf->SetTextColor(88, 89, 91);
         $y = 1;
         for ($x = 0; $x < sizeof($listaAsignados); $x ++) {
