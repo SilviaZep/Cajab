@@ -533,10 +533,10 @@ class transporteActions extends baseCajabProjectActions {
         //$pdf->AddPage ('L');
         $pdf->AddPage();
         $pdf->Ln(10);
-        $pdf->SetFont('Arial', '', 18);
-        $pdf->SetTextColor(88, 89, 91);
-        $pdf->Cell(0, 8, utf8_decode('Transporte Escolar'), 'B', 0, 'C');
-        $pdf->Ln(15);
+        //$pdf->SetFont('Arial', '', 18);
+        //$pdf->SetTextColor(88, 89, 91);
+        //$pdf->Cell(0, 8, utf8_decode('Transporte Escolar'), 'B', 0, 'C');
+        //$pdf->Ln(15);
 
         if (isset($idRuta) && $idRuta > 0) {
             $listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $idRuta);
@@ -546,9 +546,9 @@ class transporteActions extends baseCajabProjectActions {
             }
             $rutaDetail = Doctrine::getTable('Ruta')->find((int) $idRuta);
             //print_r($listaAlumnos);die();    			
-            $pdf->SetFont('Arial', '', 14);
+            $pdf->SetFont('Arial', '', 11);
             $pdf->SetTextColor(88, 89, 91);
-            $pdf->Cell(0, 8, utf8_decode('Ruta: ' . $rutaDetail->getNombre()), 'B', 0, 'C');
+            $pdf->Cell(0, 8, utf8_decode( $rutaDetail->getNombre()), 'B', 0, 'C');
             $pdf->Ln(8);
             $pdf->SetFont('Arial', '', 10);
             $pdf->Cell(50, 8, utf8_decode('Horario: ' . $rutaDetail->getHorario()), 'B', 0, 'L');
@@ -574,7 +574,7 @@ class transporteActions extends baseCajabProjectActions {
                     } else {
                         $pdf->Ln(30);
                     }
-                    $pdf->SetFont('Arial', '', 18);
+                    $pdf->SetFont('Arial', '', 10);
                     $pdf->SetTextColor(88, 89, 91);
                     $pdf->Cell(0, 8, utf8_decode(''), 'B', 0, 'C');
                     $pdf->Ln(10);
@@ -601,7 +601,7 @@ class transporteActions extends baseCajabProjectActions {
     }
 
     private function pdfListaAlumnos($pdf, $listaAlumnos) {
-        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->SetFont('Arial', 'B', 9);
         $pdf->SetTextColor(255, 255, 255);
         $pdf->SetFillColor(136, 138, 140);
         $pdf->Cell(20, 8, utf8_decode("#"), 'B', 0, 'L', true);
@@ -610,7 +610,7 @@ class transporteActions extends baseCajabProjectActions {
         $pdf->Cell(30, 8, utf8_decode("Observaciones   " . ": "), 'B', 0, 'L', true);
         $pdf->Ln(8);
 
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '', 9);
         $pdf->SetTextColor(88, 89, 91);
         $y = 1;
         for ($x = 0; $x < sizeof($listaAlumnos); $x ++) {
