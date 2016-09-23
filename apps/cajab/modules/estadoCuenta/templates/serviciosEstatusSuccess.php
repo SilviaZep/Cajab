@@ -114,7 +114,7 @@
         <table class="table table-striped table-bordered">
             <thead>
 
-            <td colspan="9" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> <b>{{tituloTabla}}</b>                          
+            <td colspan="10" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> <b>{{tituloTabla}}</b>                          
                     <!--<button ng-show="listaAsignados.length > 0"  type="button" class="btn btn-default pull-right" ng-click="imprimirAsignadosAServicio()">
                         <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
                     </button>-->
@@ -128,6 +128,7 @@
                 <th class="col-md-2">Nombre</th> 
                 <th class="col-md-1">Precio</th>
                 <th class="col-md-1">Abonado</th>
+                <th class="col-md-1">Descuento</th>
                 <th class="col-md-1">No.Abonos</th>
                 <th class="col-md-1">Adeuda</th>
                 <th class="col-md-1">Estatus</th>  
@@ -143,6 +144,7 @@
 
                     <td>{{a.precio| currency}}</td> 
                     <td>{{a.abonado| currency}}</td>
+                    <td>{{a.descuento| currency}}</td>
                     <td>
                         <button ng-show="a.no_abonos > 0" type="button" class="btn btn-info btn-xs" ng-click="listaPagos(a.id)" data-toggle="modal" data-target="#mListaPagos">
                             Detalle <span class="badge">{{a.no_abonos}}</span>
@@ -157,7 +159,7 @@
                         <span ng-if="a.estatus_descripcion == 'Pagado'" class="label label-primary">{{a.estatus_descripcion}}</span>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(a.tipo_descripcion,a.cliente)">
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(a.tipo_descripcion, a.cliente)">
                             <i class="fa fa-share" aria-hidden="true"></i> Caja
                         </button>
                     </td>
@@ -195,11 +197,12 @@
                         <table class="table table-striped table-bordered" style="font-size: 14px !important">
                             <thead>
 
-                            <td colspan="3" class="info">Lista pagos</td>
+                            <td colspan="4" class="info">Lista pagos</td>
 
                             <tr>
                                 <th >Fecha Pago</th>
                                 <th >Monto</th>
+                                <th >Descuento</th>
                                 <th >Forma Pago</th>
                             </tr>
 
@@ -209,6 +212,7 @@
                                 <tr ng-repeat="lp in listaPagosServicioCliente">
                                     <td >{{lp.fecha_pago| date:'dd/MM/yyyy'}}</td>
                                     <td align="right" >{{lp.monto| currency}}</td>
+                                    <td align="right" >{{lp.descuento| currency}}</td>
                                     <td >{{lp.forma_pago}}</td>
                                 </tr>
 
