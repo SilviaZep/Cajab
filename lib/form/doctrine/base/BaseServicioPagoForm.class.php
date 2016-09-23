@@ -26,6 +26,7 @@ abstract class BaseServicioPagoForm extends BaseFormDoctrine {
             'tipo_pago' => new sfWidgetFormInputText(),
             'forma_pago' => new sfWidgetFormInputText(),
             'id_pago' => new sfWidgetFormInputText(),
+             'descuento' => new sfWidgetFormInputText(),
         ));
 
         $this->setValidators(array(
@@ -41,6 +42,7 @@ abstract class BaseServicioPagoForm extends BaseFormDoctrine {
             'tipo_pago' => new sfValidatorInteger(array('required' => false)),
             'forma_pago' => new sfValidatorString(array('max_length' => 20, 'required' => false)),
             'id_pago' => new sfValidatorInteger(array('required' => false)),
+             'descuento' => new sfValidatorNumber(array('required' => false)),
         ));
 
         $this->widgetSchema->setNameFormat('servicio_pago[%s]');
