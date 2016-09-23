@@ -2,11 +2,11 @@ var app = angular.module('pagarServicioCliente', []);
 
 app.controller('pagarServicioClienteController', ['$http', '$scope', function ($http, $scope) {
 
-        var x = getCookie('nombre');        
-        if (x.length > 0) {            
+        var x = getCookie('nombre');
+        if (x.length > 0) {
             $scope.nombreCliente = x;
             delete_cookie('nombre');
-        }         
+        }
 
         $scope.paginaActualClientes = 1;
         $scope.detalle = false;
@@ -68,12 +68,14 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
 
         $scope.totalPagaraCalculo = function () {
             $scope.totalPagara = 0;
+            $scope.totalDescuento = 0;
             $scope.numPagos = 0;
             for (i = 0; i < $scope.listaServicios.length; i++) {
-                if (parseFloat($scope.listaServicios[i].pagara) > 0) {//cuantos pagos hara
+                if (parseFloat($scope.listaServicios[i].pagara) > 0 || parseFloat($scope.listaServicios[i].descuento) > 0) {//cuantos pagos hara
                     $scope.numPagos++;
                 }
                 $scope.totalPagara += parseFloat($scope.listaServicios[i].pagara);
+                $scope.totalDescuento += parseFloat($scope.listaServicios[i].descuento);
             }
         };
 
@@ -88,12 +90,19 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
             var idServicios = "";
             var idCliente = "";
             var montosPagara = "";
+            var montosDescuento = "";
             var formaPagos = "";
 
             for (i = 0; i < $scope.listaServicios.length; i++) {
-                if (parseFloat($scope.listaServicios[i].pagara) > 0) {
+                if (Number.isNaN($scope.listaServicios[i].descuento) || $scope.listaServicios[i].descuento == null || $scope.listaServicios[i].descuento == undefined) {
+                    $scope.listaServicios[i].descuento = 0;
+                }
+                if (Number.isNaN($scope.listaServicios[i].pagara) || $scope.listaServicios[i].pagara == null || $scope.listaServicios[i].pagara == undefined) {
+                    $scope.listaServicios[i].pagara = 0;
+                }
+                if (parseFloat($scope.listaServicios[i].pagara) > 0 || $scope.listaServicios[i].descuento > 0) {
 
-                    if ((parseFloat($scope.listaServicios[i].abonado) + parseFloat($scope.listaServicios[i].pagara)) > parseFloat($scope.listaServicios[i].precio)) {
+                    if ((parseFloat($scope.listaServicios[i].abonado) + parseFloat($scope.listaServicios[i].pagara) + parseFloat($scope.listaServicios[i].descuento)) > parseFloat($scope.listaServicios[i].precio)) {
                         alert("No puedes pagar mas del precio que especifica el servicio: " +
                                 $scope.listaServicios[i].servicio);
                         return;
@@ -109,12 +118,15 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                     idServicios += $scope.listaServicios[i].id + ",";
                     idCliente = $scope.listaServicios[i].id_cliente;
                     montosPagara += $scope.listaServicios[i].pagara + ",";
+                    montosDescuento += $scope.listaServicios[i].descuento + ",";
                     formaPagos += $scope.listaServicios[i].formaPago + ",";
 
 
                 }
 
             }
+
+            $scope.totalPagaraCalculo();
 
             if (idServicios.length == 0) {
                 alert("no se selecciono ningun servicio para pagar");
@@ -124,6 +136,10 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
 
             if ($scope.totalIngresado < $scope.totalPagara) {
                 alert("El monto ingresado no cubre el total que se pagara");
+                return;
+            }
+            if ($scope.totalPagara == undefined || $scope.totalPagara == null || Number.isNaN($scope.totalPagara)) {
+                alert('Los montos que no son abonados tienen que estar en ceros');
                 return;
             }
 
@@ -138,6 +154,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                     idCliente: idCliente,
                     idServicios: idServicios,
                     montosPagara: montosPagara,
+                    montosDescuento: montosDescuento,
                     formaPagos: formaPagos
                 }
             }).then(
@@ -198,6 +215,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
             $scope.totalAbonado = 0;
             $scope.totalAdeuda = 0;
             $scope.totalPagara = 0;
+            $scope.totalDescuento = 0;
             $scope.listaServicios = [];
 
             $http({
@@ -215,6 +233,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                             $scope.totalAbonado += parseFloat($scope.listaServicios[i].abonado);
                             $scope.totalAdeuda += (parseFloat($scope.listaServicios[i].precio) - parseFloat($scope.listaServicios[i].abonado));
                             $scope.listaServicios[i].pagara = 0;
+                            $scope.listaServicios[i].descuento = 0;
                             $scope.listaServicios[i].formaPago = "EFECTIVO";
 
                         }
