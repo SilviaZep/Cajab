@@ -256,6 +256,11 @@ estado_cuenta_servicios_activos_alumnos:
 estado_cuenta_servicios_activos_alumnos_lista:
   url:   /estado_cuenta_servicios_activos_alumnos_lista
   param: { module: estadoCuenta, action: serviciosActivosAlumnosLista }     
+estado_cuenta_ingresos_egresos:
+  url:   /estado_cuenta_ingresos_egresos
+  param: { module: estadoCuenta, action: ingresosEgresos }     
+   
+  
   
 #fin estado de cuenta
 
