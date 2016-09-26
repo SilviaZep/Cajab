@@ -1100,5 +1100,40 @@ order by no_servicios)t
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public static function getIngresosEgresosServicio($idServicio) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        
+        $sql = "
+select s.nombre,sp.monto as pago,ifnull(sp.descuento,0) as descuento,0 as egreso,sp.fecha_pago,
+sp.tipo_cliente,sp.id_alumno,sp.id_cliente,
+CASE sc.tipo_cliente
+WHEN 1 THEN ifnull((select nombre from alumno_pruebas where id=sc.id_alumno),'na')
+WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
+ELSE  'na' END as cliente,'INGRESO' as modo_pago,
+(CASE sc.tipo_cliente
+WHEN 1 THEN 'Alumno'
+WHEN 2 THEN 'Cliente Externo'
+ELSE  'na' END) as tipo_descripcion
+from servicio_pago sp,servicio_cliente sc,servicio s
+where sp.id_servicio=sc.id 
+and sc.id_servicio=s.id
+and s.id={$idServicio}
+union 
+select 
+s.nombre,0 as pago,0 as descuento,e.cantidad as egreso,e.fecha_registro as fecha_pago,
+2 as tipo_cliente,null as id_alumno,0 as id_cliente,
+p.nombre as cliente,'EGRESO' as modo_pago,'PROVEEDOR' as tipo_descripcion
+from egresos e,servicio s,proveedores p
+where e.id_servicio=s.id
+and e.id_proveedor=p.id
+and s.id={$idServicio}
+
+order by fecha_pago;
+";
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }
