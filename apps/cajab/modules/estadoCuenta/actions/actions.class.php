@@ -179,6 +179,46 @@ class estadoCuentaActions extends baseCajabProjectActions {
             return $this->sendJSON($r);
         }
     }
+    
+      public function executeIngresosEgresos(sfWebRequest $request) {
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                date_default_timezone_set('America/Mexico_City');
+
+
+               
+                $idServicio = $request->getParameter("idServicio", 0);
+              
+
+
+                
+
+
+
+                $listaIngresosEgresos = consultasBd::getIngresosEgresosServicio((int) $idServicio);
+                for ($i = 0; $i < sizeof($listaIngresosEgresos); $i ++) {
+                    if ($listaIngresosEgresos[$i]['tipo_cliente'] == 1) {
+                        $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaIngresosEgresos[$i]['id_alumno']);
+                        $listaIngresosEgresos[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];                      
+                    } 
+                }             
+
+               
+
+
+                $r = array("error" => false, "mensaje" => "Ok", "listaIngresosEgresos" => $listaIngresosEgresos); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("error" => true, "mensaje" => "Error Desconocido_01");
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            throw new sfException($e);
+            $r = array("error" => true, "mensaje" => "Error Desconocido_02");
+            return $this->sendJSON($r);
+        }
+    }
 
 
 }
