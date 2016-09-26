@@ -2,7 +2,7 @@
 
 <div ng-app="servicio" ng-controller="servicioController">      
 
-    <div ng-show="flagVentanaPrincipal == true"> 
+    <div ng-show="flagVentanaPrincipal == 1"> 
         <div class="panel panel-default">
             <div class="panel-body">
                 <form class="form-inline">
@@ -40,7 +40,7 @@
             <table class="table table-striped table-bordered" style="font-size: 14px !important">
                 <thead>
 
-                <td colspan="9" class="info"><b>Listado De Servicios</b></td>
+                <td colspan="10" class="info"><b>Listado De Servicios</b></td>
 
                 <tr>
 
@@ -54,7 +54,9 @@
                     <th class="col-md-1">Capacidad</th>
 
 
-                    <th class="col-md-1"></th>
+                    <th class="col-md-1">Detalles por Alumno</th>
+                    <th class="col-md-1">Detalles por Movimientos</th>
+
 
 
 
@@ -80,7 +82,14 @@
                         <td>{{s.capacidad}}</td>
 
 
-                        <td> <button type="button" ng-click="asignadosServicio(s)" class="btn btn-success " ><i class="fa fa-tasks" aria-hidden="true"></i></button></td>
+                        <td> 
+                            <button type="button" ng-click="asignadosServicio(s)" class="btn btn-info " >
+                                <i class="fa fa-users" aria-hidden="true"></i></button>
+                        </td>
+                        <td> <button type="button" ng-click="ingresosEgresos(s)" class="btn btn-success " >
+                                <i class="fa fa-tasks" aria-hidden="true"></i>
+                            </button>
+                        </td>
 
 
 
@@ -109,8 +118,8 @@
         </div>
     </div>
 
-    <div ng-show="flagVentanaPrincipal == false">
-
+    <div ng-show="flagVentanaPrincipal == 2">
+        <h4>Detalles de pagos de los clientes asignados al servicio</h4>
         <table class="table table-striped table-bordered">
             <thead>
 
@@ -162,6 +171,75 @@
                         <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(a.tipo_descripcion, a.cliente)">
                             <i class="fa fa-share" aria-hidden="true"></i> Caja
                         </button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <nav ng-show="numPaginasAsignados > 1">
+            <ul class="pagination">                             
+                <li><a ng-click="iniAsignados()">INI</a></li>
+                <li><a ng-click="anteriorAsignados()">Ant</a ></li>
+                <li  ng-repeat="x in paginadoAsignados">
+                    <a ng-click="listadoAsignados(x)" ng-if="x == paginaActualAsignados" ><span class="badge">{{x}}</span></a>
+                    <a ng-click="listadoAsignados(x)" ng-if="x != paginaActualAsignados" >{{x}}</a>
+                </li>
+                <li><a ng-click="siguienteAsignados()">Sig</a></li>
+                <li><a ng-click="endAsignados()">FIN</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div ng-show="flagVentanaPrincipal == 3">
+        <h4>Detalles de movimientos del servicio</h4>
+        <table class="table table-striped table-bordered">
+            <thead>
+
+            <td colspan="10" class="info"><h4>
+                    <b>{{tituloTabla}}</b> 
+                    <span class="label label-primary">Pagado:<b>{{totalPagadoIE| currency}}</b></span>
+                    <span class="label label-info">Descuento:<b>{{totalDescuentoIE| currency}}</b></span>
+                    <span class="label label-warning">Egreso:<b>{{totalEgresoIE| currency}}</b></span>
+                    <span class="label label-success">Total:<b>{{totalTotalIE| currency}}</b></span>
+                    <button type="button" class="btn btn-danger btn-xs pull-right" ng-click=" flagVentanaPrincipal = 1"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
+                </h4>
+            </td>
+
+            <tr>
+                <th class="col-md-1"></th>
+                <th class="col-md-1">Tipo Cliente</th>                      
+                <th class="col-md-2">Nombre</th> 
+                <th class="col-md-1">Tipo Movimiento</th>
+                <th class="col-md-1">Fecha Registro</th>
+                <th class="col-md-1">Pagado</th>
+                <th class="col-md-1">Descuento</th>
+                <th class="col-md-1">Egreso</th>
+                <th class="col-md-1"></th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="lie in listaIngresosEgresos" class="{{colorRow(a.saldo)}}">
+                    <td>{{$index + 1}}</td>
+                    <td>{{lie.tipo_descripcion}}</td>
+                    <td>{{lie.cliente}}</td>
+                    <td class="{{colorRowIngEgr(lie.modo_pago)}}">{{lie.modo_pago}}</td>
+                    <td>{{lie.fecha_pago| date:'dd/MM/yyyy'}}</td>
+
+                    <td >{{lie.pago| currency}}</td> 
+                    <td >{{lie.descuento| currency}}</td>
+                    <td >{{lie.egreso| currency}}</td>
+
+
+
+                    <td>
+                        <span ng-show="lie.modo_pago == 'INGRESO'">
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(lie.tipo_descripcion, lie.cliente)">
+                                <i class="fa fa-share" aria-hidden="true"></i> Caja
+                            </button>
+                        </span>
                     </td>
 
                 </tr>
