@@ -15,7 +15,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         $scope.fechaFin = ultimoDia;
         $scope.categoria = "0";
 
-        $scope.flagVentanaPrincipal = true;//flag para mostrar o esconder ventana
+        $scope.flagVentanaPrincipal = 1;//flag para mostrar o esconder ventana
 
 
         $scope.listadoCategoriasServicios = function () {
@@ -145,7 +145,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         $scope.asignadosServicio = function (s) {
 
             $scope.idServicio = s.id;
-            $scope.flagVentanaPrincipal = false;
+            $scope.flagVentanaPrincipal = 2;
             $scope.tituloTabla = s.nombre;
             $scope.listadoAsignados();
 
@@ -153,7 +153,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         };
 
         $scope.expandir = function () {
-            $scope.flagVentanaPrincipal = true;
+            $scope.flagVentanaPrincipal = 1;
         };
 
         $scope.imprimirAsignadosAServicio = function () {
@@ -296,6 +296,58 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
 
 
         };
+
+
+        $scope.colorRowIngEgr = function (tipo) {
+            if (tipo == 'INGRESO') {
+                return 'success';
+            } else {
+                return 'danger';
+            }
+
+            return '';
+
+
+
+        };
+
+
+        //movimientos por servicio (ingresos y egresos)
+        $scope.ingresosEgresos = function (s) {
+            $scope.flagVentanaPrincipal = 3;
+            var idServicio = s.id;
+            $scope.tituloTabla = s.nombre;
+            $scope.listaIngresosEgresos = [];
+
+            $scope.totalPagadoIE = 0;
+            $scope.totalDescuentoIE = 0;
+            $scope.totalEgresoIE = 0;
+            $scope.totalTotalIE = 0;
+
+            $http({
+                method: 'POST',
+                url: 'estado_cuenta_ingresos_egresos',
+                params: {
+                    idServicio: idServicio
+                }
+            }).then(
+                    function (r) {
+                        $scope.listaIngresosEgresos = r.data.listaIngresosEgresos;
+                        for (var i = 0; i < $scope.listaIngresosEgresos.length; i++) {
+                            $scope.totalPagadoIE += parseFloat($scope.listaIngresosEgresos[i]['pago']);
+                            $scope.totalDescuentoIE +=parseFloat( $scope.listaIngresosEgresos[i]['descuento']);
+                            $scope.totalEgresoIE +=parseFloat( $scope.listaIngresosEgresos[i]['egreso']);                           
+                        }
+                         $scope.totalTotalIE = ($scope.totalPagadoIE-$scope.totalEgresoIE);
+
+                    }
+            );
+
+        };
+
+
+
+
 
 //----------------Funcion llevar a pagos
         $scope.llamarPagos = function (tipo, nombre) {
