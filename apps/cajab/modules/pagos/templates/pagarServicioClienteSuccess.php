@@ -285,7 +285,7 @@
                         <table class="table table-striped table-bordered" style="font-size: 14px !important">
                             <thead>
 
-                            <td colspan="3" class="info">Lista pagos</td>
+                            <td colspan="4" class="info">Lista pagos</td>
 
                             <tr>
                                 <th >Fecha Pago</th>
