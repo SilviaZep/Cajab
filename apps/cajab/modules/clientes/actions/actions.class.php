@@ -38,8 +38,8 @@ class clientesActions extends baseCajabProjectActions {
 				
 				$clientesForm->setNombre($this->nombre); 
 				$clientesForm->setDireccion($this->domicilio);
-				$clientesForm->setTelefono($this->tel);
-				$clientesForm->setEmail($this->correo);                  
+				$clientesForm->setTelefono($this->telCasa);
+				$clientesForm->setEmail($this->email);                  
 				$clientesForm->save();
                                  
                 

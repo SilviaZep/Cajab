@@ -61,8 +61,7 @@ class parametrosActions extends baseCajabProjectActions
 					
 					$response="OK";
 				}		   
-            } else {
-                echo $form;
+            } else {               
 				echo $form_user;
                 die();
                
@@ -105,7 +104,7 @@ class parametrosActions extends baseCajabProjectActions
 	public function executeDetalleEmpleado(sfWebRequest $request) {
         try {
                 $id = $request->getParameter("id");
-                $this->empleado = consultasBd::getEmpleadoById($id); 
+                $this->empleado = Doctrine::getTable('Usuario')->find($id);  
                 
                 return $this->sendJSON($this->empleado);
           
@@ -122,11 +121,9 @@ class parametrosActions extends baseCajabProjectActions
 				$this->rol = $request->getParameter("rol1", 0);
                 $this->usuario = $request->getParameter("usuario1", 0);
                 $this->pass = $request->getParameter("pass1", 0);              
-				$this->estatusCuenta = $request->getParameter("estatusCuenta", 0);			
+				$this->estatusCuenta = $request->getParameter("estatusCuenta", 0);	
 				
-               	
-				
-				$form_user = Doctrine::getTable('Usuario')->findOneBy('id_empleado',$this->id); 
+				$form_user = Doctrine::getTable('Usuario')->find($this->id); 
                 
 				$form_user->setNombreCompleto($this->nombre);
 				$form_user->setUsuario($this->usuario);

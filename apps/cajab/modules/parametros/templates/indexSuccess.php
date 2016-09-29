@@ -238,10 +238,7 @@ if ($empleados->count() > 0):
                 { "sClass": "" }, 
                 { "sClass": "" },
                 { "sClass": "" },
-                { "sClass": "" },
-                { "sClass": "" },
-				{ "sClass": "" },
-                { "sClass": "" },
+                { "sClass": "" },                
                 { "sClass": "" }             ],
             "oLanguage": { "sZeroRecords": "No hay registros",
                 "oPaginate": { "sPrevious": "<<",
@@ -255,9 +252,9 @@ if ($empleados->count() > 0):
        
         
         $("#btn-empleado").click(function(){
+			
             var form = document.getElementById('form_empleado');
-            var dataForm = new FormData(form);
-        
+            var dataForm = new FormData(form);       
   	  
             $.ajax({          
                 url: "<?php echo url_for("@empleados_agregar"); ?>",
@@ -380,11 +377,11 @@ $.toggleShowPassword({
             dataType: "JSON",
             data:{ id: id}  
         }).done(function(empleadoList){  
-			$('#id1').val(empleadoList[0].id);		
-            $('#nombre1').val( empleadoList[0].empleado);
-            $('#rol1').val(empleadoList[0].rol);
-            $('#usuario1').val(empleadoList[0].usuario);			
-			$('#estatusCuenta').val(empleadoList[0].estatus); 
+			$('#id1').val(empleadoList.id);		
+            $('#nombre1').val( empleadoList.nombre_completo);
+            $('#rol1').val(empleadoList.rol);
+            $('#usuario1').val(empleadoList.usuario);			
+			$('#estatusCuenta').val(empleadoList.estatus); 
 			
         });        
         $("#empleadosActModal").modal('show');
