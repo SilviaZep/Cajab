@@ -50,7 +50,7 @@
                     <th class="col-md-1">Abonado </th>
                     <th class="col-md-1">Descuento </th>
                     <th class="col-md-1">No.Abonos</th> 
-                    <th class="col-md-1">Saldo</th> 
+                    <th class="col-md-1">Saldo</th>
                     <th class="col-md-1">Ultimo dia (Pagar)</th>
 
                     <th class="col-md-1">Dias de mora </th>
