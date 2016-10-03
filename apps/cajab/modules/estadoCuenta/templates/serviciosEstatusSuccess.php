@@ -139,13 +139,13 @@
                 <th class="col-md-1">Abonado</th>
                 <th class="col-md-1">Descuento</th>
                 <th class="col-md-1">No.Abonos</th>
-                <th class="col-md-1">Adeuda</th>
+                <th class="col-md-1">Saldo</th>
                 <th class="col-md-1">Estatus</th>  
                 <th class="col-md-1"></th>  
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="a in listaAsignados" class="{{colorRow(a.saldo)}}">
+                <tr ng-repeat="a in listaAsignados" class="{{colorRow(a)}}">
                     <td>{{$index + 1}}</td>
                     <td>{{a.tipo_descripcion}}</td>
                     <td>{{a.cliente}}</td>
@@ -160,7 +160,9 @@
                         </button>
                         <p ng-show="a.no_abonos <= 0"><span class="badge">0</span></p>
                     </td>
-                    <td>{{a.saldo| currency}}</td>
+                    <td><span ng-if="a.estatus_descripcion!='Cancelado'">{{a.saldo| currency}}</span>
+                    <span ng-if="a.estatus_descripcion=='Cancelado'">{{0| currency}}</span>
+                    </td>
 
                     <td> 
                         <span ng-if="a.estatus_descripcion == 'Cancelado'" class="label label-danger">{{a.estatus_descripcion}}</span>
@@ -221,7 +223,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="lie in listaIngresosEgresos" class="{{colorRow(a.saldo)}}">
+                <tr ng-repeat="lie in listaIngresosEgresos" class="{{colorRow(a)}}">
                     <td>{{$index + 1}}</td>
                     <td>{{lie.tipo_descripcion}}</td>
                     <td>{{lie.cliente}}</td>
