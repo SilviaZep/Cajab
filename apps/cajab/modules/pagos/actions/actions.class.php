@@ -223,39 +223,60 @@ class pagosActions extends baseCajabProjectActions {
         if (isset($pagos) && sizeof($pagos) > 0) {
             $pdf = new FPDF ();
             $pdf->AddPage();
-            $pdf->Ln(6);
-            $pdf->SetFont('Arial', '', 11);
-            $pdf->SetTextColor(88, 89, 91);
-            $pdf->Cell(0, 8, utf8_decode('RECIBO POR CUOTA DE TERCEROS'), 'B', 0, 'C');
-            $pdf->Ln(12);
+
+            /*     $pdf->Ln(6);
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->SetTextColor(88, 89, 91);
+              $pdf->Cell(0, 8, utf8_decode('RECIBO POR CUOTA DE TERCEROS'), 'B', 0, 'C'); */
+
+
+
+            // $pdf->Ln(10);
             $pdf->SetFont('Arial', '', 9);
             $pdf->SetTextColor(88, 89, 91);
-            $pdf->Cell(0, 7, utf8_decode('Recibo Provisional'), 0, 0, 'R');
-            $pdf->Ln(7);
-            $pdf->Cell(160, 7, "", 0, 0, 'R');
-            $pdf->Cell(30, 7, utf8_decode('NO.' . $pagos[0]['id_pago']), 1, 0, 'L');
-            $pdf->Ln(7);
-            $pdf->Cell(0, 7, utf8_decode($pagos[0]['fecha_pago']), 0, 0, 'R');
-            $pdf->Ln(10);
+            $pdf->Cell(80, 6, utf8_decode('RECIBO POR CUOTA DE TERCEROS:'), 1, 0, 'L');
+            $pdf->Cell(10, 8, utf8_decode(' '), 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', 9);
+            $pdf->Cell(30, 6, utf8_decode('NO:  ' . $pagos[0]['id_pago']), 1, 0, 'L');
+            $pdf->Cell(10, 8, utf8_decode(' '), 0, 0, 'L');
+            $pdf->Cell(60, 6, utf8_decode('Fecha Pago: ' . $pagos[0]['fecha_pago']), 1, 0, 'L');
+            $pdf->Ln(8);
+
+
+            /*    $pdf->SetFont('Arial', '', 9);
+              $pdf->SetTextColor(88, 89, 91);
+              $pdf->Cell(30, 8, utf8_decode('Recibo Provisional'), 0, 0, 'R');
+              $pdf->Ln(7);
+              $pdf->Cell(60, 7, "", 0, 0, 'R');
+              $pdf->Cell(40, 5, utf8_decode('NO.' . $pagos[0]['id_pago']), 1, 0, 'L');
+              $pdf->Ln(7);
+              $pdf->Cell(175, 6, utf8_decode($pagos[0]['fecha_pago']), 0, 0, 'R');
+              $pdf->Ln(10); */
             $pdf->SetFont('Arial', '', 9);
             $pdf->SetTextColor(88, 89, 91);
-            $pdf->Cell(15, 8, utf8_decode('Nombre:'), 0, 0, 'L');
+            $pdf->Cell(15, 6, utf8_decode('Nombre:'), 1, 0, 'L');
             $pdf->SetFont('Arial', 'B', 9);
             $pdf->Cell(175, 6, utf8_decode($pagos[0]['cliente']), 1, 0, 'L');
             $pdf->Ln(8);
 
-            $pdf->Cell(90, 8, utf8_decode('Servicio'), 'B', 0, 'L');
-            $pdf->Cell(35, 8, utf8_decode('Monto'), 'B', 0, 'L');
-            $pdf->Cell(35, 8, utf8_decode('Descuento'), 'B', 0, 'L');
+            $pdf->Cell(110, 8, utf8_decode('Servicio'), 'B', 0, 'L');
+            $pdf->Cell(30, 8, utf8_decode('Monto'), 'B', 0, 'L');
+            $pdf->Cell(30, 8, utf8_decode('Descuento'), 'B', 0, 'L');
             $pdf->Cell(35, 8, utf8_decode('Forma de Pago'), 'B', 0, 'L');
             $pdf->Ln(8);
-            $pdf->SetFont('Arial', '', 9);
+            $pdf->SetFont('Arial', '', 11);
 
             for ($i = 0; $i < sizeof($pagos); $i ++) {
+                $ts = strlen($pagos[$i]['nombre_servicio']);
+                if ($ts > 45) {
+                    $pagos[$i]['nombre_servicio'] = substr($pagos[$i]['nombre_servicio'],0,45);
+                }
+
+
                 $pdf->Cell(90, 8, utf8_decode($pagos[$i]['nombre_servicio']), 0, 0, 'L');
-                $pdf->Cell(35, 8, utf8_decode('$' . $pagos[$i]['monto']), 0, 0, 'L');
-                $pdf->Cell(35, 8, utf8_decode('$' . $pagos[$i]['descuento']), 0, 0, 'L');
-                $pdf->Cell(35, 8, utf8_decode($pagos[$i]['forma_pago']), 0, 0, 'L');
+                $pdf->Cell(30, 8, utf8_decode('$' . $pagos[$i]['monto']), 0, 0, 'R');
+                $pdf->Cell(30, 8, utf8_decode('$' . $pagos[$i]['descuento']), 0, 0, 'R');
+                $pdf->Cell(35, 8, utf8_decode($pagos[$i]['forma_pago']), 0, 0, 'R');
                 $pdf->Ln(8);
                 $total+=(double) $pagos[$i]['monto'];
             }
@@ -267,21 +288,27 @@ class pagosActions extends baseCajabProjectActions {
             //  $pdf->Ln(8);
             //   $pdf->Cell(160, 8, utf8_decode('IVA: ' . "$"), 0, 0, 'R');
             //  $pdf->Ln(8);
-            $pdf->Cell(160, 8, utf8_decode('Total: ' . "$" . $total), 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', 9);
+            $pdf->Cell(35, 8, utf8_decode('Total: ' . "$" . $total), 1, 0, 'L');
+            $pdf->SetFont('Arial', '', 9);
+            $pdf->Cell(30, 8, utf8_decode('Importe con letra:'), 1, 0, 'L');
+            $pdf->SetFont('Arial', 'B', 11);
+            $pdf->Cell(130, 8, utf8_decode($importeLetra), 1, 0, 'L');
+            $pdf->SetFont('Arial', '', 11);
+            $pdf->Ln(10);
+            $pdf->Cell(100, 6, utf8_decode('Total Pagado: ' . "$" . $totalIngresado), 1, 0, 'L');
+
+            $pdf->Cell(90, 6, utf8_decode('Cambio: ' . "$" . ($totalIngresado - $total)), 1, 0, 'L');
             $pdf->Ln(8);
-            $pdf->Cell(160, 8, utf8_decode('Total Pagado: ' . "$" . $totalIngresado), 0, 0, 'L');
-            $pdf->Ln(8);
-            $pdf->Cell(160, 8, utf8_decode('Cambio: ' . "$" . ($totalIngresado - $total)), 0, 0, 'L');
-            $pdf->Ln(8);
-            $pdf->Cell(160, 8, utf8_decode('Importe con letra:'), 0, 0, 'L');
-            $pdf->Ln(8);
-            $pdf->Cell(160, 8, utf8_decode($importeLetra), 0, 0, 'L');
+
+            //   $pdf->Ln(8);
+
 
             $x = $pdf->GetX();
             $y = $pdf->GetY();
-            $pdf->Rect(115, $y - 22, 90, 40, 'D');
-            $pdf->SetXY(115, $y - 22);
-            $pdf->Cell(15, 6, 'Sello Caja', 0, 1);
+            /*   $pdf->Rect(115, $y - 22, 90, 40, 'D');
+              $pdf->SetXY(115, $y - 22);
+              $pdf->Cell(15, 6, 'Sello Caja', 0, 1); */
 
             $response = new sfWebResponse($pdf->Output());
             $response->headers->set('Content-Type', 'application/pdf');
