@@ -391,8 +391,11 @@ class serviciosActions extends baseCajabProjectActions {
 
                 $nombreCliente = $request->getParameter("nombreCliente", "");
                 $idServicio = $request->getParameter("idServicio", 0);
-                $offset = $request->getParameter("offset", 0);
-                $limit = $request->getParameter("limit", 0);
+                //$offset = $request->getParameter("offset", 0);
+                //$limit = $request->getParameter("limit", 0);
+                $offset = 0;
+                $limit = 10000;
+                
 
                 $tam = 0;
                 $count = 0;
