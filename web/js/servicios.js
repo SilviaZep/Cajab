@@ -362,7 +362,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.todosAsignados = false;
 
             $scope.paginaActualAsignados = pag;
-            var numRegistros = 10;//se cambio para que no salga el paginador
+            var numRegistros = 10000;//se cambio para que no salga el paginador
             var max = numRegistros;
             var offset = numRegistros * ($scope.paginaActualAsignados - 1);
 
