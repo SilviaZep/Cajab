@@ -280,16 +280,23 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             );
         };
 
-        $scope.colorRow = function (saldo) {
-            if (saldo == 0) {
+        $scope.colorRow = function (a) {
+
+            if (a.estatus_descripcion == 'Cancelado') {
                 return 'success';
             }
-            if (saldo > 0) {
+            if (a.saldo == 0) {
+                return 'success';
+            }
+            if (a.saldo > 0) {
                 return 'warning';
             }
-            if (saldo < 0) {
+            if (a.saldo < 0) {
                 return 'danger';
             }
+
+
+
 
             return '';
 
@@ -335,10 +342,10 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
                         $scope.listaIngresosEgresos = r.data.listaIngresosEgresos;
                         for (var i = 0; i < $scope.listaIngresosEgresos.length; i++) {
                             $scope.totalPagadoIE += parseFloat($scope.listaIngresosEgresos[i]['pago']);
-                            $scope.totalDescuentoIE +=parseFloat( $scope.listaIngresosEgresos[i]['descuento']);
-                            $scope.totalEgresoIE +=parseFloat( $scope.listaIngresosEgresos[i]['egreso']);                           
+                            $scope.totalDescuentoIE += parseFloat($scope.listaIngresosEgresos[i]['descuento']);
+                            $scope.totalEgresoIE += parseFloat($scope.listaIngresosEgresos[i]['egreso']);
                         }
-                         $scope.totalTotalIE = ($scope.totalPagadoIE-$scope.totalEgresoIE);
+                        $scope.totalTotalIE = ($scope.totalPagadoIE - $scope.totalEgresoIE);
 
                     }
             );
