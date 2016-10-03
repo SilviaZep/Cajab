@@ -530,7 +530,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
                     from servicio_cliente sc,servicio s,horario_ruta hr
                     where sc.id_servicio=s.id
                     and sc.id_alumno=hr.id_alumno                   
-                    and s.fecha_inicio<='{$fecha}'
+                    and s.fecha_evento<='{$fecha}'
                     and s.fecha_fin>='{$fecha}'
                     and s.tipo_transporte in (1,2)
                     and s.activo=1
@@ -597,7 +597,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
                     from servicio_cliente sc,servicio s,horario_ruta hr
                     where sc.id_servicio=s.id
                     and sc.id_alumno=hr.id_alumno                   
-                    and s.fecha_inicio<='{$fecha}'
+                    and s.fecha_evento<='{$fecha}'
                     and s.fecha_fin>='{$fecha}'
                     and s.tipo_transporte in (1,2)
                     and s.activo=1
