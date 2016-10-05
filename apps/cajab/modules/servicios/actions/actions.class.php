@@ -60,7 +60,7 @@ class serviciosActions extends baseCajabProjectActions {
 
 
                 $servicioForm->setCategoriaId((int) $categoria);
-                $servicioForm->setNombre($nombre);
+                $servicioForm->setNombre(utf8_decode($nombre));
                 $servicioForm->setPrecio((double) $precio);
                 //$servicioForm->setPagoObligatorio((int) $pagoObligarotio);
                 $servicioForm->setAplicaParcialidad((int) $aplicaParcialidad);
