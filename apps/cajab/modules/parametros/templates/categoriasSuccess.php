@@ -125,12 +125,11 @@
 <table id = "categoriasTable" class = "display" cellspacing = "0" width = "100%">
     <thead>
         <tr>
-            <th class = "col-xs-1"></th>
-            <th class = "col-xs-2">Categoria</th>
-			<th class = "col-xs-1">Tipo</th>
-			<th class = "col-xs-1">Descripci&oacute;n</th>
+            <th class = "col-xs-1">#</th>
+            <th class = "col-xs-2">Categoria</th>			
+			<th class = "col-xs-2">Descripci&oacute;n</th>
             <th class = "col-xs-1">Estatus</th>
-            <th class = "col-xs-1"></th>
+            <th class = "col-xs-1">Acciones</th>
 
         </tr>
     </thead>
@@ -145,9 +144,8 @@
 				}		   ?> 
                 <tr id=" <?php echo $categorias[$i]['id']; ?>">
                     <td><?php echo $categorias[$i]['id']; ?></td>      
-                    <td class="col-xs-1"><?php echo $categorias[$i]['categoria']; ?></td>					
-					 <td class="col-xs-1"><?php echo $categorias[$i]['tipo']; ?></td>
-					 <td class="col-xs-1"><?php echo $categorias[$i]['descripcion']; ?></td>
+                    <td class="col-xs-1"><?php echo $categorias[$i]['categoria']; ?></td>	
+					 <td class="col-xs-2"><?php echo $categorias[$i]['descripcion']; ?></td>
                     <td class="col-xs-1"><?php echo $tipo_status; ?></td>
 					<td class="col-xs-1"><a href = "javascript:editar('<?php echo $categorias[$i]['id'];?>','<?php echo $categorias[$i]['categoria'];?>','<?php echo $categorias[$i]['estatus'];?>','<?php echo $categorias[$i]['tipo'];?>','<?php echo $categorias[$i]['descripcion'];?>')" class = "fa fa-pencil-square-o fa-lg"> </a></td>   
                 </tr>             
@@ -170,8 +168,7 @@
                 { "sClass": "" },
                 { "sClass": "" }, 
 			    { "sClass": "" }, 
-				{ "sClass": "" }, 
-                { "sClass": "" },
+				{ "sClass": "" },                
                 { "sClass": "" }           ],
             "oLanguage": { "sZeroRecords": "No hay registros",
                 "oPaginate": { "sPrevious": "<<",
