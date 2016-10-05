@@ -162,11 +162,11 @@ class transporteActions extends baseCajabProjectActions {
                 }
 
 
-                $rutaForm->setNombre($nombre);
-                $rutaForm->setDescripcion($descripcion);
+                $rutaForm->setNombre(utf8_decode($nombre));
+                $rutaForm->setDescripcion(utf8_decode($descripcion));
                 $rutaForm->setHorario($horario);
                 $rutaForm->setCapacidad((int) $capacidad);
-                $rutaForm->setChofer($conductor);
+                $rutaForm->setChofer(utf8_decode($conductor));
                 $rutaForm->setEstatus(1);
                 $rutaForm->save();
 
