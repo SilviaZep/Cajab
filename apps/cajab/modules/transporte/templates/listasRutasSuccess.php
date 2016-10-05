@@ -76,7 +76,7 @@
 
             </thead>
             <tbody>
-                <tr ng-repeat="a in listaAlumnosPorDia">
+                <tr ng-repeat="a in listaAlumnosPorDia | orderBy:'nombre'">
                     <td>{{$index + 1}}</td>                    
                     <td>{{a.nombre}}</td>
                     <td>{{a.tipo_transporte}}</td>
