@@ -36,7 +36,7 @@
                     <th class="col-md-2">Nombre</th>
                     <th class="col-md-1">Grado</th>                        
                     <th class="col-md-1">Grupo</th>                        
-                    <th class="col-md-1"></th>
+                   <!-- <th class="col-md-1"></th>-->
                     <th class="col-md-1"></th>
                 </tr>
                 </thead>
@@ -47,11 +47,11 @@
                         <td>{{a.nombre}}</td>
                         <td>{{a.grado}}</td>  
                         <td>{{a.grupo}}</td>      
-                        <td>
+                       <!-- <td>
                             <button type="button" class="btn btn-primary btn-xs" ng-click="contraerEC(a.id, a.nombre)">
                                 <i class="fa fa-balance-scale" aria-hidden="true"></i> Estado de Cuenta
                             </button>
-                        </td>
+                        </td>-->
                         <td>
                             <span >                            
                                 <button type="button" class="btn btn-warning btn-xs" ng-click="contraer(a.id)">
