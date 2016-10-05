@@ -106,11 +106,11 @@
 <table id = "conceptoTable" class = "display" cellspacing = "0" width = "100%">
     <thead>
         <tr>
-            <th class = "col-xs-1"></th>
+            <th class = "col-xs-1">#</th>
             <th class = "col-xs-2">Servicio</th>
 			<th class = "col-xs-1">Concepto</th> 
             <th class = "col-xs-1">Estatus</th>
-            <th class = "col-xs-1"></th>
+            <th class = "col-xs-1">Acciones</th>
 
         </tr>
     </thead>
@@ -130,7 +130,7 @@ if ($conceptos->count() > 0):
 					<td class="col-xs-1"><?php echo $record['concepto']; ?></td>
                     <td class="col-xs-1"><?php echo $tipo_status; ?></td>                   
 					 <td class="col-xs-1">
-					 <a href = "javascript:editar('<?php echo $record['id'];?>','<?php echo $record['concepto'];?>','<?php echo $record['estatus'];?>')" class = "fa fa-pencil-square-o fa-lg"></a> &nbsp
+					 <a title="Editar concepto de pago" href = "javascript:editar('<?php echo $record['id'];?>','<?php echo $record['concepto'];?>','<?php echo $record['estatus'];?>')" class = "fa fa-pencil-square-o fa-lg"></a> &nbsp
 					 </td>  
 					</tr>             
         <?php $i++;endforeach; endif;?>     
