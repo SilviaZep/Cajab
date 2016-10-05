@@ -25,7 +25,7 @@
             <table  class="table table-striped table-bordered">
                 <thead>
 
-                <td colspan="3" class="info"><h4><span class="label label-primary">{{numeroRegistrosClientes}}</span> Clientes
+                <td colspan="2" class="info"><h4><span class="label label-primary">{{numeroRegistrosClientes}}</span> Clientes
 
 
                     </h4>
@@ -35,7 +35,7 @@
                 <tr>
                     <th class="col-md-2">Nombre</th>
 
-                    <th class="col-md-1"></th>
+                    <!--<th class="col-md-1"></th>-->
                     <th class="col-md-1"></th>
                 </tr>
                 </thead>
@@ -45,11 +45,11 @@
 
                         <td>{{a.nombre}}</td>
 
-                        <td>
+                      <!--  <td>
                             <button type="button" class="btn btn-primary btn-xs" ng-click="contraerEC(a.id, a.nombre)">
                                 <i class="fa fa-balance-scale" aria-hidden="true"></i> Estado de Cuenta
                             </button>
-                        </td>
+                        </td>-->
                         <td>
                             <span >
                                 <button type="button" class="btn btn-warning btn-xs" ng-click="contraer(a.id)">

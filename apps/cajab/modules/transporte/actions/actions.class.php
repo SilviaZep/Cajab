@@ -548,7 +548,7 @@ class transporteActions extends baseCajabProjectActions {
             //print_r($listaAlumnos);die();    			
             $pdf->SetFont('Arial', '', 11);
             $pdf->SetTextColor(88, 89, 91);
-            $pdf->Cell(0, 8, utf8_decode( $rutaDetail->getNombre()), 'B', 0, 'C');
+            $pdf->Cell(0, 8, utf8_decode($rutaDetail->getNombre()), 'B', 0, 'C');
             $pdf->Ln(8);
             $pdf->SetFont('Arial', '', 10);
             $pdf->Cell(50, 8, utf8_decode('Horario: ' . $rutaDetail->getHorario()), 'B', 0, 'L');
@@ -613,6 +613,14 @@ class transporteActions extends baseCajabProjectActions {
         $pdf->SetFont('Arial', '', 9);
         $pdf->SetTextColor(88, 89, 91);
         $y = 1;
+        //ordenar la lista de alumnos
+        foreach ($listaAlumnos as $key => $row) {
+            $aux[$key] = $row['nombre'];
+        }
+        array_multisort($aux, SORT_ASC, $listaAlumnos);
+        //--------------------
+
+
         for ($x = 0; $x < sizeof($listaAlumnos); $x ++) {
             if ($listaAlumnos[$x]['observacion'] == 'asistencia') {
                 $pdf->Cell(20, 8, utf8_decode($y), 'B', 0, 'L');

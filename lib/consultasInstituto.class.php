@@ -12,7 +12,7 @@ class consultasInstituto {
     //'instutto' en $conn = Doctrine_Manager::getInstance()->getConnection("instituto"); por 'default'  
     public static function getListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo, $alumno, $limit, $offset, $idsVenta, $idsPadre) {
 
-        $campos = "select idalumno as id,CONCAT(nombre,' ', appat,' ',apmat) as nombre,seccion as nivel,GradoPuro as grado,NombreGrupo as grupo";
+        $campos = "select idalumno as id,CONCAT(appat,' ',apmat,' ',nombre) as nombre,seccion as nivel,GradoPuro as grado,NombreGrupo as grupo";
 
         $condicion = " WHERE alumnoactivo=1 ";
 
@@ -27,7 +27,7 @@ class consultasInstituto {
             $condicion = $condicion.= " AND NombreGrupo ='" . $idgrupo . "'";
         }
         if (isset($alumno) && !empty($alumno)) {
-            $condicion = $condicion.= " AND (CONCAT(nombre,' ', appat,' ',apmat) LIKE '%" . $alumno . "%')";
+            $condicion = $condicion.= " AND (CONCAT( appat,' ',apmat,' ',nombre) LIKE '%" . $alumno . "%')";
         }
 
         if ($idsVenta != "") {//si trae ids
@@ -63,7 +63,7 @@ class consultasInstituto {
             $condicion = $condicion.= " AND NombreGrupo ='" . $idgrupo . "'";
         }
         if (isset($alumno) && !empty($alumno)) {
-            $condicion = $condicion.= " AND (CONCAT(nombre,' ', appat,' ',apmat) LIKE '%" . $alumno . "%')";
+            $condicion = $condicion.= " AND (CONCAT(appat,' ',apmat,' ',nombre) LIKE '%" . $alumno . "%')";
         }
 
         if ($idsVenta != "") {//si trae ids
@@ -106,7 +106,7 @@ class consultasInstituto {
     //Consulta de alumno por ID
 
     public static function getAlumnoXId($idAlumno) {
-        $sql = "select ifnull(CONCAT(nombre,' ', appat,' ',apmat),'') as nombre 
+        $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre),'') as nombre 
                    from ListaAlumnoB where idalumno =" . $idAlumno . " limit 0,1;";
         $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
         $st = $conn->execute($sql);
@@ -116,7 +116,7 @@ class consultasInstituto {
     public static function getIdsAlumnos($nombre) {
         $sql = "select  idalumno
                    from ListaAlumnoB 
-                   where CONCAT(nombre,' ', appat,' ',apmat) like'%" . $nombre . "%' ;";
+                   where CONCAT(appat,' ',apmat,' ',nombre) like'%" . $nombre . "%' ;";
 
         $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
         $st = $conn->execute($sql);
