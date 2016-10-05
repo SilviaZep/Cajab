@@ -533,7 +533,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
                     and s.fecha_evento<='{$fecha}'
                     and s.fecha_fin>='{$fecha}'
                     and s.tipo_transporte in (1,2)
-                    and s.activo=1
+                    and s.activo=1 and sc.estatus=1
                     and (hr.r_{$dia}_e={$ruta} or hr.r_{$dia}_s={$ruta})
                     union 
                     select lr.id as id_ref,0 as guardado,
@@ -600,7 +600,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
                     and s.fecha_evento<='{$fecha}'
                     and s.fecha_fin>='{$fecha}'
                     and s.tipo_transporte in (1,2)
-                    and s.activo=1
+                    and s.activo=1 and sc.estatus=1
                     and (hr.r_{$dia}_e={$ruta} or hr.r_{$dia}_s={$ruta})
                     union 
                     select lr.id as id_ref,
