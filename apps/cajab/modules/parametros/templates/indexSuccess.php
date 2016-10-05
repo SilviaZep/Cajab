@@ -181,12 +181,12 @@
 <table id = "empleadosTable" class = "display" cellspacing = "0" width = "100%">
     <thead>
         <tr>
-            <th class = "col-xs-1"></th>
+            <th class = "col-xs-1">#</th>
             <th class = "col-xs-2">Nombre</th>
 			<th class = "col-xs-1">Usuario</th> 
             <th class = "col-xs-1">Rol</th> 
             <th class = "col-xs-1">Estatus Cuenta</th>
-            <th class = "col-xs-1"></th>
+            <th class = "col-xs-1">Acciones</th>
 
         </tr>
     </thead>
@@ -211,8 +211,8 @@ if ($empleados->count() > 0):
                     <td class="col-xs-1"><?php echo $rol; ?></td>
                     <td class="col-xs-1"><?php echo $tipo_status; ?></td>                   
 					 <td class="col-xs-1">
-					 <a href = "javascript:editar('<?php echo $record['id'];?>')" class = "fa fa-pencil-square-o fa-lg"> </a> &nbsp
-					 <a href = "javascript:cambiarPassword('<?php echo $record['id'];?>')" class = "fa fa-key fa-lg"> </a>
+					 <a title="Editar Usuario" href = "javascript:editar('<?php echo $record['id'];?>')" class = "fa fa-pencil-square-o fa-lg"> </a> &nbsp
+					 <a title="Cambiar password" href = "javascript:cambiarPassword('<?php echo $record['id'];?>')" class = "fa fa-key fa-lg"> </a>
 					
 					 </td>  
 					</tr>             
