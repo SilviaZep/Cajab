@@ -5,9 +5,9 @@ all:
   default:
     class: sfDoctrineDatabase
     param:
-      dsn:      mysql:host=localhost;dbname=clubdem4_cajab
-      username: clubdem4_cajabus
-      password: C4J4B0R13NT3
+      dsn:      mysql:host=localhost;dbname=cajab
+      username: root
+      password: 
       encoding: Latin1
   instituto:
     class: sfDoctrineDatabase
@@ -15,4 +15,8 @@ all:
       dsn:      mysql:host=centroeducativooriente.com;dbname=centrof3_io
       username: centrof3_view
       password: vista#43.Si
-      encoding: Latin1
+      encoding:  Latin1
+      
+      #dsn:      mysql:host=localhost;dbname=clubdem4_cajab
+      #username: clubdem4_cajabus
+      #password: C4J4B0R13NT3   
