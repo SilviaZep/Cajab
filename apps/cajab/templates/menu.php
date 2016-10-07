@@ -193,7 +193,7 @@
                                                     </section>
                                                     </div>
                                                     <footer>
-                                                        Copyright SkinDepile 2016
+                                                        Copyright 2016
                                                     </footer>
 
                                                     <script>
