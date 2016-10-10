@@ -3,9 +3,9 @@
 /*
   Clase para hacer consultas a la bd
  */
-//$GLOBALS['instBD'] = "default";
+$GLOBALS['instBD'] = "default";
 
-$GLOBALS['instBD']="instituto";
+//$GLOBALS['instBD']="instituto";
 class consultasInstituto {
 
     //SISE DESEA USAR EL LOCAL  CAMBIAR
