@@ -116,7 +116,8 @@ class consultasBd {
       date(fecha_inicio) as fec_ini,
       date(fecha_fin) as fec_fin,
       ifnull((select categoria from categoria_servicio where id=s.categoria_id),'NA') as categoria,
-      ifnull((select nombre from servicio where id=s.id_servicio),'') as servicio_padre
+      ifnull((select nombre from servicio where id=s.id_servicio),'') as servicio_padre,
+      (select count(*) from servicio_cliente sc where sc.estatus in (1,3) and sc.id_servicio=s.id) as inscritos
       from servicio s
       where s.activo=1
       and s.fecha_evento >='{$fechaIni}'
