@@ -40,7 +40,11 @@
             <table class="table table-striped table-bordered" style="font-size: 14px !important">
                 <thead>
 
-                <td colspan="11" class="info"><b>Listado Dias de mora al dia de : {{fechaHoy| date:"dd/MM/yyyy"}}</b></td>
+                <td colspan="11" class="info"><b>Listado Dias de mora al dia de : {{fechaHoy| date:"dd/MM/yyyy"}}</b>
+                    <div class="group pull-right">
+                        <button type="button" class="btn btn-default btn-xs" ng-click="listadoDiasMoraImprimir()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+                    </div>
+                </td>
 
                 <tr>                    
                     <th class="col-md-1">Tipo Cliente </th>

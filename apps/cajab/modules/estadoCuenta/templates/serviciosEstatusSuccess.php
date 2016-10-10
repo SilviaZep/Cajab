@@ -40,7 +40,7 @@
             <table class="table table-striped table-bordered" style="font-size: 14px !important">
                 <thead>
 
-                <td colspan="10" class="info"><b>Listado De Servicios</b></td>
+                <td colspan="12" class="info"><b>Listado De Servicios</b></td>
 
                 <tr>
 
@@ -48,10 +48,12 @@
                     <th class="col-md-2">Categoria </th>
                     <th class="col-md-2">Servicio Padre </th>
                     <th class="col-md-2">Fecha Inicia</th>
-                    <th class="col-md-2">Nombre Servicio </th>
+                    <th class="col-md-2">Nombre Servicio *</th>
                     <th class="col-md-1">Precio</th>               
                     <th class="col-md-1">Tipo Clientes</th>
                     <th class="col-md-1">Capacidad</th>
+                    <th class="col-md-1">Inscritos</th>
+                    <th class="col-md-1">Esperado($)</th>
 
 
                     <th class="col-md-1">Detalles por Alumno</th>
@@ -68,7 +70,7 @@
 
                 </thead>
                 <tbody>
-                    <tr ng-repeat="s in listaServicios">
+                    <tr ng-repeat="s in listaServicios| orderBy :'nombre' ">
 
 
                         <td><font color="#04B431">{{s.fec_ini|  date:'dd/MM/yyyy' }}</font>  <font color="#FE642E">{{s.fec_fin|  date:'dd/MM/yyyy' }}</font></td>
@@ -80,6 +82,8 @@
 
                         <td>{{s.tip_cli}}</td>
                         <td>{{s.capacidad}}</td>
+                        <td>{{s.inscritos}}</td>
+                        <td>{{(s.inscritos*s.precio)| currency}}</td>
 
 
                         <td> 
@@ -127,7 +131,11 @@
                     <!--<button ng-show="listaAsignados.length > 0"  type="button" class="btn btn-default pull-right" ng-click="imprimirAsignadosAServicio()">
                         <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
                     </button>-->
-                    <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
+                     <div class="group pull-right">
+                        <button type="button" class="btn btn-default btn-xs" ng-click="asignadosServicioImprimir()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+                        <button type="button" class="btn btn-danger btn-xs" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
+                    </div>
+                    
                 </h4>
             </td>
 
@@ -145,7 +153,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="a in listaAsignados" class="{{colorRow(a)}}">
+                <tr ng-repeat="a in listaAsignados| orderBy:'cliente' " class="{{colorRow(a)}}">
                     <td>{{$index + 1}}</td>
                     <td>{{a.tipo_descripcion}}</td>
                     <td>{{a.cliente}}</td>
@@ -160,8 +168,8 @@
                         </button>
                         <p ng-show="a.no_abonos <= 0"><span class="badge">0</span></p>
                     </td>
-                    <td><span ng-if="a.estatus_descripcion!='Cancelado'">{{a.saldo| currency}}</span>
-                    <span ng-if="a.estatus_descripcion=='Cancelado'">{{0| currency}}</span>
+                    <td><span ng-if="a.estatus_descripcion != 'Cancelado'">{{a.saldo| currency}}</span>
+                        <span ng-if="a.estatus_descripcion == 'Cancelado'">{{0| currency}}</span>
                     </td>
 
                     <td> 
@@ -200,11 +208,16 @@
 
             <td colspan="10" class="info"><h4>
                     <b>{{tituloTabla}}</b> 
+                    <span class="label label-default">Esperado:<b>{{totalEsperadoIE| currency}}</b></span>
                     <span class="label label-primary">Pagado:<b>{{totalPagadoIE| currency}}</b></span>
                     <span class="label label-info">Descuento:<b>{{totalDescuentoIE| currency}}</b></span>
                     <span class="label label-warning">Egreso:<b>{{totalEgresoIE| currency}}</b></span>
                     <span class="label label-success">Total:<b>{{totalTotalIE| currency}}</b></span>
-                    <button type="button" class="btn btn-danger btn-xs pull-right" ng-click=" flagVentanaPrincipal = 1"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
+                     
+                    <div class="group pull-right">
+                        <button type="button" class="btn btn-default btn-xs" ng-click="ingresosEgresosImprimir()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+                        <button type="button" class="btn btn-danger btn-xs" ng-click=" flagVentanaPrincipal = 1"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
+                    </div>
                 </h4>
             </td>
 
@@ -223,7 +236,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="lie in listaIngresosEgresos" class="{{colorRow(a)}}">
+                <tr ng-repeat="lie in listaIngresosEgresos| orderBy:'cliente'" class="{{colorRow(a)}}">
                     <td>{{$index + 1}}</td>
                     <td>{{lie.tipo_descripcion}}</td>
                     <td>{{lie.cliente}}</td>
