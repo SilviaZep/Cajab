@@ -7,7 +7,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         var date = new Date();
         // var primerDia = new Date(date.getFullYear(), date.getMonth(), 1);
         //var ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        var primerDia = new Date(date.getFullYear(), date.getMonth(), 1);
+        var primerDia = new Date(date.getFullYear(), 0, 1);
         var ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
 
 

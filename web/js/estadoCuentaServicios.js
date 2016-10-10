@@ -17,6 +17,9 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
 
         $scope.flagVentanaPrincipal = 1;//flag para mostrar o esconder ventana
 
+        $scope.idSerImp = 0;
+        $scope.totalEsperadoIE = 0;
+
 
         $scope.listadoCategoriasServicios = function () {
             $http({
@@ -323,6 +326,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         $scope.ingresosEgresos = function (s) {
             $scope.flagVentanaPrincipal = 3;
             var idServicio = s.id;
+            $scope.idSerImp = s.id;
             $scope.tituloTabla = s.nombre;
             $scope.listaIngresosEgresos = [];
 
@@ -330,6 +334,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.totalDescuentoIE = 0;
             $scope.totalEgresoIE = 0;
             $scope.totalTotalIE = 0;
+            $scope.totalEsperadoIE = (s.inscritos * s.precio);
 
             $http({
                 method: 'POST',
@@ -350,6 +355,22 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
                     }
             );
 
+        };
+
+
+        $scope.ingresosEgresosImprimir = function () {
+            var idServicio = $scope.idSerImp;// id de servicio que se va a imprimir
+            var nombreServicio = $scope.tituloTabla;
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/estado_cuenta_ingresos_egresos_imprimir?idServicio=' + idServicio + '&nombreServicio=' + nombreServicio, '_blank');
+            return;
+        };
+
+
+        $scope.asignadosServicioImprimir = function () {
+            var idServicio = $scope.idSerImp;// id de servicio que se va a imprimir
+            var nombreServicio = $scope.tituloTabla;
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/estado_cuenta_asignados_a_servicio_imprimir?idServicio=' + idServicio + '&nombreServicio=' + nombreServicio, '_blank');
+            return;
         };
 
 

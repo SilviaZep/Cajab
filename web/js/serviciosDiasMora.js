@@ -39,6 +39,11 @@ app.controller('servicioDiasMoraController', ['$http', '$scope', function ($http
         };
 
 
+        $scope.listadoDiasMoraImprimir = function () {
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/estado_cuenta_listado_dias_mora_imprimir', '_blank');
+            return;
+        };
+
 
         //-----------------Listado de servicios--------------
 
