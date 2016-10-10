@@ -258,7 +258,17 @@ estado_cuenta_servicios_activos_alumnos_lista:
   param: { module: estadoCuenta, action: serviciosActivosAlumnosLista }     
 estado_cuenta_ingresos_egresos:
   url:   /estado_cuenta_ingresos_egresos
-  param: { module: estadoCuenta, action: ingresosEgresos }     
+  param: { module: estadoCuenta, action: ingresosEgresos }  
+estado_cuenta_ingresos_egresos_imprimir:
+  url:   /estado_cuenta_ingresos_egresos_imprimir
+  param: { module: estadoCuenta, action: ingresosEgresosImprimir }
+estado_cuenta_asignados_a_servicio_imprimir:
+  url:   /estado_cuenta_asignados_a_servicio_imprimir
+  param: { module: estadoCuenta, action: asignadosAServicioImprimir }
+estado_cuenta_listado_dias_mora_imprimir:
+  url:   /estado_cuenta_listado_dias_mora_imprimir
+  param: { module: estadoCuenta, action: listadoDiasMoraImprimir } 
+  
    
   
   
