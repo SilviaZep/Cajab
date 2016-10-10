@@ -44,7 +44,7 @@
 
             </thead>
             <tbody>
-                <tr ng-repeat="r in listaRutas">
+                <tr ng-repeat="r in listaRutas | orderBy:'nombre'">
 
                  
                     <td>{{r.nombre}}</td>
