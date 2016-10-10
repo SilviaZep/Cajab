@@ -267,6 +267,10 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->SetTextColor(88, 89, 91);
             $y = 1;
             //ordenar la lista de alumnos
+             if(sizeof($listaIngresosEgresos)==0){
+                echo 'No hay datos para imprimir..';
+                die();
+            }
             foreach ($listaIngresosEgresos as $key => $row) {
                 $aux[$key] = $row['cliente'];
             }
@@ -398,6 +402,10 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->SetTextColor(88, 89, 91);
             $y = 1;
             //ordenar la lista de alumnos
+             if(sizeof($listaAsignados)==0){
+                echo 'No hay datos para imprimir..';
+                die();
+            }
             foreach ($listaAsignados as $key => $row) {
                 $aux[$key] = $row['cliente'];
             }
@@ -489,6 +497,12 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->SetTextColor(88, 89, 91);
             $y = 1;
             //ordenar la lista de alumnos
+            
+            if(sizeof($listaDiasMora)==0){
+                echo 'No hay datos para imprimir..';
+                die();
+            }
+            
             foreach ($listaDiasMora as $key => $row) {
                 $aux[$key] = $row['cliente'];
             }
