@@ -139,6 +139,7 @@
                                                                             <ul class="dropdown-menu">
                                                                                 <li><a href="<?php echo url_for("@pagos_pagar_servicio"); ?>"> <i class="fa fa-usd" aria-hidden="true"> Pagar Servicio Alumno</i></a></li> 
                                                                                 <li><a href="<?php echo url_for("@pagos_pagar_servicio_cliente"); ?>"> <i class="fa fa-usd" aria-hidden="true"> Pagar Servicio Cliente</i></a></li>
+                                                                                <li><a href="<?php echo url_for("@pagos_movimientos_caja"); ?>"> <i class="fa fa-exchange" aria-hidden="true"> Movimientos Caja</i></a></li>
                                                                                 <!--<li><a href="<?php echo url_for("@transporte_listas_rutas"); ?>"> <i class="fa fa-list"> EstadoCuentaAlumno</i> </a></li>                                                      -->
                                                                                 <li id="mClientes"><a href="<?php echo url_for("@egresos_list"); ?>"><i class="fa fa-users"> Registro de Egresos</i></a></li>    
 
