@@ -4,3 +4,5 @@ pagarServicioSuccess:
   javascripts: [moment.min.js,pagarServicio.js]
 pagarServicioClienteSuccess:
   javascripts: [moment.min.js,pagarServicioCliente.js]
+movimientosCajaSuccess:
+  javascripts: [moment.min.js,movimientosCaja.js]
