@@ -1136,5 +1136,46 @@ order by fecha_pago;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    
+    
+    public static function getMovimientosCaja($idPago,$fechaIni,$fechaFin,$formaPago) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $filtroIdPago="";
+        $filtroFormaPago="";
+        if($idPago!=0){
+            $filtroIdPago="and sp.id_pago={$idPago}";
+        }
+        if($formaPago!="NA"){
+            $filtroFormaPago="and sp.forma_pago='{$formaPago}'";
+        }
+        
+        $sql = "select 
+(select nombre 
+from servicio where id=
+(select sc.id_servicio from servicio_cliente sc where sc.id=sp.id_servicio)) as nombre_servicio,
+(CASE sp.tipo_cliente
+WHEN 1 THEN 'na'
+WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sp.id_cliente),'na')
+ELSE  'na' END) as cliente,
+(CASE sp.tipo_cliente
+WHEN 1 THEN 'Alumno'
+WHEN 2 THEN 'Cliente Externo'
+ELSE  'na' END) as tipo_descripcion,
+ifnull(sp.monto,0) as monto,
+ifnull(sp.descuento,0) as descuento,
+sp.forma_pago,sp.id_pago,
+date(sp.fecha_pago) as fecha_pago,sp.id_alumno
+from servicio_pago sp
+where '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
+{$filtroIdPago}
+{$filtroFormaPago}
+    order by sp.fecha_pago desc
+;";
+
+
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }
