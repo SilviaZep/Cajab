@@ -27,6 +27,10 @@ class pagosActions extends baseCajabProjectActions {
         $this->setTemplate('pagarServicioCliente');
     }
 
+    public function executeMovimientosCaja(sfWebRequest $request) {
+        $this->setTemplate('movimientosCaja');
+    }
+
     public function executeServiciosPagandoAlumno(sfWebRequest $request) {
         try {
             if ($request->isMethod(sfWebRequest::POST)) {
@@ -269,7 +273,7 @@ class pagosActions extends baseCajabProjectActions {
             for ($i = 0; $i < sizeof($pagos); $i ++) {
                 $ts = strlen($pagos[$i]['nombre_servicio']);
                 if ($ts > 45) {
-                    $pagos[$i]['nombre_servicio'] = substr($pagos[$i]['nombre_servicio'],0,45);
+                    $pagos[$i]['nombre_servicio'] = substr($pagos[$i]['nombre_servicio'], 0, 45);
                 }
 
 
@@ -512,6 +516,148 @@ class pagosActions extends baseCajabProjectActions {
             $xsub = "MIL";
         //
         return $xsub;
+    }
+
+    public function executeListadoMovimientosCaja(sfWebRequest $request) {//guarda y edita
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                date_default_timezone_set('America/Mexico_City');
+
+                $numRecibo = $request->getParameter("numRecibo", 0);
+                $formaPago = $request->getParameter("formaPago", "NA");
+
+                $fechaIni = $request->getParameter("fechaIni", 0);
+                $fechaFin = $request->getParameter("fechaFin", 0);
+
+
+                // $fechaIni = new DateTime($fechaIni);
+                // $fechaFin = new DateTime($fechaFin);
+
+
+
+
+                $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago);
+
+
+                for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {
+                    if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
+                        $nombreAlumno = consultasInstituto::getAlumnoXId($listadoMovimientos[$i]['id_alumno']);
+                        $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                    }
+                }
+
+
+                $r = array("mensaje" => "Ok", 'listadoMovimientos' => $listadoMovimientos); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("mensaje" => "No se pudo guardar Err:001 ", "error" => true); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            // throw new sfException($e);
+            $r = array("mensaje" => "No se pudo guardar Err:002 ", "error" => true); //a partir de php 5.4 es con corchetes[]
+            return $this->sendJSON($r);
+        }
+    }
+
+    public function executeListadoMovimientosCajaImprimir(sfWebRequest $request) {
+        try {
+
+
+            date_default_timezone_set('America/Mexico_City');
+
+            date_default_timezone_set('America/Mexico_City');
+
+            $numRecibo = $request->getParameter("numRecibo", 0);
+            $formaPago = $request->getParameter("formaPago", "NA");
+
+            $fechaIni = $request->getParameter("fechaIni", 0);
+            $fechaFin = $request->getParameter("fechaFin", 0);
+
+            $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago);
+
+
+            for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {
+                if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
+                    $nombreAlumno = consultasInstituto::getAlumnoXId($listadoMovimientos[$i]['id_alumno']);
+                    $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                }
+            }
+
+            //-------------imprimir
+
+            $pdf = new FPDF ();
+
+            $pdf->AddPage('L'); // orientacion de la hoja!
+            //  $pdf->AddPage();
+
+            $pdf->Ln(10);
+            $pdf->SetFont('Arial', '', 12);
+            $pdf->Cell(120, 8, utf8_decode('Listado Movimientos de  : ' . $fechaIni . ' a ' . $fechaFin), 'B', 0, 'L');
+
+            $pdf->Ln(8);
+
+
+            $pdf->SetFont('Arial', 'B', 9);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFillColor(136, 138, 140);
+            $pdf->Cell(8, 8, utf8_decode("#"), 'B', 0, 'L', true);
+            $pdf->Cell(70, 8, utf8_decode("Nombre Servicio"), 'B', 0, 'L', true);
+            $pdf->Cell(20, 8, utf8_decode("Tipo Cli."), 'B', 0, 'L', true);
+            $pdf->Cell(70, 8, utf8_decode("Nombre"), 'B', 0, 'C', true);
+            $pdf->Cell(20, 8, utf8_decode("Monto"), 'B', 0, 'R', true);
+            $pdf->Cell(20, 8, utf8_decode("Descuento"), 'B', 0, 'R', true);
+            $pdf->Cell(25, 8, utf8_decode("Fecha Pago"), 'B', 0, 'L', true);
+            $pdf->Cell(25, 8, utf8_decode("Forma Pago"), 'B', 0, 'L', true);
+            $pdf->Cell(12, 8, utf8_decode("# Recibo"), 'B', 0, 'R', true);
+            
+            $pdf->Ln(8);
+
+            $pdf->SetFont('Arial', '', 9);
+            $pdf->SetTextColor(88, 89, 91);
+            $y = 1;
+            //ordenar la lista de alumnos
+
+            if (sizeof($listadoMovimientos) == 0) {
+                echo 'No hay datos para imprimir..';
+                die();
+            }
+
+       /*     foreach ($listadoMovimientos as $key => $row) {
+                $aux[$key] = $row['cliente'];
+            }
+            array_multisort($aux, SORT_ASC, $listaDiasMora);*/
+            //--------------------
+
+
+            for ($x = 0; $x < sizeof($listadoMovimientos); $x ++) {
+
+                $pdf->Cell(8, 8, utf8_decode($y), 'B', 0, 'L');
+                $pdf->Cell(70, 8, utf8_decode($listadoMovimientos[$x]['nombre_servicio']), 'B', 0, 'L');
+                $pdf->Cell(20, 8, utf8_decode($listadoMovimientos[$x]['tipo_descripcion']), 'B', 0, 'L');
+                $pdf->Cell(70, 8, utf8_decode($listadoMovimientos[$x]['cliente']), 'B', 0, 'L');
+                $pdf->Cell(20, 8, utf8_decode('$' .$listadoMovimientos[$x]['monto']), 'B', 0, 'R');
+                $pdf->Cell(20, 8, utf8_decode('$' . $listadoMovimientos[$x]['descuento']), 'B', 0, 'R');
+                $pdf->Cell(25, 8, utf8_decode( $listadoMovimientos[$x]['fecha_pago']), 'B', 0, 'L');
+                $pdf->Cell(25, 8, utf8_decode( $listadoMovimientos[$x]['forma_pago']), 'B', 0, 'L');
+                $pdf->Cell(12, 8, utf8_decode('#'. $listadoMovimientos[$x]['id_pago']), 'B', 0, 'R');
+             
+
+                $y++;
+                $pdf->Ln(8);
+            }
+
+
+
+            $response = new sfWebResponse($pdf->Output());
+            $response->headers->set('Content-Type', 'application/pdf');
+            return $response;
+        } catch (Doctrine_Exception $e) {
+            throw new sfException($e);
+            $r = array("error" => true, "mensaje" => "Error Desconocido_02");
+            return $this->sendJSON($r);
+        }
     }
 
 }
