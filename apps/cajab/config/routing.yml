@@ -233,6 +233,17 @@ pagos_estado_cuenta_alumno:
 pagos_estado_cuenta_cliente:
   url:   /pagos_estado_cuenta_cliente
   param: { module: pagos, action: estadoCuentaCliente }  
+pagos_movimientos_caja:
+  url:   /pagos_movimientos_caja
+  param: { module: pagos, action: movimientosCaja }  
+pagos_listado_movimientos_caja:
+  url:   /pagos_listado_movimientos_caja
+  param: { module: pagos, action: listadoMovimientosCaja }  
+pagos_listado_movimientos_caja_imprimir:
+  url:   /pagos_listado_movimientos_caja_imprimir
+  param: { module: pagos, action: listadoMovimientosCajaImprimir } 
+  
+  
 
 
 #Fin pagos
