@@ -117,7 +117,7 @@ class consultasBd {
       date(fecha_fin) as fec_fin,
       ifnull((select categoria from categoria_servicio where id=s.categoria_id),'NA') as categoria,
       ifnull((select nombre from servicio where id=s.id_servicio),'') as servicio_padre,
-      (select count(*) from servicio_cliente sc where sc.estatus in (1,3) and sc.id_servicio=s.id) as inscritos
+      (select count(*) from servicio_cliente sc where sc.estatus in (1,2) and sc.id_servicio=s.id) as inscritos
       from servicio s
       where s.activo=1
       and s.fecha_evento >='{$fechaIni}'
@@ -534,7 +534,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
                     and s.fecha_evento<='{$fecha}'
                     and s.fecha_fin>='{$fecha}'
                     and s.tipo_transporte in (1,2)
-                    and s.activo=1 and sc.estatus=1
+                    and s.activo=1 and (sc.estatus=1 or sc.estatus=2)
                     and (hr.r_{$dia}_e={$ruta} or hr.r_{$dia}_s={$ruta})
                     union 
                     select lr.id as id_ref,0 as guardado,
@@ -601,7 +601,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
                     and s.fecha_evento<='{$fecha}'
                     and s.fecha_fin>='{$fecha}'
                     and s.tipo_transporte in (1,2)
-                    and s.activo=1 and sc.estatus=1
+                    and s.activo=1 and (sc.estatus=1 or sc.estatus=2)
                     and (hr.r_{$dia}_e={$ruta} or hr.r_{$dia}_s={$ruta})
                     union 
                     select lr.id as id_ref,
