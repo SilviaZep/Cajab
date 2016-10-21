@@ -109,7 +109,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                         return;
                     }
                     if ($scope.listaServicios[i].aplica_parcialidad == '0') {//no hay parcialidades
-                        if (parseFloat($scope.listaServicios[i].pagara) < parseFloat($scope.listaServicios[i].precio)) {//tiene que pagar completo
+                        if ((parseFloat($scope.listaServicios[i].pagara)+parseFloat($scope.listaServicios[i].descuento)) < parseFloat($scope.listaServicios[i].precio)) {//tiene que pagar completo
                             alert("Tienes que pagar el monto completo ya que no aplica parcialidad el servicio: " +
                                     $scope.listaServicios[i].servicio);
                             return;
