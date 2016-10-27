@@ -153,7 +153,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="a in listaAsignados| orderBy:'cliente' " class="{{colorRow(a)}}">
+                <tr ng-repeat="a in listaAsignados| orderBy:'saldo' " class="{{colorRow(a)}}">
                     <td>{{$index + 1}}</td>
                     <td>{{a.tipo_descripcion}}</td>
                     <td>{{a.cliente}}</td>
