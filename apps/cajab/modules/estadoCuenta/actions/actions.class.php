@@ -407,7 +407,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
                 die();
             }
             foreach ($listaAsignados as $key => $row) {
-                $aux[$key] = $row['cliente'];
+                $aux[$key] = $row['saldo'];
             }
             array_multisort($aux, SORT_ASC, $listaAsignados);
             //--------------------
