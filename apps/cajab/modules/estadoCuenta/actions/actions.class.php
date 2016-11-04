@@ -267,7 +267,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->SetTextColor(88, 89, 91);
             $y = 1;
             //ordenar la lista de alumnos
-             if(sizeof($listaIngresosEgresos)==0){
+            if (sizeof($listaIngresosEgresos) == 0) {
                 echo 'No hay datos para imprimir..';
                 die();
             }
@@ -276,7 +276,11 @@ class estadoCuentaActions extends baseCajabProjectActions {
             }
             array_multisort($aux, SORT_ASC, $listaIngresosEgresos);
             //--------------------
-
+            $totalEsperado = 0;
+            $totalPagado = 0;
+            $totalDescuento = 0;
+            $totalEgreso = 0;
+            $totalTotal = 0;
 
             for ($x = 0; $x < sizeof($listaIngresosEgresos); $x ++) {
 
@@ -291,7 +295,26 @@ class estadoCuentaActions extends baseCajabProjectActions {
 
                 $y++;
                 $pdf->Ln(8);
+
+                $totalEsperado = (double) $listaIngresosEgresos[0]['inscritos'] * (double) $listaIngresosEgresos[0]['precio'];
+                $totalPagado +=(double) $listaIngresosEgresos[$x]['pago'] + (double) $listaIngresosEgresos[$x]['descuento'];
+                $totalDescuento +=(double) $listaIngresosEgresos[$x]['descuento'];
+                $totalEgreso +=(double) $listaIngresosEgresos[$x]['egreso'];
             }
+            $totalTotal = $totalPagado - $totalDescuento - $totalEgreso;
+            $pdf->Ln(8);
+            $pdf->SetFont('Arial', 'B', 9);
+            $pdf->Cell(30, 8, utf8_decode('Esperado: '), 1, 0, 'L');
+            $pdf->Cell(30, 8, utf8_decode('Pagado: '), 1, 0, 'L');
+            $pdf->Cell(30, 8, utf8_decode('Descuento: '), 1, 0, 'L');
+            $pdf->Cell(30, 8, utf8_decode('Egreso: '), 1, 0, 'L');
+            $pdf->Cell(30, 8, utf8_decode('Total: '), 1, 0, 'L');
+            $pdf->Ln(8);
+            $pdf->Cell(30, 8, utf8_decode("$" . $totalEsperado), 1, 0, 'R');
+            $pdf->Cell(30, 8, utf8_decode("$" . $totalPagado), 1, 0, 'R');
+            $pdf->Cell(30, 8, utf8_decode("$" . $totalDescuento), 1, 0, 'R');
+            $pdf->Cell(30, 8, utf8_decode("$" . $totalEgreso), 1, 0, 'R');
+            $pdf->Cell(30, 8, utf8_decode("$" . $totalTotal), 1, 0, 'R');
 
 
 
@@ -402,7 +425,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->SetTextColor(88, 89, 91);
             $y = 1;
             //ordenar la lista de alumnos
-             if(sizeof($listaAsignados)==0){
+            if (sizeof($listaAsignados) == 0) {
                 echo 'No hay datos para imprimir..';
                 die();
             }
@@ -478,7 +501,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->Ln(8);
 
 
-            $pdf->SetFont('Arial', 'B', 9);
+            $pdf->SetFont('Arial', 'B', 8);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(136, 138, 140);
             $pdf->Cell(8, 8, utf8_decode("#"), 'B', 0, 'L', true);
@@ -493,16 +516,16 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->Cell(15, 8, utf8_decode("Dias Mora"), 'B', 0, 'R', true);
             $pdf->Ln(8);
 
-            $pdf->SetFont('Arial', '', 9);
+            $pdf->SetFont('Arial', '', 8);
             $pdf->SetTextColor(88, 89, 91);
             $y = 1;
             //ordenar la lista de alumnos
-            
-            if(sizeof($listaDiasMora)==0){
+
+            if (sizeof($listaDiasMora) == 0) {
                 echo 'No hay datos para imprimir..';
                 die();
             }
-            
+
             foreach ($listaDiasMora as $key => $row) {
                 $aux[$key] = $row['cliente'];
             }
