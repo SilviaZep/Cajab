@@ -112,6 +112,14 @@ class consultasInstituto {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+     public static function getDatosAlumnoXId($idAlumno) {
+        $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre,'  *' ,ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') as nombre 
+                   from ListaAlumnoB where idalumno =" . $idAlumno . " limit 0,1;";
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public static function getIdsAlumnos($nombre) {
         $sql = "select  idalumno
