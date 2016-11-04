@@ -209,7 +209,7 @@
             <td colspan="10" class="info"><h4>
                     <b>{{tituloTabla}}</b> 
                     <span class="label label-default">Esperado:<b>{{totalEsperadoIE| currency}}</b></span>
-                    <span class="label label-primary">Pagado:<b>{{totalPagadoIE| currency}}</b></span>
+                    <span class="label label-primary">Pagado:<b>{{(totalPagadoIE+totalDescuentoIE)| currency}}</b></span>
                     <span class="label label-info">Descuento:<b>{{totalDescuentoIE| currency}}</b></span>
                     <span class="label label-warning">Egreso:<b>{{totalEgresoIE| currency}}</b></span>
                     <span class="label label-success">Total:<b>{{totalTotalIE| currency}}</b></span>
