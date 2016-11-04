@@ -505,18 +505,18 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(136, 138, 140);
             $pdf->Cell(8, 8, utf8_decode("#"), 'B', 0, 'L', true);
-            $pdf->Cell(20, 8, utf8_decode("Tipo Cli."), 'B', 0, 'L', true);
-            $pdf->Cell(70, 8, utf8_decode("Nombre"), 'B', 0, 'C', true);
-            $pdf->Cell(50, 8, utf8_decode("Servicio"), 'B', 0, 'L', true);
+            $pdf->Cell(5, 8, utf8_decode("T.C."), 'B', 0, 'L', true);
+            $pdf->Cell(73, 8, utf8_decode("Nombre"), 'B', 0, 'C', true);
+            $pdf->Cell(70, 8, utf8_decode("Servicio"), 'B', 0, 'L', true);
             $pdf->Cell(20, 8, utf8_decode("Precio"), 'B', 0, 'R', true);
             $pdf->Cell(20, 8, utf8_decode("Abonado"), 'B', 0, 'R', true);
             $pdf->Cell(20, 8, utf8_decode("Descuento"), 'B', 0, 'R', true);
             $pdf->Cell(20, 8, utf8_decode("Saldo"), 'B', 0, 'R', true);
-            $pdf->Cell(30, 8, utf8_decode("Fecha Fin"), 'B', 0, 'C', true);
+            $pdf->Cell(25, 8, utf8_decode("Fecha Fin"), 'B', 0, 'C', true);
             $pdf->Cell(15, 8, utf8_decode("Dias Mora"), 'B', 0, 'R', true);
             $pdf->Ln(8);
 
-            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetFont('Arial', '', 7);
             $pdf->SetTextColor(88, 89, 91);
             $y = 1;
             //ordenar la lista de alumnos
@@ -536,14 +536,31 @@ class estadoCuentaActions extends baseCajabProjectActions {
             for ($x = 0; $x < sizeof($listaDiasMora); $x ++) {
 
                 $pdf->Cell(8, 8, utf8_decode($y), 'B', 0, 'L');
-                $pdf->Cell(20, 8, utf8_decode($listaDiasMora[$x]['tipo_descripcion']), 'B', 0, 'L');
+                $listaDiasMora[$x]['tipo_descripcion'] = substr($listaDiasMora[$x]['tipo_descripcion'], 0, 1);
+                $pdf->Cell(5, 8, utf8_decode($listaDiasMora[$x]['tipo_descripcion']), 'B', 0, 'L');
+                $ts = strlen($listaDiasMora[$x]['cliente']);
+                if ($ts > 37) {
+                    $pdf->SetFont('Arial', '', 5);
+                    //  $listaDiasMora[$x]['cliente'] = substr($listaDiasMora[$x]['cliente'], 0, 37);
+                }
+
                 $pdf->Cell(70, 8, utf8_decode($listaDiasMora[$x]['cliente']), 'B', 0, 'L');
-                $pdf->Cell(50, 8, utf8_decode($listaDiasMora[$x]['servicio']), 'B', 0, 'L');
+
+                $pdf->SetFont('Arial', '', 7);
+
+                $ts = strlen($listaDiasMora[$x]['servicio']);
+                if ($ts > 40) {
+                    $pdf->SetFont('Arial', '', 5);
+                    // $listaDiasMora[$x]['servicio'] = substr($listaDiasMora[$x]['servicio'], 0, 50);
+                }
+                $pdf->SetFont('Arial', '', 7);
+                $pdf->Cell(70, 8, utf8_decode($listaDiasMora[$x]['servicio']), 'B', 0, 'L');
+                //     $pdf->SetFont('Arial', '', 7);
                 $pdf->Cell(20, 8, utf8_decode('$' . $listaDiasMora[$x]['precio']), 'B', 0, 'R');
                 $pdf->Cell(20, 8, utf8_decode('$' . $listaDiasMora[$x]['abonado']), 'B', 0, 'R');
                 $pdf->Cell(20, 8, utf8_decode('$' . $listaDiasMora[$x]['descuento']), 'B', 0, 'R');
                 $pdf->Cell(20, 8, utf8_decode('$' . $listaDiasMora[$x]['saldo']), 'B', 0, 'R');
-                $pdf->Cell(30, 8, utf8_decode($listaDiasMora[$x]['fecha_fin']), 'B', 0, 'C');
+                $pdf->Cell(25, 8, utf8_decode($listaDiasMora[$x]['fecha_fin']), 'B', 0, 'C');
                 $pdf->Cell(15, 8, utf8_decode($listaDiasMora[$x]['dias_mora']), 'B', 0, 'R');
 
                 $y++;
