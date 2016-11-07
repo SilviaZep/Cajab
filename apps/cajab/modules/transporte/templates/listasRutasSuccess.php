@@ -67,18 +67,20 @@
 
             <tr>
                 <th class="col-xs-1"></th>              
-                <th class="col-md-4">Nombre</th>
-                <th class="col-md-4">Tipo Transporte</th>                
-                <th class="col-md-3">Estatus</th>
+                <th class="col-md-3">Nombre</th>
+                <th class="col-md-3">Secciòn:Grado:Grupo</th>
+                <th class="col-md-2">Tipo Transporte</th>                
+                <th class="col-md-2">Estatus</th>
                 <th class="col-md-1"></th>
             </tr>
 
 
             </thead>
             <tbody>
-                <tr ng-repeat="a in listaAlumnosPorDia | orderBy:'nombre'">
+                <tr ng-repeat="a in listaAlumnosPorDia| orderBy:'nombre'">
                     <td>{{$index + 1}}</td>                    
                     <td>{{a.nombre}}</td>
+                    <td>{{a.datos}}</td>
                     <td>{{a.tipo_transporte}}</td>
                     <td> 
                         <button ng-show="a.tipo_transporte == 'Eventual' && a.guardado == 0" type="button" class="btn btn-danger btn-xs" ng-click="eliminarEventual(a)"> 
