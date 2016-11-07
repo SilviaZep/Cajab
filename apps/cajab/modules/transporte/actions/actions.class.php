@@ -347,6 +347,8 @@ class transporteActions extends baseCajabProjectActions {
                 for ($i = 0; $i < sizeof($listaAlumnos); $i ++) {
                     $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$i]['id_alumno']);
                     $listaAlumnos[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
+                    $vecDatosAlumno = consultasInstituto::getSoloDatosAlumnoXId($listaAlumnos[$i]['id_alumno']);
+                    $listaAlumnos[$i]['datos'] = $vecDatosAlumno[0]['datos'];
                 }
 
 
@@ -530,8 +532,8 @@ class transporteActions extends baseCajabProjectActions {
         //$pdf = new \FPDF ();
         $pdf = new FPDF ();
 
-        //$pdf->AddPage ('L');
-        $pdf->AddPage();
+        $pdf->AddPage('L');
+        // $pdf->AddPage();
         $pdf->Ln(10);
         //$pdf->SetFont('Arial', '', 18);
         //$pdf->SetTextColor(88, 89, 91);
@@ -543,6 +545,9 @@ class transporteActions extends baseCajabProjectActions {
             for ($i = 0; $i < sizeof($listaAlumnos); $i ++) {
                 $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$i]['id_alumno']);
                 $listaAlumnos[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
+
+                $vecDatosAlumno = consultasInstituto::getSoloDatosAlumnoXId($listaAlumnos[$i]['id_alumno']);
+                $listaAlumnos[$i]['datos'] = $vecDatosAlumno[0]['datos'];
             }
             $rutaDetail = Doctrine::getTable('Ruta')->find((int) $idRuta);
             //print_r($listaAlumnos);die();    			
@@ -565,8 +570,11 @@ class transporteActions extends baseCajabProjectActions {
 
                 $listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $listaRutas[$i]['id']);
                 for ($j = 0; $j < sizeof($listaAlumnos); $j ++) {
-                    $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$j]['id_alumno']);
+                    $vecNombreAlumno = consultasInstituto::getAlumnoXId("*" . $listaAlumnos[$j]['id_alumno']);
                     $listaAlumnos[$j]['nombre'] = $vecNombreAlumno[0]['nombre'];
+
+                    $vecDatosAlumno = consultasInstituto::getSoloDatosAlumnoXId($listaAlumnos[$i]['id_alumno']);
+                    $listaAlumnos[$i]['datos'] = $vecDatosAlumno[0]['datos'];
                 }
                 if (sizeof($listaAlumnos) > 0) {
                     if ($y == 1) {//si es la primera fila 
@@ -606,8 +614,9 @@ class transporteActions extends baseCajabProjectActions {
         $pdf->SetFillColor(136, 138, 140);
         $pdf->Cell(20, 8, utf8_decode("#"), 'B', 0, 'L', true);
         $pdf->Cell(110, 8, utf8_decode("Alumno"), 'B', 0, 'L', true);
+        $pdf->Cell(90, 8, utf8_decode("Seccion:Grado:Grupo"), 'B', 0, 'L', true);
         $pdf->Cell(30, 8, utf8_decode("Tipo"), 'B', 0, 'L', true);
-        $pdf->Cell(30, 8, utf8_decode("Observaciones   " . ": "), 'B', 0, 'L', true);
+        $pdf->Cell(30, 8, utf8_decode("Observaciones   "), 'B', 0, 'L', true);
         $pdf->Ln(8);
 
         $pdf->SetFont('Arial', '', 9);
@@ -625,6 +634,7 @@ class transporteActions extends baseCajabProjectActions {
             if ($listaAlumnos[$x]['observacion'] == 'asistencia') {
                 $pdf->Cell(20, 8, utf8_decode($y), 'B', 0, 'L');
                 $pdf->Cell(110, 8, utf8_decode($listaAlumnos[$x]['nombre']), 'B', 0, 'L');
+                $pdf->Cell(90, 8, utf8_decode($listaAlumnos[$x]['datos']), 'B', 0, 'L');
                 $pdf->Cell(30, 8, utf8_decode($listaAlumnos[$x]['tipo_transporte']), 'B', 0, 'L');
                 $pdf->Cell(30, 8, utf8_decode(""), 'B', 0, 'L');
                 $y++;
