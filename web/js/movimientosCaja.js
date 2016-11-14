@@ -17,6 +17,7 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
 
         $scope.totalMonto = 0;
         $scope.totalDescuento = 0;
+        $scope.nombreServicio = "";
 
 
 
@@ -30,8 +31,12 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
             var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');
             var fechaFin = moment($scope.fechaFin).format('YYYY-MM-DD');
             var numRecibo = 0;
+            var nombreServicio = '';
             if ($scope.numRecibo != "" && $scope.numRecibo != undefined && $scope.numRecibo != null) {
                 numRecibo = $scope.numRecibo;
+            }
+            if ($scope.nombreServicio != "" && $scope.nombreServicio != undefined && $scope.nombreServicio != null) {
+                nombreServicio = $scope.nombreServicio;
             }
 
             if ($scope.fechaIni > $scope.fechaFin) {
@@ -46,7 +51,8 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
                     fechaIni: fechaIni,
                     fechaFin: fechaFin,
                     formaPago: $scope.formaPago,
-                    numRecibo: numRecibo
+                    numRecibo: numRecibo,
+                    nombreServicio: nombreServicio
                 }
             }).then(
                     function (r) {
@@ -67,8 +73,12 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
             var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');
             var fechaFin = moment($scope.fechaFin).format('YYYY-MM-DD');
             var numRecibo = 0;
+            var nombreServicio = '';
             if ($scope.numRecibo != "" && $scope.numRecibo != undefined && $scope.numRecibo != null) {
                 numRecibo = $scope.numRecibo;
+            }
+            if ($scope.nombreServicio != "" && $scope.nombreServicio != undefined && $scope.nombreServicio != null) {
+                nombreServicio = $scope.nombreServicio;
             }
 
             if ($scope.fechaIni > $scope.fechaFin) {
@@ -76,11 +86,40 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
                 return;
             }
 
-            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_listado_movimientos_caja_imprimir?fechaIni='+
-                    fechaIni+'&fechaFin='+fechaFin+'&formaPago='+$scope.formaPago+
-                    '&numRecibo='+numRecibo, '_blank');
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_listado_movimientos_caja_imprimir?fechaIni=' +
+                    fechaIni + '&fechaFin=' + fechaFin + '&formaPago=' + $scope.formaPago +
+                    '&numRecibo=' + numRecibo, '&nombreServicio=' + nombreServicio, '_blank');
             return;
         };
+
+        $scope.reImprimirTicket = function (idRecibo) {
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_imprimir_ticket?idPago=' +
+                    idRecibo, '_blank');
+            return;
+        };
+
+        $scope.eliminarPagos = function (idRecibo) {
+
+            var r = confirm("Desea eliminar los pagos relacionados con este recibo?");
+            if (r != true) {
+                  return;
+            } 
+
+            $http({
+                method: 'POST',
+                url: 'pagos_eliminar_pagos',
+                params: {
+                    numRecibo: idRecibo
+                }
+            }).then(
+                    function (r) {
+                        alert('eliminado correctamente');
+                        $scope.listadoMovimientosCaja();
+                    }
+            );
+
+        };
+
 
 
 
