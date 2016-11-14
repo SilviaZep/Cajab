@@ -72,7 +72,7 @@ class serviciosActions extends baseCajabProjectActions {
                 $servicioForm->setActivo(1);
                 $servicioForm->setTipoCliente((int) $tipoClientes);
                 $servicioForm->setCapacidad((int) $capacidad);
-                $servicioForm->setIdServicio(null);
+                // $servicioForm->setIdServicio(null);
                 $servicioForm->setTipoTransporte((int) $tipoTransporte);
                 $servicioForm->save();
 
