@@ -242,7 +242,9 @@ pagos_listado_movimientos_caja:
 pagos_listado_movimientos_caja_imprimir:
   url:   /pagos_listado_movimientos_caja_imprimir
   param: { module: pagos, action: listadoMovimientosCajaImprimir } 
-  
+pagos_eliminar_pagos:
+  url:   /pagos_eliminar_pagos
+  param: { module: pagos, action: eliminarPagos } 
   
 
 
