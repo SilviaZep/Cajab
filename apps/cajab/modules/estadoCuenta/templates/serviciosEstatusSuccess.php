@@ -78,12 +78,12 @@
                         <td>{{s.servicio_padre}}</td>
                         <td><font color="#0B6121"><b>{{s.fecha_evento| date:"dd/MM/yyyy"}}</b></font></td>
                         <td>{{s.nombre}}</td>
-                        <td>{{s.precio| currency}}</td>
+                        <td align="right">{{s.precio| currency}}</td>
 
                         <td>{{s.tip_cli}}</td>
                         <td>{{s.capacidad}}</td>
                         <td>{{s.inscritos}}</td>
-                        <td>{{(s.inscritos*s.precio)| currency}}</td>
+                        <td align="right">{{(s.inscritos*s.precio)| currency}}</td>
 
 
                         <td> 
@@ -159,16 +159,16 @@
                     <td>{{a.cliente}}</td>
 
 
-                    <td>{{a.precio| currency}}</td> 
-                    <td>{{a.abonado| currency}}</td>
-                    <td>{{a.descuento| currency}}</td>
+                    <td align="right">{{a.precio| currency}}</td> 
+                    <td align="right">{{a.abonado| currency}}</td>
+                    <td align="right">{{a.descuento| currency}}</td>
                     <td>
                         <button ng-show="a.no_abonos > 0" type="button" class="btn btn-info btn-xs" ng-click="listaPagos(a.id)" data-toggle="modal" data-target="#mListaPagos">
                             Detalle <span class="badge">{{a.no_abonos}}</span>
                         </button>
                         <p ng-show="a.no_abonos <= 0"><span class="badge">0</span></p>
                     </td>
-                    <td><span ng-if="a.estatus_descripcion != 'Cancelado'">{{a.saldo| currency}}</span>
+                    <td align="right"><span ng-if="a.estatus_descripcion != 'Cancelado'">{{a.saldo| currency}}</span>
                         <span ng-if="a.estatus_descripcion == 'Cancelado'">{{0| currency}}</span>
                     </td>
 
@@ -239,13 +239,13 @@
                 <tr ng-repeat="lie in listaIngresosEgresos| orderBy:'cliente'" class="{{colorRow(a)}}">
                     <td>{{$index + 1}}</td>
                     <td>{{lie.tipo_descripcion}}</td>
-                    <td>{{lie.cliente}}</td>
+                    <td >{{lie.cliente}}</td>
                     <td class="{{colorRowIngEgr(lie.modo_pago)}}">{{lie.modo_pago}}</td>
                     <td>{{lie.fecha_pago| date:'dd/MM/yyyy'}}</td>
 
-                    <td >{{lie.pago| currency}}</td> 
-                    <td >{{lie.descuento| currency}}</td>
-                    <td >{{lie.egreso| currency}}</td>
+                    <td align="right">{{lie.pago| currency}}</td> 
+                    <td align="right">{{lie.descuento| currency}}</td>
+                    <td align="right">{{lie.egreso| currency}}</td>
 
 
 

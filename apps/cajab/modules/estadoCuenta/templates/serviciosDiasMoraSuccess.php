@@ -71,16 +71,16 @@
                         <td>{{s.tipo_descripcion}}</td>
                         <td><b>{{s.cliente}}</b></td>
                         <td>{{s.servicio}}</td>
-                        <td>{{s.precio| currency}}</td>
-                        <td>{{s.abonado| currency}}</td>
-                        <td>{{s.descuento| currency}}</td>
+                        <td align="right">{{s.precio| currency}}</td>
+                        <td align="right">{{s.abonado| currency}}</td>
+                        <td align="right">{{s.descuento| currency}}</td>
                         <td>
                             <button ng-show="s.no_abonos > 0" type="button" class="btn btn-info btn-xs" ng-click="listaPagos(s.id)" data-toggle="modal" data-target="#mListaPagos">
                                 Detalle <span class="badge">{{s.no_abonos}}</span>
                             </button>
                             <p ng-show="s.no_abonos <= 0"><span class="badge">0</span></p>
                         </td>
-                        <td><b>{{s.saldo| currency}}</b></td>
+                        <td align="right"><b>{{s.saldo| currency}}</b></td>
                         <td>{{s.fecha_fin| date:"dd/MM/yyyy"}}</td>
 
                         <td>{{s.dias_mora}}</td>
