@@ -6,15 +6,11 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <form class="form-inline">
+                <div class="form-group">
+                    <label for="exampleInputEmail2"> Nombre :</label>
+                    <input type="text" ng-model="nombreServicio" class="form-control" placeholder="Nombre Servicio" id="exampleInputEmail2" >
+                </div>
 
-                <div class="form-group">
-                    <label for="exampleInputEmail2"> Inicio de eventos de:</label>
-                    <input type="date" ng-model="fechaIni" class="form-control" id="exampleInputEmail2" >
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail2"> a :</label>
-                    <input type="date" ng-model="fechaFin" class="form-control" id="exampleInputEmail2" >
-                </div>
                 <div class="form-group">
                     <label for="exampleInputEmail2"> # Recibo :</label>
                     <input type="number" ng-model="numRecibo" class="form-control" id="exampleInputEmail2" >
@@ -31,8 +27,17 @@
                     </select>
                 </div>
 
+                <div class="form-group">
+                    <label for="exampleInputEmail2"> Fecha Pago:</label>
+                    <input type="date" ng-model="fechaIni" class="form-control" id="exampleInputEmail2" >
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail2"> a :</label>
+                    <input type="date" ng-model="fechaFin" class="form-control" id="exampleInputEmail2" >
+                </div>
 
-                <button type="button" ng-click="listadoMovimientosCaja()" class="btn btn-default">
+
+                <button type="submit" ng-click="listadoMovimientosCaja()" class="btn btn-default">
                     <i class="fa fa-refresh" aria-hidden="true"></i>
                 </button>
 
@@ -62,7 +67,7 @@
 
                 <th class="col-md-1">Nombre Servicio</th>
                 <th class="col-md-1">Tipo Cliente</th>
-                <th class="col-md-2">Cliente</th>
+                <th class="col-md-3">Cliente</th>
 
                 <th class="col-md-1">Monto</th>               
                 <th class="col-md-1">Descuento</th>
@@ -89,12 +94,22 @@
                     <td>{{m.nombre_servicio}}</td>
                     <td>{{m.tipo_descripcion}}</td>
                     <td>{{m.cliente}}</td>
-                    <td>{{m.monto| currency}}</td>
-                    <td>{{m.descuento| currency}}</td>
+                    <td align="right">{{m.monto| currency}}</td>
+                    <td align="right">{{m.descuento| currency}}</td>
                     <td>{{m.fecha_pago| date:"dd/MM/yyyy"}}</td>
 
                     <td>{{m.forma_pago}}</td>
-                    <td><b># {{m.id_pago}}</b></td>
+                    <td><b># {{m.id_pago}}</b>
+                        <div class="form-group">
+
+                            <button type="button" class="btn btn-default" ng-click="reImprimirTicket(m.id_pago)">
+                                <i class="fa fa-print" aria-hidden="true"> </i>
+                            </button>
+                            <button type="button" class="btn btn-danger " ng-click="eliminarPagos(m.id_pago)">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </td>
 
 
 
