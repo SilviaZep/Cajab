@@ -312,9 +312,12 @@ class pagosActions extends baseCajabProjectActions {
             $pdf->SetFont('Arial', 'B', 9);
             $pdf->Cell(100, 8, utf8_decode($importeLetra), 1, 0, 'L');
             $pdf->Ln(8);
-            $pdf->Cell(30, 8, utf8_decode('Cambio: '), 1, 0, 'L');
-            $pdf->Cell(20, 8, utf8_decode("$" . ($totalIngresado - $total)), 1, 0, 'R');
-            $pdf->Ln(8);
+            if ($totalIngresado > 0) {
+                $pdf->Cell(30, 8, utf8_decode('Cambio: '), 1, 0, 'L');
+                $pdf->Cell(20, 8, utf8_decode("$" . ($totalIngresado - $total)), 1, 0, 'R');
+                $pdf->Ln(8);
+            }
+
 
             //   $pdf->Ln(8);
 
@@ -541,6 +544,8 @@ class pagosActions extends baseCajabProjectActions {
                 $fechaIni = $request->getParameter("fechaIni", 0);
                 $fechaFin = $request->getParameter("fechaFin", 0);
 
+                $nombreServicio = $request->getParameter("nombreServicio", '');
+
 
                 // $fechaIni = new DateTime($fechaIni);
                 // $fechaFin = new DateTime($fechaFin);
@@ -548,12 +553,12 @@ class pagosActions extends baseCajabProjectActions {
 
 
 
-                $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago);
+                $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago, $nombreServicio);
 
 
                 for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {
                     if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
-                        $nombreAlumno = consultasInstituto::getAlumnoXId($listadoMovimientos[$i]['id_alumno']);
+                        $nombreAlumno = consultasInstituto::getDatosAlumnoXId($listadoMovimientos[$i]['id_alumno']);
                         $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
                     }
                 }
@@ -591,7 +596,7 @@ class pagosActions extends baseCajabProjectActions {
 
             for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {
                 if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
-                    $nombreAlumno = consultasInstituto::getAlumnoXId($listadoMovimientos[$i]['id_alumno']);
+                    $nombreAlumno = consultasInstituto::getDatosAlumnoXId($listadoMovimientos[$i]['id_alumno']);
                     $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
                 }
             }
@@ -664,7 +669,7 @@ class pagosActions extends baseCajabProjectActions {
 
             $pdf->Ln(8);
             $pdf->SetFont('Arial', 'B', 9);
-          
+
             $pdf->Cell(40, 8, utf8_decode("Total Pagado "), 1, 0, 'L');
             $pdf->Cell(40, 8, utf8_decode("Total Descuento: "), 1, 0, 'L');
 
@@ -684,6 +689,30 @@ class pagosActions extends baseCajabProjectActions {
         } catch (Doctrine_Exception $e) {
             throw new sfException($e);
             $r = array("error" => true, "mensaje" => "Error Desconocido_02");
+            return $this->sendJSON($r);
+        }
+    }
+    
+    
+      public function executeEliminarPagos(sfWebRequest $request) {//guarda y edita
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                date_default_timezone_set('America/Mexico_City');
+
+                $numRecibo = $request->getParameter("numRecibo", 0);
+           
+                consultasBd::getEliminarPagos($numRecibo);
+
+                $r = array("mensaje" => "Ok"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("mensaje" => "No se pudo guardar Err:001 ", "error" => true); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            // throw new sfException($e);
+            $r = array("mensaje" => "No se pudo guardar Err:002 ", "error" => true); //a partir de php 5.4 es con corchetes[]
             return $this->sendJSON($r);
         }
     }
