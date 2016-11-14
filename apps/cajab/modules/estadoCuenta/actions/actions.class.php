@@ -414,8 +414,8 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->Cell(8, 8, utf8_decode("#"), 'B', 0, 'L', true);
             $pdf->Cell(20, 8, utf8_decode("Tipo Cli."), 'B', 0, 'L', true);
             $pdf->Cell(80, 8, utf8_decode("Nombre"), 'B', 0, 'C', true);
-            $pdf->Cell(30, 8, utf8_decode("Precio"), 'B', 0, 'L', true);
-            $pdf->Cell(30, 8, utf8_decode("Abonado"), 'B', 0, 'L', true);
+            $pdf->Cell(30, 8, utf8_decode("Precio"), 'B', 0, 'R', true);
+            $pdf->Cell(30, 8, utf8_decode("Abonado"), 'B', 0, 'R', true);
             $pdf->Cell(30, 8, utf8_decode("Descuento"), 'B', 0, 'R', true);
             $pdf->Cell(30, 8, utf8_decode("Saldo"), 'B', 0, 'R', true);
             $pdf->Cell(30, 8, utf8_decode("Estatus"), 'B', 0, 'R', true);
@@ -441,8 +441,8 @@ class estadoCuentaActions extends baseCajabProjectActions {
                 $pdf->Cell(8, 8, utf8_decode($y), 'B', 0, 'L');
                 $pdf->Cell(20, 8, utf8_decode($listaAsignados[$x]['tipo_descripcion']), 'B', 0, 'L');
                 $pdf->Cell(80, 8, utf8_decode($listaAsignados[$x]['cliente']), 'B', 0, 'L');
-                $pdf->Cell(30, 8, utf8_decode($listaAsignados[$x]['precio']), 'B', 0, 'L');
-                $pdf->Cell(30, 8, utf8_decode($listaAsignados[$x]['abonado']), 'B', 0, 'L');
+                $pdf->Cell(30, 8, utf8_decode('$' .$listaAsignados[$x]['precio']), 'B', 0, 'R');
+                $pdf->Cell(30, 8, utf8_decode('$' .$listaAsignados[$x]['abonado']), 'B', 0, 'R');
                 $pdf->Cell(30, 8, utf8_decode('$' . $listaAsignados[$x]['descuento']), 'B', 0, 'R');
                 $pdf->Cell(30, 8, utf8_decode('$' . $listaAsignados[$x]['saldo']), 'B', 0, 'R');
                 $pdf->Cell(30, 8, utf8_decode($listaAsignados[$x]['estatus_descripcion']), 'B', 0, 'R');
