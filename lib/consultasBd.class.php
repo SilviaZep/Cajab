@@ -126,8 +126,8 @@ class consultasBd {
       {$filtroCategoria}
       order by servicio_padre asc,s.fecha_evento desc,s.nombre asc
       limit {$lim} offset {$off};";
-        //  $rsql = sprintf($sql);
-        //echo $sql;
+//  $rsql = sprintf($sql);
+//echo $sql;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -144,7 +144,7 @@ class consultasBd {
                 and fecha_evento <='{$fechaFin}'
                 and nombre like '%{$nombreServicio}%'
                 {$filtroCategoria} ;";
-        //  $rsql = sprintf($sql);
+//  $rsql = sprintf($sql);
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -224,7 +224,7 @@ class consultasBd {
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //----------------------------Listado Rutas que pudieron haber sido eliminadas
+//----------------------------Listado Rutas que pudieron haber sido eliminadas
 
     public static function getListadoRutasAntiguas($fecha, $nombreRuta) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
@@ -255,7 +255,7 @@ class consultasBd {
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //--------------------------------------------------------------------------
+//--------------------------------------------------------------------------
 
 
     public static function getListadoCategoriasServicios() {
@@ -266,7 +266,7 @@ class consultasBd {
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //listad Alumnos 
+//listad Alumnos 
     public static function getListadoAlumnos($lim, $off, $nombreAlumno, $idServicio, $flagVenta, $idPapa) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $filtroVenta = "and id not in(
@@ -319,7 +319,7 @@ class consultasBd {
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //***fin listado Alumnos
+//***fin listado Alumnos
 //Lista Clientes
     public static function getListadoClientesExternos($lim, $off, $nombreCliente, $idServicio, $flagVenta, $idPapa) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
@@ -374,7 +374,7 @@ class consultasBd {
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //---------
+//---------
     public static function getListaAsignadosServicio($idServicio, $nombreCliente, $limit, $offset) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select * from (select sc.id,sc.estatus,sc.id_servicio,sc.id_alumno,sc.id_cliente,
@@ -434,7 +434,7 @@ class consultasBd {
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //---------clonar servicio
+//---------clonar servicio
     public static function getClonarServicio($idServicioa, $idServiciob, $idUsuario) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "call sp_clonar_servicio({$idServicioa},{$idServiciob},{$idUsuario});";
@@ -442,7 +442,7 @@ class consultasBd {
         return true;
     }
 
-    //_--------------------------------HORARIOS
+//_--------------------------------HORARIOS
 
     public static function getHorariosAlumnos($limit, $offset, $idsAlumno) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
@@ -484,7 +484,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //-----------------------Rutas.................
+//-----------------------Rutas.................
 
     public static function getDiaSemana($fecha) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
@@ -623,7 +623,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //--------------Fin consultas Coronel-----------------
+//--------------Fin consultas Coronel-----------------
 
     public static function getGuardarListasPorRuta($fecha, $idRuta) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
@@ -661,7 +661,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //-------------------------------------Querys del estado de cuenta--------------------------------
+//-------------------------------------Querys del estado de cuenta--------------------------------
 
 
     public static function getServiciosPagandoAlumno($idAlumno) {
@@ -707,7 +707,7 @@ where  sp.id_servicio={$idServicioCliente}";
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //*********************************************Cliente servicios
+//*********************************************Cliente servicios
 
 
 
@@ -735,8 +735,8 @@ and sc.estatus=1;";
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //----------------------------------Fin Querys estado de cuenta--------------------------------------
-    //------------------------------------------------
+//----------------------------------Fin Querys estado de cuenta--------------------------------------
+//------------------------------------------------
     public static function getIdsServicioCliente($idServicio) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select distinct(id_alumno) as id_alumno
@@ -746,7 +746,7 @@ from servicio_cliente where id_servicio={$idServicio};";
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //-------------------lo pagado a un servicio
+//-------------------lo pagado a un servicio
     public static function getPagadoClientesServicio($idServicio, $limit, $offset) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
 
@@ -1139,7 +1139,7 @@ order by fecha_pago;
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago) {
+    public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago, $nombreServicio) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $filtroIdPago = "";
         $filtroFormaPago = "";
@@ -1150,10 +1150,9 @@ order by fecha_pago;
             $filtroFormaPago = "and sp.forma_pago='{$formaPago}'";
         }
 
-        $sql = "select 
-(select nombre 
-from servicio where id=
-(select sc.id_servicio from servicio_cliente sc where sc.id=sp.id_servicio)) as nombre_servicio,
+        $sql = "
+            select 
+s.nombre as nombre_servicio,
 (CASE sp.tipo_cliente
 WHEN 1 THEN 'na'
 WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sp.id_cliente),'na')
@@ -1166,16 +1165,33 @@ ifnull(sp.monto,0) as monto,
 ifnull(sp.descuento,0) as descuento,
 sp.forma_pago,sp.id_pago,
 date(sp.fecha_pago) as fecha_pago,sp.id_alumno
-from servicio_pago sp
-where '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
+from servicio_pago sp,servicio_cliente sc,servicio s
+where sp.id_servicio=sc.id
+and sc.id_servicio=s.id
+and '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
 {$filtroIdPago}
 {$filtroFormaPago}
+    and s.nombre like '%{$nombreServicio}%'
     order by sp.fecha_pago desc
 ;";
 
-
+// echo $sql;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getEliminarPagos($idPago) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+       
+        $sql = "
+          call sp_eliminar_pagos({$idPago});
+            ";
+
+// echo $sql;
+        //$st =
+                $conn->execute($sql);
+        //return $st->fetchAll(PDO::FETCH_ASSOC);
+                return true;
     }
 
 }
