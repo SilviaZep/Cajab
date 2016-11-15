@@ -27,6 +27,8 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
         $scope.fechaIniEC = primerDia;
         $scope.fechaFinEC = ultimoDia;
+        
+        $scope.idAlumnoSel=0;
 
 
         $scope.sumTotal = function (listaFiltro) {
@@ -42,6 +44,7 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
 
         $scope.contraer = function (idAlumno) {
             $scope.listadoServicios(idAlumno);
+            $scope.idAlumnoSel=idAlumno;
             $scope.detalle = true;
             // contraerElemento('serviciosVigentesDiv');
             // expandirElemento('edicionServiciosDiv');
@@ -203,6 +206,25 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
             }).then(
                     function (r) {
                         $scope.listaPagosServicioCliente = r.data.listaPagos;
+                    }
+            );
+
+        };
+        
+        
+        $scope.historialServicios = function () {
+//alert("hello "+$scope.idAlumnoSel);
+            $scope.listadoHistorial = [];
+
+            $http({
+                method: 'POST',
+                url: 'pagos_historial_pagos',
+                params: {
+                    idAlumno: $scope.idAlumnoSel
+                }
+            }).then(
+                    function (r) {
+                        $scope.listadoHistorial = r.data.historialServicios;
                     }
             );
 

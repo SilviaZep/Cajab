@@ -25,6 +25,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
         $scope.fechaIniEC = primerDia;
         $scope.fechaFinEC = ultimoDia;
 
+        $scope.idAlumnoSel = 0;
 
         $scope.sumTotal = function (listaFiltro) {
             $scope.totalPagado = 0;
@@ -55,6 +56,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
         $scope.contraer = function (idAlumno) {
             $scope.listadoServicios(idAlumno);
             $scope.detalle = true;
+            $scope.idAlumnoSel = idAlumno;
             // contraerElemento('serviciosVigentesDiv');
             // expandirElemento('edicionServiciosDiv');
 
@@ -108,7 +110,7 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
                         return;
                     }
                     if ($scope.listaServicios[i].aplica_parcialidad == '0') {//no hay parcialidades
-                        if ((parseFloat($scope.listaServicios[i].pagara)+parseFloat($scope.listaServicios[i].descuento)) < parseFloat($scope.listaServicios[i].precio)) {//tiene que pagar completo
+                        if ((parseFloat($scope.listaServicios[i].pagara) + parseFloat($scope.listaServicios[i].descuento)) < parseFloat($scope.listaServicios[i].precio)) {//tiene que pagar completo
                             alert("Tienes que pagar el monto completo ya que no aplica parcialidad el servicio: " +
                                     $scope.listaServicios[i].servicio);
                             return;
@@ -199,6 +201,24 @@ app.controller('pagarServicioClienteController', ['$http', '$scope', function ($
 
 
 
+
+        };
+
+        $scope.historialServicios = function () {
+//alert("hello "+$scope.idAlumnoSel);
+            $scope.listadoHistorial = [];
+
+            $http({
+                method: 'POST',
+                url: 'pagos_historial_pagos',
+                params: {
+                    idCliente: $scope.idAlumnoSel
+                }
+            }).then(
+                    function (r) {
+                        $scope.listadoHistorial = r.data.historialServicios;
+                    }
+            );
 
         };
 
