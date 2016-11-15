@@ -692,19 +692,51 @@ class pagosActions extends baseCajabProjectActions {
             return $this->sendJSON($r);
         }
     }
-    
-    
-      public function executeEliminarPagos(sfWebRequest $request) {//guarda y edita
+
+    public function executeEliminarPagos(sfWebRequest $request) {//guarda y edita
         try {
             if ($request->isMethod(sfWebRequest::POST)) {
 
                 date_default_timezone_set('America/Mexico_City');
 
                 $numRecibo = $request->getParameter("numRecibo", 0);
-           
+
                 consultasBd::getEliminarPagos($numRecibo);
 
                 $r = array("mensaje" => "Ok"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("mensaje" => "No se pudo guardar Err:001 ", "error" => true); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            // throw new sfException($e);
+            $r = array("mensaje" => "No se pudo guardar Err:002 ", "error" => true); //a partir de php 5.4 es con corchetes[]
+            return $this->sendJSON($r);
+        }
+    }
+
+    public function executeHistorialPagos(sfWebRequest $request) {//guarda y edita
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                date_default_timezone_set('America/Mexico_City');
+
+                $idAlumno = $request->getParameter("idAlumno", 0);
+                $idCliente = $request->getParameter("idCliente", 0);
+
+                $historialServicios = null;
+                if ($idAlumno > 0) {
+                    $historialServicios = consultasBd::getHistorialServicios($idAlumno,"A");
+                } else {
+                    $historialServicios = consultasBd::getHistorialServicios($idCliente,"C");
+                }
+
+
+
+
+
+                $r = array("mensaje" => "Ok", "historialServicios" => $historialServicios); //a partir de php 5.4 es con corchetes[]
                 return $this->sendJSON($r);
             } else {
                 $r = array("mensaje" => "No se pudo guardar Err:001 ", "error" => true); //a partir de php 5.4 es con corchetes[]
