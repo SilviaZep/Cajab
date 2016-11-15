@@ -245,6 +245,9 @@ pagos_listado_movimientos_caja_imprimir:
 pagos_eliminar_pagos:
   url:   /pagos_eliminar_pagos
   param: { module: pagos, action: eliminarPagos } 
+pagos_historial_pagos:
+  url:   /pagos_historial_pagos
+  param: { module: pagos, action: historialPagos }  
   
 
 
