@@ -310,6 +310,9 @@ class serviciosActions extends baseCajabProjectActions {
                         $vecAlumnos = explode(",", $idAlumnos);
                         $max = (sizeof($vecAlumnos) - 1); //agarra uno de mas   
 
+                        $serviciosHijos = consultasBd::getListaServiciosHijos((int) $idServicio);
+                        $totHijos = sizeof($serviciosHijos); //agarra uno de mas 
+
                         for ($i = 0; $i < $max; $i++) {
                             $instServicioCliente = new ServicioCliente();
                             $instServicioCliente->setIdServicio((int) $idServicio);
@@ -319,6 +322,19 @@ class serviciosActions extends baseCajabProjectActions {
                             $instServicioCliente->setTipoCliente(1); //1.- Alumno; 2.- Cliente Externo
                             $instServicioCliente->setEstatus(1); //1.- PAGANDO; 2.- PAGADO;3.-Cancelado; 4.-Condonado
                             $instServicioCliente->save();
+
+                            if ($totHijos > 0) {
+                                for ($j = 0; $j < $totHijos; $j++) {
+                                    $instServicioClienteHijo = new ServicioCliente();
+                                    $instServicioClienteHijo->setIdServicio((int) $serviciosHijos[$j]['id']);
+                                    $instServicioClienteHijo->setIdAlumno((int) $vecAlumnos[$i]);
+                                    $instServicioClienteHijo->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
+                                    $instServicioClienteHijo->setUsuarioRegistro($this->getUser()->getUserId());
+                                    $instServicioClienteHijo->setTipoCliente(1); //1.- Alumno; 2.- Cliente Externo
+                                    $instServicioClienteHijo->setEstatus(1); //1.- PAGANDO; 2.- PAGADO;3.-Cancelado; 4.-Condonado
+                                    $instServicioClienteHijo->save();
+                                }
+                            }
                         }
                     }
                 }
@@ -354,6 +370,9 @@ class serviciosActions extends baseCajabProjectActions {
                         $vecClientes = explode(",", $idClientes);
                         $max = (sizeof($vecClientes) - 1); //agarra uno de mas   
 
+                        $serviciosHijos = consultasBd::getListaServiciosHijos((int) $idServicio);
+                        $totHijos = sizeof($serviciosHijos); //agarra uno de mas 
+
                         for ($i = 0; $i < $max; $i++) {
                             $instServicioCliente = new ServicioCliente();
                             $instServicioCliente->setIdServicio((int) $idServicio);
@@ -363,6 +382,19 @@ class serviciosActions extends baseCajabProjectActions {
                             $instServicioCliente->setTipoCliente(2); //1.- Alumno; 2.- Cliente Externo
                             $instServicioCliente->setEstatus(1); //1.- PAGANDO; 2.- PAGADO;3.-Cancelado; 4.-Condonado
                             $instServicioCliente->save();
+
+                            if ($totHijos > 0) {
+                                for ($j = 0; $j < $totHijos; $j++) {
+                                    $instServicioClienteHijo = new ServicioCliente();
+                                    $instServicioClienteHijo->setIdServicio((int) $serviciosHijos[$j]['id']);
+                                    $instServicioClienteHijo->setIdCliente((int) $vecClientes[$i]);
+                                    $instServicioClienteHijo->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
+                                    $instServicioClienteHijo->setUsuarioRegistro($this->getUser()->getUserId());
+                                    $instServicioClienteHijo->setTipoCliente(2); //1.- Alumno; 2.- Cliente Externo
+                                    $instServicioClienteHijo->setEstatus(1); //1.- PAGANDO; 2.- PAGADO;3.-Cancelado; 4.-Condonado
+                                    $instServicioClienteHijo->save();
+                                }
+                            }
                         }
                     }
                 }
@@ -395,7 +427,7 @@ class serviciosActions extends baseCajabProjectActions {
                 //$limit = $request->getParameter("limit", 0);
                 $offset = 0;
                 $limit = 10000;
-                
+
 
                 $tam = 0;
                 $count = 0;
