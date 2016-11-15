@@ -84,7 +84,9 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="11" class="info"><h3>Servicios del Cliente <small>(Pagando)</small><button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3></td>
+            <td colspan="11" class="info"><h3>Servicios del Cliente <small>(Pagando)</small>
+                   <button type="button" class="btn btn-default btn-sx " ng-click="historialServicios()" data-toggle="modal" data-target="#mListaServicios"><i class="fa fa-list-ol" aria-hidden="true"></i> Servicios Alumno</button> 
+                    <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button></h3></td>
 
             <tr>
                 <th class="col-md-2">Categoria</th>
@@ -320,6 +322,58 @@
             </div>
         </div>
     </div>
+    
+    <div class="modal fade" id="mListaServicios" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Lista Servicios Cliente</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div >
+                        <table class="table table-striped table-bordered" style="font-size: 14px !important">
+                            <thead>
+
+                            <td colspan="3" class="info">Ultimos Servicios del cliente</td>
+
+                            <tr>
+                                <th >Servicio</th>
+                                <th >Estatus</th>
+                                <th >Fecha Evento</th>
+                            </tr>
+
+
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ls in listadoHistorial">
+                                    <td >{{ls.nombre}}</td>
+                                    <td> 
+                                        <span ng-if="ls.estatus == 'Cancelado'" class="label label-danger">{{ls.estatus}}</span>
+                                        <span ng-if="ls.estatus == 'Activo'" class="label label-success">{{ls.estatus}}</span>
+                                        <span ng-if="ls.estatus == 'Pagado'" class="label label-primary">{{ls.estatus}}</span>
+                                    </td>
+                                    <td >{{ls.fecha_evento| date:'dd/MM/yyyy'}}</td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>      
+
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cerrar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
