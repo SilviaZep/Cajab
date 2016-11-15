@@ -1182,16 +1182,59 @@ and '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
 
     public static function getEliminarPagos($idPago) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
-       
+
         $sql = "
           call sp_eliminar_pagos({$idPago});
             ";
 
 // echo $sql;
         //$st =
-                $conn->execute($sql);
+        $conn->execute($sql);
         //return $st->fetchAll(PDO::FETCH_ASSOC);
-                return true;
+        return true;
+    }
+
+    public static function getHistorialServicios($idAC, $tipoCliente) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $filtro = " ";
+        if ($tipoCliente == "A") {
+            $filtro = " and sc.id_alumno={$idAC} ";
+        } else {
+            $filtro = " and sc.id_cliente={$idAC} ";
+        }
+
+        $sql = "
+                     select s.nombre ,
+            (CASE sc.estatus
+            WHEN 1 THEN 'Activo'
+            WHEN 2 THEN 'Pagado'
+            WHEN 3 THEN 'Cancelado'
+            WHEN 4 THEN 'Condonado'
+            ELSE  'na' END) as estatus,s.fecha_evento
+            from servicio_cliente sc,servicio s
+            where sc.id_servicio=s.id
+            {$filtro}
+            order by s.fecha_evento,s.nombre
+            limit 0,15;
+                        ";
+// echo $sql;
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+     public static function getListaServiciosHijos($idPapa) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        
+
+        $sql = "
+                    select id from servicio
+                    where id_servicio={$idPapa}
+                    and date(now())<=date(fecha_fin);
+                        ";
+// echo $sql;
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
