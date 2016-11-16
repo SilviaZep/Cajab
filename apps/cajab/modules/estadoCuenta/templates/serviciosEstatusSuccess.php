@@ -70,7 +70,7 @@
 
                 </thead>
                 <tbody>
-                    <tr ng-repeat="s in listaServicios| orderBy :'nombre' ">
+                    <tr ng-repeat="s in listaServicios">
 
 
                         <td><font color="#04B431">{{s.fec_ini|  date:'dd/MM/yyyy' }}</font>  <font color="#FE642E">{{s.fec_fin|  date:'dd/MM/yyyy' }}</font></td>
@@ -153,7 +153,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="a in listaAsignados| orderBy:'saldo' " class="{{colorRow(a)}}">
+                <tr ng-repeat="a in listaAsignados " class="{{colorRow(a)}}">
                     <td>{{$index + 1}}</td>
                     <td>{{a.tipo_descripcion}}</td>
                     <td>{{a.cliente}}</td>
@@ -168,8 +168,7 @@
                         </button>
                         <p ng-show="a.no_abonos <= 0"><span class="badge">0</span></p>
                     </td>
-                    <td align="right"><span ng-if="a.estatus_descripcion != 'Cancelado'">{{a.saldo| currency}}</span>
-                        <span ng-if="a.estatus_descripcion == 'Cancelado'">{{0| currency}}</span>
+                    <td align="right">{{a.saldo| currency}}
                     </td>
 
                     <td> 

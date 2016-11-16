@@ -40,7 +40,7 @@
             <table class="table table-striped table-bordered" style="font-size: 14px !important">
                 <thead>
 
-                <td colspan="11" class="info"><b>Listado Dias de mora al dia de : {{fechaHoy| date:"dd/MM/yyyy"}}</b>
+                <td colspan="11" class="info"><b> Dias de mora al dia de : {{fechaHoy| date:"dd/MM/yyyy"}}</b>
                     <div class="group pull-right">
                         <button type="button" class="btn btn-default btn-xs" ng-click="listadoDiasMoraImprimir()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
                     </div>
@@ -64,7 +64,7 @@
 
                 </thead>
                 <tbody>
-                    <tr ng-repeat="s in listaDiasMora" class="{{colorRow(s.dias_mora)}}" ><!--style="border: gray 3px solid !important"-->
+                    <tr ng-repeat="s in listaDiasMora | orderBy:'cliente'" class="{{colorRow(s.dias_mora)}}" ><!--style="border: gray 3px solid !important"-->
 
 
 
