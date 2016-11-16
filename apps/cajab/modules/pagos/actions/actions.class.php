@@ -268,7 +268,7 @@ class pagosActions extends baseCajabProjectActions {
             $pdf->Cell(30, 8, utf8_decode('Descuento'), 'B', 0, 'L');
             $pdf->Cell(35, 8, utf8_decode('Forma de Pago'), 'B', 0, 'L');
             $pdf->Ln(8);
-            $pdf->SetFont('Arial', '', 11);
+            $pdf->SetFont('Arial', '', 8);
 
 
             $subTotal = 0;
@@ -281,11 +281,11 @@ class pagosActions extends baseCajabProjectActions {
                 }
 
 
-                $pdf->Cell(90, 8, utf8_decode($pagos[$i]['nombre_servicio']), 0, 0, 'L');
-                $pdf->Cell(30, 8, utf8_decode('$' . $pagos[$i]['monto']), 0, 0, 'R');
-                $pdf->Cell(30, 8, utf8_decode('$' . $pagos[$i]['descuento']), 0, 0, 'R');
-                $pdf->Cell(35, 8, utf8_decode($pagos[$i]['forma_pago']), 0, 0, 'R');
-                $pdf->Ln(8);
+                $pdf->Cell(90, 6, utf8_decode($pagos[$i]['nombre_servicio']), 0, 0, 'L');
+                $pdf->Cell(30, 6, utf8_decode('$' . $pagos[$i]['monto']), 0, 0, 'R');
+                $pdf->Cell(30, 6, utf8_decode('$' . $pagos[$i]['descuento']), 0, 0, 'R');
+                $pdf->Cell(35, 6, utf8_decode($pagos[$i]['forma_pago']), 0, 0, 'R');
+                $pdf->Ln(6);
                 $total+=(double) $pagos[$i]['monto'];
                 $subTotal +=(double) $pagos[$i]['monto'] + (double) $pagos[$i]['descuento'];
                 $decuentoTotal+=(double) $pagos[$i]['descuento'];
@@ -307,7 +307,7 @@ class pagosActions extends baseCajabProjectActions {
             $pdf->Cell(30, 8, utf8_decode('Descuento: '), 1, 0, 'L');
             $pdf->Cell(20, 8, utf8_decode("$" . $decuentoTotal), 1, 0, 'R');
             $pdf->Ln(8);
-          //  $pdf->Cell(10, 8, "", 0, 0, 'L');
+            //  $pdf->Cell(10, 8, "", 0, 0, 'L');
             $pdf->SetFont('Arial', '', 8);
             $pdf->Cell(30, 8, utf8_decode('Importe con letra:'), 1, 0, 'L');
             $pdf->SetFont('Arial', 'B', 9);
@@ -550,22 +550,31 @@ class pagosActions extends baseCajabProjectActions {
                 $fechaFin = $request->getParameter("fechaFin", 0);
 
                 $nombreServicio = $request->getParameter("nombreServicio", '');
-
-
-                // $fechaIni = new DateTime($fechaIni);
-                // $fechaFin = new DateTime($fechaFin);
-
-
+                $nombreSeccion = $request->getParameter("nombreSeccion", '');
 
 
                 $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago, $nombreServicio);
-
+                $listadoMovimientosRefinada = [];
 
                 for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {
-                    if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
-                        $nombreAlumno = consultasInstituto::getDatosAlumnoXId($listadoMovimientos[$i]['id_alumno']);
-                        $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                    if ($nombreSeccion != '') {
+                        if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
+                            $nombreAlumno = consultasInstituto::getDatosAlumnoXIdSeccion($listadoMovimientos[$i]['id_alumno'], $nombreSeccion);
+                            if (sizeof($nombreAlumno) > 0) {
+                                $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                                array_push($listadoMovimientosRefinada, $listadoMovimientos[$i]);
+                            }
+                        }
+                    } else {
+                        if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
+                            $nombreAlumno = consultasInstituto::getDatosAlumnoXId($listadoMovimientos[$i]['id_alumno']);
+                            $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                        }
                     }
+                }
+
+                if ($nombreSeccion != '') {
+                    $listadoMovimientos = $listadoMovimientosRefinada;
                 }
 
 
@@ -595,16 +604,34 @@ class pagosActions extends baseCajabProjectActions {
 
             $fechaIni = $request->getParameter("fechaIni", 0);
             $fechaFin = $request->getParameter("fechaFin", 0);
-            
-            $nombreServicio = $request->getParameter("nombreServicio", '');
 
-            $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago,$nombreServicio);
+            $nombreServicio = $request->getParameter("nombreServicio", '');
+            $nombreSeccion = $request->getParameter("nombreSeccion", '');
+
+            $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago, $nombreServicio);
+            $listadoMovimientosRefinada = [];
 
             for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {
-                if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
-                    $nombreAlumno = consultasInstituto::getDatosAlumnoXId($listadoMovimientos[$i]['id_alumno']);
-                    $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                if ($nombreSeccion != '') {
+                    if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
+                        $nombreAlumno = consultasInstituto::getDatosAlumnoXIdSeccionSeparados($listadoMovimientos[$i]['id_alumno'], $nombreSeccion);
+                        if (sizeof($nombreAlumno) > 0) {
+                            $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                            $listadoMovimientos[$i]['seccion'] = $nombreAlumno[0]['seccion'];
+                            array_push($listadoMovimientosRefinada, $listadoMovimientos[$i]);
+                        }
+                    }
+                } else {
+                    if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
+                        $nombreAlumno = consultasInstituto::getDatosAlumnoXIdSeccionSeparados($listadoMovimientos[$i]['id_alumno']);
+                        $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                        $listadoMovimientos[$i]['seccion'] = $nombreAlumno[0]['seccion'];
+                    }
                 }
+            }
+
+            if ($nombreSeccion != '') {
+                $listadoMovimientos = $listadoMovimientosRefinada;
             }
 
             //-------------imprimir
@@ -636,7 +663,7 @@ class pagosActions extends baseCajabProjectActions {
 
             $pdf->Ln(8);
 
-            $pdf->SetFont('Arial', '', 9);
+            $pdf->SetFont('Arial', '', 8);
             $pdf->SetTextColor(88, 89, 91);
             $y = 1;
             //ordenar la lista de alumnos
@@ -659,29 +686,33 @@ class pagosActions extends baseCajabProjectActions {
                 $pdf->Cell(8, 8, utf8_decode($y), 'B', 0, 'L');
                 $pdf->Cell(70, 8, utf8_decode($listadoMovimientos[$x]['nombre_servicio']), 'B', 0, 'L');
                 $pdf->Cell(20, 8, utf8_decode($listadoMovimientos[$x]['tipo_descripcion']), 'B', 0, 'L');
-                $pdf->Cell(70, 8, utf8_decode($listadoMovimientos[$x]['cliente']), 'B', 0, 'L');
+                $pdf->Cell(70, 4, utf8_decode($listadoMovimientos[$x]['cliente']), 0, 0, 'L');
                 $pdf->Cell(20, 8, utf8_decode('$' . $listadoMovimientos[$x]['monto']), 'B', 0, 'R');
                 $pdf->Cell(20, 8, utf8_decode('$' . $listadoMovimientos[$x]['descuento']), 'B', 0, 'R');
                 $pdf->Cell(25, 8, utf8_decode($listadoMovimientos[$x]['fecha_pago']), 'B', 0, 'L');
                 $pdf->Cell(25, 8, utf8_decode($listadoMovimientos[$x]['forma_pago']), 'B', 0, 'L');
                 $pdf->Cell(12, 8, utf8_decode('#' . $listadoMovimientos[$x]['id_pago']), 'B', 0, 'R');
+                
+                $pdf->Ln(4);
+                $pdf->Cell(98, 4,"", 0, 0, 'L');
+                $pdf->Cell(70, 4, utf8_decode($listadoMovimientos[$x]['seccion']), 'B', 0, 'L');
 
 
                 $y++;
                 $totalPagado+= $listadoMovimientos[$x]['monto'];
                 $totalDescuento+= $listadoMovimientos[$x]['descuento'];
-                $pdf->Ln(8);
+                $pdf->Ln(4);
             }
 
             $pdf->Ln(8);
-            $pdf->SetFont('Arial', 'B', 9);
-            
-            $pdf->Cell(180, 8,"", 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', 8);
+
+            $pdf->Cell(180, 8, "", 0, 0, 'L');
             $pdf->Cell(40, 8, utf8_decode("Total Pagado "), 1, 0, 'L');
             $pdf->Cell(40, 8, utf8_decode("Total Descuento: "), 1, 0, 'L');
 
             $pdf->Ln(8);
-            $pdf->Cell(180, 8,"", 0, 0, 'L');
+            $pdf->Cell(180, 8, "", 0, 0, 'L');
             $pdf->Cell(40, 8, utf8_decode("$" . $totalPagado), 1, 0, 'R');
             $pdf->Cell(40, 8, utf8_decode("$" . $totalDescuento), 1, 0, 'R');
 
