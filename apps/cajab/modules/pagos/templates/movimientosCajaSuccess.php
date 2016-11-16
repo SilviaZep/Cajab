@@ -10,7 +10,10 @@
                     <label for="exampleInputEmail2"> Nombre :</label>
                     <input type="text" ng-model="nombreServicio" class="form-control" placeholder="Nombre Servicio" id="exampleInputEmail2" >
                 </div>
-
+                <div class="form-group">
+                    <label for="exampleInputEmail2"> Seccion :</label>
+                    <input type="text" ng-model="nombreSeccion" class="form-control" placeholder="seccion grado grupo" id="exampleInputEmail2" >
+                </div>
                 <div class="form-group">
                     <label for="exampleInputEmail2"> # Recibo :</label>
                     <input type="number" ng-model="numRecibo" class="form-control" id="exampleInputEmail2" >
