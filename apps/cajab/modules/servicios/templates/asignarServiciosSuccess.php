@@ -53,7 +53,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="s in listaServicios | orderBy:'nombre'">
+                <tr ng-repeat="s in listaServicios">
 
                     <td><font color="#04B431">{{s.fec_ini|  date:'dd/MM/yyyy' }}</font>  <font color="#FE642E">{{s.fec_fin|  date:'dd/MM/yyyy' }}</font></td>
                     <td>{{s.categoria}}</td>
