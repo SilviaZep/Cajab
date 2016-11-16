@@ -336,9 +336,10 @@
                         <table class="table table-striped table-bordered" style="font-size: 14px !important">
                             <thead>
 
-                            <td colspan="3" class="info">Ultimos Servicios del cliente</td>
+                            <td colspan="4" class="info">Ultimos Servicios del cliente</td>
 
                             <tr>
+                                <th >Categoria</th>
                                 <th >Servicio</th>
                                 <th >Estatus</th>
                                 <th >Fecha Evento</th>
@@ -348,6 +349,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="ls in listadoHistorial">
+                                     <td >{{ls.categoria}}</td>
                                     <td >{{ls.nombre}}</td>
                                     <td> 
                                         <span ng-if="ls.estatus == 'Cancelado'" class="label label-danger">{{ls.estatus}}</span>
