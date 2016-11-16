@@ -304,12 +304,14 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $totalTotal = $totalPagado - $totalDescuento - $totalEgreso;
             $pdf->Ln(8);
             $pdf->SetFont('Arial', 'B', 9);
+            $pdf->Cell(110, 8, utf8_decode(''), 0, 0, 'L');
             $pdf->Cell(30, 8, utf8_decode('Esperado: '), 1, 0, 'L');
             $pdf->Cell(30, 8, utf8_decode('Pagado: '), 1, 0, 'L');
             $pdf->Cell(30, 8, utf8_decode('Descuento: '), 1, 0, 'L');
             $pdf->Cell(30, 8, utf8_decode('Egreso: '), 1, 0, 'L');
             $pdf->Cell(30, 8, utf8_decode('Total: '), 1, 0, 'L');
             $pdf->Ln(8);
+            $pdf->Cell(110, 8, utf8_decode(''), 0, 0, 'L');
             $pdf->Cell(30, 8, utf8_decode("$" . $totalEsperado), 1, 0, 'R');
             $pdf->Cell(30, 8, utf8_decode("$" . $totalPagado), 1, 0, 'R');
             $pdf->Cell(30, 8, utf8_decode("$" . $totalDescuento), 1, 0, 'R');
@@ -412,8 +414,8 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(136, 138, 140);
             $pdf->Cell(8, 8, utf8_decode("#"), 'B', 0, 'L', true);
-            $pdf->Cell(20, 8, utf8_decode("Tipo Cli."), 'B', 0, 'L', true);
-            $pdf->Cell(80, 8, utf8_decode("Nombre"), 'B', 0, 'C', true);
+            $pdf->Cell(25, 8, utf8_decode("Tipo Cli."), 'B', 0, 'L', true);
+            $pdf->Cell(90, 8, utf8_decode("Nombre"), 'B', 0, 'C', true);
             $pdf->Cell(30, 8, utf8_decode("Precio"), 'B', 0, 'R', true);
             $pdf->Cell(30, 8, utf8_decode("Abonado"), 'B', 0, 'R', true);
             $pdf->Cell(30, 8, utf8_decode("Descuento"), 'B', 0, 'R', true);
@@ -429,20 +431,20 @@ class estadoCuentaActions extends baseCajabProjectActions {
                 echo 'No hay datos para imprimir..';
                 die();
             }
-            foreach ($listaAsignados as $key => $row) {
-                $aux[$key] = $row['saldo'];
-            }
-            array_multisort($aux, SORT_ASC, $listaAsignados);
+            /*   foreach ($listaAsignados as $key => $row) {
+              $aux[$key] = $row['saldo'];
+              }
+              array_multisort($aux, SORT_ASC, $listaAsignados); */
             //--------------------
 
 
             for ($x = 0; $x < sizeof($listaAsignados); $x ++) {
 
                 $pdf->Cell(8, 8, utf8_decode($y), 'B', 0, 'L');
-                $pdf->Cell(20, 8, utf8_decode($listaAsignados[$x]['tipo_descripcion']), 'B', 0, 'L');
-                $pdf->Cell(80, 8, utf8_decode($listaAsignados[$x]['cliente']), 'B', 0, 'L');
-                $pdf->Cell(30, 8, utf8_decode('$' .$listaAsignados[$x]['precio']), 'B', 0, 'R');
-                $pdf->Cell(30, 8, utf8_decode('$' .$listaAsignados[$x]['abonado']), 'B', 0, 'R');
+                $pdf->Cell(25, 8, utf8_decode($listaAsignados[$x]['tipo_descripcion']), 'B', 0, 'L');
+                $pdf->Cell(90, 8, utf8_decode($listaAsignados[$x]['cliente']), 'B', 0, 'L');
+                $pdf->Cell(30, 8, utf8_decode('$' . $listaAsignados[$x]['precio']), 'B', 0, 'R');
+                $pdf->Cell(30, 8, utf8_decode('$' . $listaAsignados[$x]['abonado']), 'B', 0, 'R');
                 $pdf->Cell(30, 8, utf8_decode('$' . $listaAsignados[$x]['descuento']), 'B', 0, 'R');
                 $pdf->Cell(30, 8, utf8_decode('$' . $listaAsignados[$x]['saldo']), 'B', 0, 'R');
                 $pdf->Cell(30, 8, utf8_decode($listaAsignados[$x]['estatus_descripcion']), 'B', 0, 'R');
