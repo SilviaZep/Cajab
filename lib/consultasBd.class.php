@@ -124,7 +124,7 @@ class consultasBd {
       and s.fecha_evento <='{$fechaFin}'
       and s.nombre like '%{$nombreServicio}%'
       {$filtroCategoria}
-      order by servicio_padre asc,s.fecha_evento desc,s.nombre asc
+      order by servicio_padre asc,s.nombre asc
       limit {$lim} offset {$off};";
 //  $rsql = sprintf($sql);
 //echo $sql;
@@ -750,7 +750,7 @@ from servicio_cliente where id_servicio={$idServicio};";
     public static function getPagadoClientesServicio($idServicio, $limit, $offset) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
 
-        $sql = "select *,ifnull(((abonado+descuento)-precio),0) as saldo 
+        $sql = "select *,if(estatus_descripcion='Cancelado',0,ifnull(((abonado+descuento)-precio),0)) as saldo 
 from (
 select * ,
 (select ifnull(s.precio,0) from servicio s where s.id=sc.id_servicio) as precio,
@@ -874,7 +874,7 @@ where id_pago={$idPago};";
 
     public static function getListadoDiasMora($limit, $offset) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
-        $sql = "select *,ifnull(((abonado+descuento)-precio),0) as saldo   
+        $sql = "select *,if(estatus_descripcion='Cancelado',0,ifnull(((abonado+descuento)-precio),0)) as saldo    
 from (
 SELECT 
 s.nombre as servicio,
@@ -1204,28 +1204,31 @@ and '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
         }
 
         $sql = "
-                     select s.nombre ,
+                     select 
+                     c.categoria,
+                     s.nombre ,
             (CASE sc.estatus
             WHEN 1 THEN 'Activo'
             WHEN 2 THEN 'Pagado'
             WHEN 3 THEN 'Cancelado'
             WHEN 4 THEN 'Condonado'
             ELSE  'na' END) as estatus,s.fecha_evento
-            from servicio_cliente sc,servicio s
+            from servicio_cliente sc,servicio s,categoria_servicio c
             where sc.id_servicio=s.id
+            and s.categoria_id=c.id
             {$filtro}
-            order by s.fecha_evento,s.nombre
-            limit 0,15;
+             and s.fecha_evento>DATE_SUB(date(now()),INTERVAL 365 DAY)
+            order by categoria,s.nombre;
+           
                         ";
 // echo $sql;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    
-     public static function getListaServiciosHijos($idPapa) {
+
+    public static function getListaServiciosHijos($idPapa) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
-        
+
 
         $sql = "
                     select id from servicio
