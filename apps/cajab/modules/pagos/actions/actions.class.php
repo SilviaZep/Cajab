@@ -299,19 +299,24 @@ class pagosActions extends baseCajabProjectActions {
             //   $pdf->Cell(160, 8, utf8_decode('IVA: ' . "$"), 0, 0, 'R');
             //  $pdf->Ln(8);
             $pdf->SetFont('Arial', 'B', 9);
+            $pdf->Cell(130, 8, "", 0, 0, 'L');
             $pdf->Cell(30, 8, utf8_decode('SubTotal: '), 1, 0, 'L');
             $pdf->Cell(20, 8, utf8_decode("$" . $subTotal), 1, 0, 'R');
             $pdf->Ln(8);
+            $pdf->Cell(130, 8, "", 0, 0, 'L');
             $pdf->Cell(30, 8, utf8_decode('Descuento: '), 1, 0, 'L');
             $pdf->Cell(20, 8, utf8_decode("$" . $decuentoTotal), 1, 0, 'R');
             $pdf->Ln(8);
-            $pdf->Cell(30, 8, utf8_decode('Total: '), 1, 0, 'L');
-            $pdf->Cell(20, 8, utf8_decode("$" . $total), 1, 0, 'R');
+          //  $pdf->Cell(10, 8, "", 0, 0, 'L');
             $pdf->SetFont('Arial', '', 8);
             $pdf->Cell(30, 8, utf8_decode('Importe con letra:'), 1, 0, 'L');
             $pdf->SetFont('Arial', 'B', 9);
             $pdf->Cell(100, 8, utf8_decode($importeLetra), 1, 0, 'L');
+            $pdf->Cell(30, 8, utf8_decode('Total: '), 1, 0, 'L');
+            $pdf->Cell(20, 8, utf8_decode("$" . $total), 1, 0, 'R');
+
             $pdf->Ln(8);
+            $pdf->Cell(130, 8, "", 0, 0, 'L');
             if ($totalIngresado > 0) {
                 $pdf->Cell(30, 8, utf8_decode('Cambio: '), 1, 0, 'L');
                 $pdf->Cell(20, 8, utf8_decode("$" . ($totalIngresado - $total)), 1, 0, 'R');
@@ -590,9 +595,10 @@ class pagosActions extends baseCajabProjectActions {
 
             $fechaIni = $request->getParameter("fechaIni", 0);
             $fechaFin = $request->getParameter("fechaFin", 0);
+            
+            $nombreServicio = $request->getParameter("nombreServicio", '');
 
-            $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago);
-
+            $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago,$nombreServicio);
 
             for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {
                 if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
@@ -727,9 +733,9 @@ class pagosActions extends baseCajabProjectActions {
 
                 $historialServicios = null;
                 if ($idAlumno > 0) {
-                    $historialServicios = consultasBd::getHistorialServicios($idAlumno,"A");
+                    $historialServicios = consultasBd::getHistorialServicios($idAlumno, "A");
                 } else {
-                    $historialServicios = consultasBd::getHistorialServicios($idCliente,"C");
+                    $historialServicios = consultasBd::getHistorialServicios($idCliente, "C");
                 }
 
 
