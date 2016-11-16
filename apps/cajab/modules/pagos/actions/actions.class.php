@@ -675,11 +675,13 @@ class pagosActions extends baseCajabProjectActions {
 
             $pdf->Ln(8);
             $pdf->SetFont('Arial', 'B', 9);
-
+            
+            $pdf->Cell(180, 8,"", 0, 0, 'L');
             $pdf->Cell(40, 8, utf8_decode("Total Pagado "), 1, 0, 'L');
             $pdf->Cell(40, 8, utf8_decode("Total Descuento: "), 1, 0, 'L');
 
             $pdf->Ln(8);
+            $pdf->Cell(180, 8,"", 0, 0, 'L');
             $pdf->Cell(40, 8, utf8_decode("$" . $totalPagado), 1, 0, 'R');
             $pdf->Cell(40, 8, utf8_decode("$" . $totalDescuento), 1, 0, 'R');
 
