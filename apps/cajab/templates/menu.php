@@ -164,8 +164,8 @@
                                                                             </a>
                                                                             <ul class="dropdown-menu">
                                                                                 <li id="mEcAlumno"><a href="<?php echo url_for("@estado_cuenta_servicios_estatus"); ?>"><i class="fa fa-bars" aria-hidden="true"> Estado de cuenta por servicio</i></a></li>  
-                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_dias_mora"); ?>"><i class="fa fa-newspaper-o" aria-hidden="true"> Reporte faltantes de pago (dias de mora)</i></a></li>  		  
-                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_activos_alumnos"); ?>"><i class="fa fa-bookmark-o" aria-hidden="true"> Reporte Alumnos con servicios vigentes</i></a></li>  		  
+                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_dias_mora"); ?>"><i class="fa fa-newspaper-o" aria-hidden="true"> Cartera Vencida </i></a></li>  		  
+                                                                                <!--<li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_activos_alumnos"); ?>"><i class="fa fa-bookmark-o" aria-hidden="true"> Reporte Alumnos con servicios vigentes</i></a></li>  		  -->
 
                                                                             </ul>
                                                                         </li>
