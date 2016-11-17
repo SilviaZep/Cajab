@@ -32,12 +32,17 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
             var fechaFin = moment($scope.fechaFin).format('YYYY-MM-DD');
             var numRecibo = 0;
             var nombreServicio = '';
+            var nombreSeccion = '';
             if ($scope.numRecibo != "" && $scope.numRecibo != undefined && $scope.numRecibo != null) {
                 numRecibo = $scope.numRecibo;
             }
             if ($scope.nombreServicio != "" && $scope.nombreServicio != undefined && $scope.nombreServicio != null) {
                 nombreServicio = $scope.nombreServicio;
             }
+            if ($scope.nombreSeccion != "" && $scope.nombreSeccion != undefined && $scope.nombreSeccion != null) {
+                nombreSeccion = $scope.nombreSeccion;
+            }
+
 
             if ($scope.fechaIni > $scope.fechaFin) {
                 alert("La fecha Desde no puede ser mayor a Fecha Fin");
@@ -52,7 +57,8 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
                     fechaFin: fechaFin,
                     formaPago: $scope.formaPago,
                     numRecibo: numRecibo,
-                    nombreServicio: nombreServicio
+                    nombreServicio: nombreServicio,
+                    nombreSeccion: nombreSeccion
                 }
             }).then(
                     function (r) {
@@ -74,12 +80,17 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
             var fechaFin = moment($scope.fechaFin).format('YYYY-MM-DD');
             var numRecibo = 0;
             var nombreServicio = '';
+            var nombreSeccion = '';
             if ($scope.numRecibo != "" && $scope.numRecibo != undefined && $scope.numRecibo != null) {
                 numRecibo = $scope.numRecibo;
             }
             if ($scope.nombreServicio != "" && $scope.nombreServicio != undefined && $scope.nombreServicio != null) {
                 nombreServicio = $scope.nombreServicio;
             }
+            if ($scope.nombreSeccion != "" && $scope.nombreSeccion != undefined && $scope.nombreSeccion != null) {
+                nombreSeccion = $scope.nombreSeccion;
+            }
+
 
             if ($scope.fechaIni > $scope.fechaFin) {
                 alert("La fecha Desde no puede ser mayor a Fecha Fin");
@@ -88,7 +99,8 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
 
             window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_listado_movimientos_caja_imprimir?fechaIni=' +
                     fechaIni + '&fechaFin=' + fechaFin + '&formaPago=' + $scope.formaPago +
-                    '&numRecibo=' + numRecibo, '&nombreServicio=' + nombreServicio, '_blank');
+                    '&numRecibo=' + numRecibo+'&nombreServicio=' + nombreServicio+
+                    '&nombreSeccion=' + nombreSeccion, '_blank');
             return;
         };
 
@@ -102,8 +114,8 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
 
             var r = confirm("Desea eliminar los pagos relacionados con este recibo?");
             if (r != true) {
-                  return;
-            } 
+                return;
+            }
 
             $http({
                 method: 'POST',
