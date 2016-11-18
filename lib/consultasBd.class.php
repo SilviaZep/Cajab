@@ -740,7 +740,7 @@ and sc.estatus=1;";
     public static function getIdsServicioCliente($idServicio) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select distinct(id_alumno) as id_alumno
-from servicio_cliente where id_servicio={$idServicio};";
+from servicio_cliente where id_servicio={$idServicio} and id_alumno is not null;";
 
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
