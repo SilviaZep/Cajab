@@ -569,7 +569,7 @@ class pagosActions extends baseCajabProjectActions {
                         if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
                             $nombreAlumno = consultasInstituto::getDatosAlumnoXId($listadoMovimientos[$i]['id_alumno']);
                             $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
-                        }
+                        } 
                     }
                 }
 
@@ -623,9 +623,11 @@ class pagosActions extends baseCajabProjectActions {
                     }
                 } else {
                     if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
-                        $nombreAlumno = consultasInstituto::getDatosAlumnoXIdSeccionSeparados($listadoMovimientos[$i]['id_alumno']);
+                        $nombreAlumno = consultasInstituto::getDatosAlumnoXIdSeccionSeparados($listadoMovimientos[$i]['id_alumno'], $nombreSeccion);
                         $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
                         $listadoMovimientos[$i]['seccion'] = $nombreAlumno[0]['seccion'];
+                    } else {
+                        $listadoMovimientos[$i]['seccion'] = "";
                     }
                 }
             }
@@ -692,9 +694,9 @@ class pagosActions extends baseCajabProjectActions {
                 $pdf->Cell(25, 8, utf8_decode($listadoMovimientos[$x]['fecha_pago']), 'B', 0, 'L');
                 $pdf->Cell(25, 8, utf8_decode($listadoMovimientos[$x]['forma_pago']), 'B', 0, 'L');
                 $pdf->Cell(12, 8, utf8_decode('#' . $listadoMovimientos[$x]['id_pago']), 'B', 0, 'R');
-                
+
                 $pdf->Ln(4);
-                $pdf->Cell(98, 4,"", 0, 0, 'L');
+                $pdf->Cell(98, 4, "", 0, 0, 'L');
                 $pdf->Cell(70, 4, utf8_decode($listadoMovimientos[$x]['seccion']), 'B', 0, 'L');
 
 
