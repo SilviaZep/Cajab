@@ -260,6 +260,9 @@ estado_cuenta_servicios_estatus:
 estado_cuenta_asignados_a_servicio:
   url:   /estado_cuenta_asignados_a_servicio
   param: { module: estadoCuenta, action: asignadosAServicio }   
+estado_cuenta_asignados_a_servicio_agrupado:
+  url:   /estado_cuenta_asignados_a_servicio_agrupado
+  param: { module: estadoCuenta, action: asignadosAServicioAgrupado } 
 estado_cuenta_servicios_dias_mora:
   url:   /estado_cuenta_servicios_dias_mora
   param: { module: estadoCuenta, action: serviciosDiasMora }
@@ -281,6 +284,9 @@ estado_cuenta_ingresos_egresos_imprimir:
 estado_cuenta_asignados_a_servicio_imprimir:
   url:   /estado_cuenta_asignados_a_servicio_imprimir
   param: { module: estadoCuenta, action: asignadosAServicioImprimir }
+estado_cuenta_asignados_a_servicio_agrupado_imprimir:
+  url:   /estado_cuenta_asignados_a_servicio_agrupado_imprimir
+  param: { module: estadoCuenta, action: asignadosAServicioAgrupadoImprimir }
 estado_cuenta_listado_dias_mora_imprimir:
   url:   /estado_cuenta_listado_dias_mora_imprimir
   param: { module: estadoCuenta, action: listadoDiasMoraImprimir } 
