@@ -150,11 +150,57 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.idServicio = s.id;
             $scope.flagVentanaPrincipal = 2;
             $scope.tituloTabla = s.nombre;
-             $scope.idSerImp = s.id;
+            $scope.idSerImp = s.id;
             $scope.listadoAsignados();
 
 
         };
+
+        $scope.asignadosServicioAgrupado = function (s) {
+
+            $scope.idServicio = s.id;
+            $scope.flagVentanaPrincipal = 4;
+            $scope.tituloTabla = s.nombre;
+            $scope.idSerImp = s.id;
+            $scope.listadoAsignadosAgrupado();
+
+
+        };
+
+        $scope.listadoAsignadosAgrupado = function (pag) {
+            if (!pag) {
+                pag = 1;
+            }
+            $scope.countSeleccionadosAsignados = 0;
+            $scope.todosAsignados = false;
+
+            $scope.paginaActualAsignados = pag;
+            var numRegistros = 10000;//se cambio para que no salga el paginador
+            var max = numRegistros;
+            var offset = numRegistros * ($scope.paginaActualAsignados - 1);
+
+            var nombreCliente = $scope.nombreAsignado;
+
+            $http({
+                method: 'POST',
+                url: 'estado_cuenta_asignados_a_servicio_agrupado',
+                params: {
+                    offset: offset,
+                    limit: max,
+                    nombreCliente: nombreCliente,
+                    idServicio: $scope.idServicio
+                }
+            }).then(
+                    function (r) {
+                        debugger
+                        $scope.listaAsignadosAgrupado = r.data.listaAsignados;
+                        //  $scope.numeroRegistrosAsignadosAgrupado = r.data.total;
+                        //$scope.paginadorAsignados(max);
+                    }
+            );
+
+        };
+
 
         $scope.expandir = function () {
             $scope.flagVentanaPrincipal = 1;
@@ -173,6 +219,8 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             return;
 
         };
+
+
 
 
         $scope.paginaActualAsignados = 1;
@@ -308,6 +356,24 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
 
         };
 
+        $scope.colorRowAgrupado = function (a) {
+
+            if (a.saldo_suma == 0) {
+                return 'success';
+            }
+            if (a.saldo_suma < 0) {
+                return 'danger';
+            }
+            if (a.saldo_suma > 0) {
+                return 'warning';
+            }
+
+            return '';
+
+
+
+        };
+
 
         $scope.colorRowIngEgr = function (tipo) {
             if (tipo == 'INGRESO') {
@@ -371,6 +437,13 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             var idServicio = $scope.idSerImp;// id de servicio que se va a imprimir
             var nombreServicio = $scope.tituloTabla;
             window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/estado_cuenta_asignados_a_servicio_imprimir?idServicio=' + idServicio + '&nombreServicio=' + nombreServicio, '_blank');
+            return;
+        };
+
+        $scope.asignadosServicioAgrupadoImprimir = function () {
+            var idServicio = $scope.idSerImp;// id de servicio que se va a imprimir
+            var nombreServicio = $scope.tituloTabla;
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/estado_cuenta_asignados_a_servicio_agrupado_imprimir?idServicio=' + idServicio + '&nombreServicio=' + nombreServicio, '_blank');
             return;
         };
 
