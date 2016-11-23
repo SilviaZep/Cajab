@@ -794,6 +794,59 @@ limit {$limit} offset {$offset};";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+       public static function getPagadoClientesServicioAgrupado($idServicio, $limit, $offset) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        $sql = "select *,sum(precio) as precio_suma,
+sum(abonado) as abonado_suma,sum(descuento) as descuento_suma,
+sum((abonado+descuento)-precio) as saldo_suma
+from (
+select * ,
+(select ifnull(s.precio,0) from servicio s where s.id=sc.id_servicio) as precio,
+(case tipo_cliente
+when 1 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+when 2 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+end) as abonado,
+(case tipo_cliente
+when 1 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+when 2 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+end) as descuento,
+(case tipo_cliente
+when 1 then (select count(*) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+when 2 then (select count(*) from servicio_pago sp
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+end) as no_abonos,
+(CASE sc.tipo_cliente
+WHEN 1 THEN 'na'
+WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
+ELSE  'na' END) as cliente,
+(CASE sc.tipo_cliente
+WHEN 1 THEN 'Alumno'
+WHEN 2 THEN 'Cliente Externo'
+ELSE  'na' END) as tipo_descripcion,
+(CASE sc.estatus
+WHEN 1 THEN 'Activo'
+WHEN 2 THEN 'Pagado'
+WHEN 3 THEN 'Cancelado'
+WHEN 4 THEN 'Condonado'
+ELSE  'na' END) as estatus_descripcion,
+if(id_alumno is null,concat('c_',id_cliente),id_alumno) as id_cliente_ac
+from servicio_cliente sc
+where sc.id_servicio={$idServicio}
+and sc.estatus!='Cancelado')t 
+group by id_cliente_ac
+order by saldo_suma asc;
+limit {$limit} offset {$offset};";
+
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public static function getTotalPagadoClientesServicio($idServicio) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
