@@ -839,7 +839,7 @@ ELSE  'na' END) as estatus_descripcion,
 if(id_alumno is null,concat('c_',id_cliente),id_alumno) as id_cliente_ac
 from servicio_cliente sc
 where sc.id_servicio={$idServicio}
-and sc.estatus!='Cancelado')t 
+and sc.estatus!=3)t 
 group by id_cliente_ac
 order by saldo_suma asc;
 limit {$limit} offset {$offset};";
