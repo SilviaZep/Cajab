@@ -40,7 +40,7 @@
             <table class="table table-striped table-bordered" style="font-size: 14px !important">
                 <thead>
 
-                <td colspan="12" class="info"><b>Listado De Servicios</b></td>
+                <td colspan="13" class="info"><b>Listado De Servicios</b></td>
 
                 <tr>
 
@@ -58,6 +58,7 @@
 
                     <th class="col-md-1">Detalles por Alumno</th>
                     <th class="col-md-1">Detalles por Movimientos</th>
+                    <th class="col-md-1">Detalles por Alumno Agrupado</th>
 
 
 
@@ -83,7 +84,7 @@
                         <td>{{s.tip_cli}}</td>
                         <td>{{s.capacidad}}</td>
                         <td>{{s.inscritos}}</td>
-                        <td align="right">{{(s.inscritos*s.precio)| currency}}</td>
+                        <td align="right">{{(s.inscritos * s.precio)| currency}}</td>
 
 
                         <td> 
@@ -93,6 +94,10 @@
                         <td> <button type="button" ng-click="ingresosEgresos(s)" class="btn btn-success " >
                                 <i class="fa fa-tasks" aria-hidden="true"></i>
                             </button>
+                        </td>
+                        <td> 
+                            <button type="button" ng-click="asignadosServicioAgrupado(s)" class="btn btn-warning " >
+                                <i class="fa fa-user" aria-hidden="true"></i></button>
                         </td>
 
 
@@ -131,11 +136,11 @@
                     <!--<button ng-show="listaAsignados.length > 0"  type="button" class="btn btn-default pull-right" ng-click="imprimirAsignadosAServicio()">
                         <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
                     </button>-->
-                     <div class="group pull-right">
+                    <div class="group pull-right">
                         <button type="button" class="btn btn-default btn-xs" ng-click="asignadosServicioImprimir()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
                         <button type="button" class="btn btn-danger btn-xs" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
                     </div>
-                    
+
                 </h4>
             </td>
 
@@ -153,7 +158,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="a in listaAsignados " class="{{colorRow(a)}}">
+                <tr ng-repeat="a in listaAsignados" class="{{colorRow(a)}}">
                     <td>{{$index + 1}}</td>
                     <td>{{a.tipo_descripcion}}</td>
                     <td>{{a.cliente}}</td>
@@ -208,11 +213,11 @@
             <td colspan="10" class="info"><h4>
                     <b>{{tituloTabla}}</b> 
                     <span class="label label-default">Esperado:<b>{{totalEsperadoIE| currency}}</b></span>
-                    <span class="label label-primary">Pagado:<b>{{(totalPagadoIE+totalDescuentoIE)| currency}}</b></span>
+                    <span class="label label-primary">Pagado:<b>{{(totalPagadoIE + totalDescuentoIE)| currency}}</b></span>
                     <span class="label label-info">Descuento:<b>{{totalDescuentoIE| currency}}</b></span>
                     <span class="label label-warning">Egreso:<b>{{totalEgresoIE| currency}}</b></span>
                     <span class="label label-success">Total:<b>{{totalTotalIE| currency}}</b></span>
-                     
+
                     <div class="group pull-right">
                         <button type="button" class="btn btn-default btn-xs" ng-click="ingresosEgresosImprimir()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
                         <button type="button" class="btn btn-danger btn-xs" ng-click=" flagVentanaPrincipal = 1"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
@@ -272,6 +277,73 @@
                 <li><a ng-click="endAsignados()">FIN</a></li>
             </ul>
         </nav>
+    </div>
+    
+    
+     <div ng-show="flagVentanaPrincipal == 4">
+        <h4>Detalles de pagos de los clientes asignados al servicio Agrupado</h4>
+        <table class="table table-striped table-bordered">
+            <thead>
+
+            <td colspan="10" class="info"><h4><span class="label label-primary">{{numeroRegistrosAsignados}}</span> <b>{{tituloTabla}}</b>                          
+                    <!--<button ng-show="listaAsignados.length > 0"  type="button" class="btn btn-default pull-right" ng-click="imprimirAsignadosAServicio()">
+                        <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
+                    </button>-->
+                    <div class="group pull-right">
+                        <button type="button" class="btn btn-default btn-xs" ng-click="asignadosServicioAgrupadoImprimir()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+                        <button type="button" class="btn btn-danger btn-xs" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
+                    </div>
+
+                </h4>
+            </td>
+
+            <tr>
+                <th class="col-md-1"></th>
+                <th class="col-md-1">Tipo Cliente</th>                      
+                <th class="col-md-2">Nombre</th> 
+                <th class="col-md-1">Precio</th>
+                <th class="col-md-1">Abonado</th>
+                <th class="col-md-1">Descuento</th>
+         <!--      <th class="col-md-1">No.Abonos</th>-->
+                <th class="col-md-1">Saldo</th>
+          <!--      <th class="col-md-1">Estatus</th>  -->
+                <th class="col-md-1"></th>  
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="a in listaAsignadosAgrupado" class="{{colorRowAgrupado(a)}}">
+                    <td>{{$index + 1}}</td>
+                    <td>{{a.tipo_descripcion}}</td>
+                    <td>{{a.cliente}}</td>
+
+
+                    <td align="right">{{a.precio_suma| currency}}</td> 
+                    <td align="right">{{a.abonado_suma| currency}}</td>
+                    <td align="right">{{a.descuento_suma| currency}}</td>
+                <!--    <td>
+                        <button ng-show="a.no_abonos > 0" type="button" class="btn btn-info btn-xs" ng-click="listaPagos(a.id)" data-toggle="modal" data-target="#mListaPagos">
+                            Detalle <span class="badge">{{a.no_abonos}}</span>
+                        </button>
+                        <p ng-show="a.no_abonos <= 0"><span class="badge">0</span></p>
+                    </td>-->
+                    <td align="right">{{a.saldo_suma| currency}}
+                    </td>
+
+        <!--            <td> 
+                        <span ng-if="a.estatus_descripcion == 'Cancelado'" class="label label-danger">{{a.estatus_descripcion}}</span>
+                        <span ng-if="a.estatus_descripcion == 'Activo'" class="label label-success">{{a.estatus_descripcion}}</span>
+                        <span ng-if="a.estatus_descripcion == 'Pagado'" class="label label-primary">{{a.estatus_descripcion}}</span>
+                    </td>-->
+                    <td>
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(a.tipo_descripcion, a.cliente)">
+                            <i class="fa fa-share" aria-hidden="true"></i> Caja
+                        </button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+      
     </div>
 
 
