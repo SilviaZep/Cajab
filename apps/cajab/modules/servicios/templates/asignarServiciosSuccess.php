@@ -189,9 +189,9 @@
                                     </button>
                                 </div>
                                 <div class="btn-group pull-right">
-                                    <button class="btn btn-info " ng-click="guardarAlumnos()"
+                                    <button class="btn btn-info " ng-click="guardarAlumnos()" id="botonGuardarAlumnos"
                                             title="Asignar servicio a los Alumnos seleccionados">
-                                        <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosAlumnos}}</span>
+                                        <i class="fa fa-floppy-o" id="iconoGuardarAlumnos"></i> Guardar <span class="badge">{{countSeleccionadosAlumnos}}</span>
                                     </button>
                                 </div>
                             </h4>
@@ -274,9 +274,9 @@
                                     </button>
                                 </div>
                                 <div class="btn-group pull-right">
-                                    <button class="btn btn-info pull-right" ng-click="guardarClientes()"
+                                    <button class="btn btn-info pull-right" ng-click="guardarClientes()" id="botonGuardarClientes"
                                             title="Asignar servicio a los clientes seleccionados">
-                                        <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar <span class="badge">{{countSeleccionadosClientes}}</span>
+                                        <i class="fa fa-floppy-o" id="iconoGuardarClientes"></i> Guardar <span class="badge">{{countSeleccionadosClientes}}</span>
                                     </button>
                                 </div>
 
