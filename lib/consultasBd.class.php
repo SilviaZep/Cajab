@@ -1286,8 +1286,8 @@ and '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
         $sql = "
                     select id from servicio
                     where id_servicio={$idPapa}
-                    and date(now())<=date(fecha_fin);
-                        ";
+                    and date(now())<=date(fecha_fin) 
+                    and activo=1  ";
 // echo $sql;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
