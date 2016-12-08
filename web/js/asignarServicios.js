@@ -285,7 +285,8 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                     return;
                 }
             }
-
+            actualizarBoton('iconoGuardarAlumnos', 'fa-floppy-o', 'fa-spinner fa-spin');
+            bloquearBoton('botonGuardarAlumnos', true);
             $http({
                 method: 'POST',
                 url: 'servicios_asignar_alumnos_servicio',
@@ -296,6 +297,8 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                 }
             }).then(
                     function (r) {
+                        actualizarBoton('iconoGuardarAlumnos', 'fa-spinner fa-spin', 'fa-floppy-o');
+                        bloquearBoton('botonGuardarAlumnos', false);
                         alert(r.data.mensaje);
                         $scope.listadoAlumnos();
                         $scope.listadoAsignados();
@@ -475,7 +478,8 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                     return;
                 }
             }
-
+            actualizarBoton('iconoGuardarClientes', 'fa-floppy-o', 'fa-spinner fa-spin');
+            bloquearBoton('botonGuardarClientes', true);
             $http({
                 method: 'POST',
                 url: 'servicios_asignar_clientes_servicio',
@@ -486,6 +490,8 @@ app.controller('asignarServiciosController', ['$http', '$scope', function ($http
                 }
             }).then(
                     function (r) {
+                        actualizarBoton('iconoGuardarClientes', 'fa-spinner fa-spin', 'fa-floppy-o');
+                        bloquearBoton('botonGuardarClientes', false);
                         alert(r.data.mensaje);
                         $scope.listadoClientes();
                         $scope.listadoAsignados();
@@ -835,6 +841,15 @@ function finActualizar() {
 
 
 }
+
+function actualizarBoton(name, cA, cB) {
+    $('#' + name).removeClass(cA);
+    $('#' + name).addClass(cB);
+}
+function bloquearBoton(name, flag) {
+    $('#' + name).prop("disabled", flag);
+}
+
 
 
 function expandirElemento(x) {
