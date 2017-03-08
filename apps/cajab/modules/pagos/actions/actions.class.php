@@ -769,6 +769,7 @@ class pagosActions extends baseCajabProjectActions {
                 $historialServicios = null;
                 if ($idAlumno > 0) {
                     $historialServicios = consultasBd::getHistorialServicios($idAlumno, "A");
+                    
                 } else {
                     $historialServicios = consultasBd::getHistorialServicios($idCliente, "C");
                 }

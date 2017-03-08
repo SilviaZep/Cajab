@@ -34,8 +34,9 @@
 
                 <tr>
                     <th class="col-md-2">Nombre</th>
+                    <th class="col-md-1">Seccion</th> 
                     <th class="col-md-1">Grado</th>                        
-                    <th class="col-md-1">Grupo</th>                        
+                    <th class="col-md-1">Grupo</th>                                             
                    <!-- <th class="col-md-1"></th>-->
                     <th class="col-md-1"></th>
                 </tr>
@@ -45,6 +46,7 @@
 
 
                         <td>{{a.nombre}}</td>
+                        <td>{{a.nivel}}</td> 
                         <td>{{a.grado}}</td>  
                         <td>{{a.grupo}}</td>      
                        <!-- <td>
