@@ -130,7 +130,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
                 $listaAsignados = consultasBd::getPagadoClientesServicioAgrupado((int) $idServicio, (int) $limit, (int) $offset);
                 for ($i = 0; $i < sizeof($listaAsignados); $i ++) {
                     if ($listaAsignados[$i]['cliente'] == "na" && $listaAsignados[$i]['tipo_descripcion'] == "Alumno") {
-                        $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAsignados[$i]['id_alumno']);
+                        $vecNombreAlumno = consultasInstituto::getDatosCompletosAlumnoXId($listaAsignados[$i]['id_alumno']);
                         $listaAsignados[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
                         if ($flagFiltroNombre) {
                             for ($j = 0; $j < $tam; $j ++) {
