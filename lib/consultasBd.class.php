@@ -667,25 +667,25 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
     public static function getServiciosPagandoAlumno($idAlumno) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "
-select s.nombre as servicio,s.aplica_parcialidad,cs.descripcion as categoria,
-s.precio,
-ifnull((select sum(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) from servicio_pago sp 
-where sp.id_alumno=sc.id_alumno 
-and sp.id_servicio=sc.id),0) as abonado,
-(select count(*) from servicio_pago sp 
-where sp.id_alumno=sc.id_alumno 
-and sp.id_servicio=sc.id) as no_pagos,
-sc.*
-from 
-servicio_cliente sc,servicio s,categoria_servicio cs
-where sc.id_servicio=s.id 
-and s.categoria_id=cs.id
-and sc.id_alumno={$idAlumno}
-and sc.estatus=1;";
-
-        $st = $conn->execute($sql);
-        return $st->fetchAll(PDO::FETCH_ASSOC);
-    }
+		select s.nombre as servicio,s.aplica_parcialidad,cs.categoria,
+		s.precio,
+		ifnull((select sum(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) from servicio_pago sp 
+		where sp.id_alumno=sc.id_alumno 
+		and sp.id_servicio=sc.id),0) as abonado,
+		(select count(*) from servicio_pago sp 
+		where sp.id_alumno=sc.id_alumno 
+		and sp.id_servicio=sc.id) as no_pagos,
+		sc.*
+		from 
+		servicio_cliente sc,servicio s,categoria_servicio cs
+		where sc.id_servicio=s.id 
+		and s.categoria_id=cs.id
+		and sc.id_alumno={$idAlumno}
+		and sc.estatus=1;";
+		
+		        $st = $conn->execute($sql);
+		        return $st->fetchAll(PDO::FETCH_ASSOC);
+		    }
 
     public static function getActualizarEstatusServicioCliente($idServicioCliente) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
