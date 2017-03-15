@@ -39,11 +39,9 @@ class pagosActions extends baseCajabProjectActions {
                 $listaServicios = consultasBd::getServiciosPagandoAlumno((int) $idAlumno);
 
                 for ($i = 0; $i < sizeof($listaServicios); $i ++) {
-                    $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaServicios[$i]['id_alumno']);
+                    $vecNombreAlumno = consultasInstituto::getDatosCompletosAlumnoXId($listaServicios[$i]['id_alumno']);
                     $listaServicios[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
                 }
-
-
 
                 $r = array("mensaje" => "Ok", "listaServicios" => $listaServicios); //a partir de php 5.4 es con corchetes[]
                 return $this->sendJSON($r);
