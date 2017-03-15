@@ -76,7 +76,7 @@
                 <th class="col-md-1">Descuento</th>
 
                 <th class="col-md-1">Fecha Pago</th>
-                <th class="col-md-1">Forma Pago </th>
+                <th class="col-md-1">Forma Pago </th>               
                 <th class="col-md-1"># Recibo</th>
 
 
@@ -97,12 +97,16 @@
                     <td>{{m.nombre_servicio}}</td>
                     <td>{{m.tipo_descripcion}}</td>
                     <td>{{m.cliente}}</td>
+                    
                     <td align="right">{{m.monto| currency}}</td>
                     <td align="right">{{m.descuento| currency}}</td>
                     <td>{{m.fecha_pago| date:"dd/MM/yyyy"}}</td>
 
                     <td>{{m.forma_pago}}</td>
-                    <td><b># {{m.id_pago}}</b>
+                    <td><div style="padding: 10px"><b># {{m.id_pago}} </b>
+                     <span ng-if="m.estatus_pago == 'Cancelado'" class="label label-warning">{{m.estatus_pago}}</span>
+                    <span ng-if="m.estatus_pago == 'Pagado'" class="label label-info">{{m.estatus_pago}}</span>                 
+                    </div>
                         <div class="form-group">
 
                             <button type="button" class="btn btn-default" ng-click="reImprimirTicket(m.id_pago)">

@@ -1160,37 +1160,37 @@ order by no_servicios)t
 
 
         $sql = "
-select s.nombre,s.precio,sp.monto as pago,ifnull(sp.descuento,0) as descuento,0 as egreso,sp.fecha_pago,
-sp.tipo_cliente,sp.id_alumno,sp.id_cliente,
-CASE sc.tipo_cliente
-WHEN 1 THEN ifnull((select nombre from alumno_pruebas where id=sc.id_alumno),'na')
-WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
-ELSE  'na' END as cliente,'INGRESO' as modo_pago,
-(CASE sc.tipo_cliente
-WHEN 1 THEN 'Alumno'
-WHEN 2 THEN 'Cliente Externo'
-ELSE  'na' END) as tipo_descripcion,
-(select count(*) from servicio_cliente sc where sc.estatus in (1,2) and sc.id_servicio=s.id) as inscritos
-from servicio_pago sp,servicio_cliente sc,servicio s
-where sp.id_servicio=sc.id 
-and sc.id_servicio=s.id
-and s.id={$idServicio}
-union 
-select 
-s.nombre,s.precio,0 as pago,0 as descuento,e.cantidad as egreso,e.fecha_registro as fecha_pago,
-2 as tipo_cliente,null as id_alumno,0 as id_cliente,
-p.nombre as cliente,'EGRESO' as modo_pago,'PROVEEDOR' as tipo_descripcion,
-(select count(*) from servicio_cliente sc where sc.estatus in (1,2) and sc.id_servicio=s.id) as inscritos
-from egresos e,servicio s,proveedores p
-where e.id_servicio=s.id
-and e.id_proveedor=p.id
-and s.id={$idServicio}
-
-order by fecha_pago;
-";
-        $st = $conn->execute($sql);
-        return $st->fetchAll(PDO::FETCH_ASSOC);
-    }
+		select s.nombre,s.precio,sp.monto as pago,ifnull(sp.descuento,0) as descuento,0 as egreso,sp.fecha_pago,
+		sp.tipo_cliente,sp.id_alumno,sp.id_cliente,
+		CASE sc.tipo_cliente
+		WHEN 1 THEN ifnull((select nombre from alumno_pruebas where id=sc.id_alumno),'na')
+		WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
+		ELSE  'na' END as cliente,'INGRESO' as modo_pago,
+		(CASE sc.tipo_cliente
+		WHEN 1 THEN 'Alumno'
+		WHEN 2 THEN 'Cliente Externo'
+		ELSE  'na' END) as tipo_descripcion,
+		(select count(*) from servicio_cliente sc where sc.estatus in (1,2) and sc.id_servicio=s.id) as inscritos
+		from servicio_pago sp,servicio_cliente sc,servicio s
+		where sp.id_servicio=sc.id 
+		and sc.id_servicio=s.id
+		and s.id={$idServicio}
+		union 
+		select 
+		s.nombre,s.precio,0 as pago,0 as descuento,e.cantidad as egreso,e.fecha_registro as fecha_pago,
+		2 as tipo_cliente,null as id_alumno,0 as id_cliente,
+		p.nombre as cliente,'EGRESO' as modo_pago,'PROVEEDOR' as tipo_descripcion,
+		(select count(*) from servicio_cliente sc where sc.estatus in (1,2) and sc.id_servicio=s.id) as inscritos
+		from egresos e,servicio s,proveedores p
+		where e.id_servicio=s.id
+		and e.id_proveedor=p.id
+		and s.id={$idServicio}
+		
+		order by fecha_pago;
+		";
+		        $st = $conn->execute($sql);
+		        return $st->fetchAll(PDO::FETCH_ASSOC);
+	}
 
     public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago, $nombreServicio) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
@@ -1205,27 +1205,31 @@ order by fecha_pago;
 
         $sql = "
             select 
-s.nombre as nombre_servicio,
-(CASE sp.tipo_cliente
-WHEN 1 THEN 'na'
-WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sp.id_cliente),'na')
-ELSE  'na' END) as cliente,
-(CASE sp.tipo_cliente
-WHEN 1 THEN 'Alumno'
-WHEN 2 THEN 'Cliente Externo'
-ELSE  'na' END) as tipo_descripcion,
-ifnull(sp.monto,0) as monto,
-ifnull(sp.descuento,0) as descuento,
-sp.forma_pago,sp.id_pago,
-date(sp.fecha_pago) as fecha_pago,sp.id_alumno
-from servicio_pago sp,servicio_cliente sc,servicio s
-where sp.id_servicio=sc.id
-and sc.id_servicio=s.id
-and '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
-{$filtroIdPago}
-{$filtroFormaPago}
-    and s.nombre like '%{$nombreServicio}%'
-    order by sp.fecha_pago desc
+	s.nombre as nombre_servicio,
+	(CASE sp.tipo_cliente
+	WHEN 1 THEN 'na'
+	WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sp.id_cliente),'na')
+	ELSE  'na' END) as cliente,
+	(CASE sp.tipo_cliente
+	WHEN 1 THEN 'Alumno'
+	WHEN 2 THEN 'Cliente Externo'
+	ELSE  'na' END) as tipo_descripcion,
+	ifnull(sp.monto,0) as monto,
+	ifnull(sp.descuento,0) as descuento,
+	sp.forma_pago,sp.id_pago,
+	date(sp.fecha_pago) as fecha_pago,sp.id_alumno,
+	(CASE sp.estatus
+	WHEN 1 THEN 'Pagado'
+	WHEN 0 THEN 'Cancelado'
+	ELSE  '' END) as estatus_pago
+	from servicio_pago sp,servicio_cliente sc,servicio s
+	where sp.id_servicio=sc.id
+	and sc.id_servicio=s.id
+	and '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
+	{$filtroIdPago}
+	{$filtroFormaPago}
+	    and s.nombre like '%{$nombreServicio}%'
+	    order by sp.fecha_pago desc
 ;";
 
 // echo $sql;
@@ -1256,8 +1260,7 @@ and '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
             $filtro = " and sc.id_cliente={$idAC} ";
         }
 
-        $sql = "
-                     select 
+        $sql = "select 
                      c.categoria,
                      s.nombre ,
             (CASE sc.estatus
@@ -1278,7 +1281,40 @@ and '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-
+//nuevo silvia
+    public static function getHistorialServiciosDetallePago($idAC, $tipoCliente) {
+    	$conn = Doctrine_Manager::getInstance()->getConnection("default");
+    	$filtro = " ";
+    	if ($tipoCliente == "A") {
+    		$filtro = " sc.id_alumno={$idAC} ";
+    	} else {
+    		$filtro = " sc.id_cliente={$idAC} ";
+    	}
+    
+    	$sql = "select
+    	sc.id,
+    	c.categoria,
+    	s.nombre ,
+    	(CASE sc.estatus
+    	WHEN 1 THEN 'Activo'
+    	WHEN 2 THEN 'Pagado'
+    	WHEN 3 THEN 'Cancelado'
+    	WHEN 4 THEN 'Condonado'
+    	ELSE  'na' END) as estatus,s.fecha_evento,
+    	(SELECT MAX(DATE_FORMAT(sp.fecha_pago,'%d/%m/%Y')) FROM servicio_pago sp WHERE sc.id=sp.id_servicio AND sp.estatus=1 GROUP BY sc.id_servicio) as fecha_pago
+    	from servicio_cliente sc
+    	INNER JOIN servicio s ON sc.id_servicio=s.id
+    	INNER JOIN categoria_servicio c ON s.categoria_id=c.id    	
+    	where  	{$filtro}
+    	and s.fecha_evento>DATE_SUB(date(now()),INTERVAL 365 DAY)
+    	order by categoria,s.nombre;
+    	 
+    	";
+    	// echo $sql; die();
+    	$st = $conn->execute($sql);
+    	return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+//***
     public static function getListaServiciosHijos($idPapa) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
 
