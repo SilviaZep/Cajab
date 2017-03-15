@@ -768,16 +768,13 @@ class pagosActions extends baseCajabProjectActions {
 
                 $historialServicios = null;
                 if ($idAlumno > 0) {
-                    $historialServicios = consultasBd::getHistorialServicios($idAlumno, "A");
+                    $historialServicios = consultasBd::getHistorialServiciosDetallePago($idAlumno, "A");
                     
                 } else {
-                    $historialServicios = consultasBd::getHistorialServicios($idCliente, "C");
+                    $historialServicios = consultasBd::getHistorialServiciosDetallePago($idCliente, "C");
                 }
 
-
-
-
-
+               //echo "<pre>";   print_r($historialServicios);die();
                 $r = array("mensaje" => "Ok", "historialServicios" => $historialServicios); //a partir de php 5.4 es con corchetes[]
                 return $this->sendJSON($r);
             } else {

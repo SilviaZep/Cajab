@@ -338,21 +338,20 @@
                 </div>
                 <div class="modal-body">
 
-                    <div >
+                    <div style="overflow-y:auto;height:400px">
                         <table class="table table-striped table-bordered" style="font-size: 14px !important">
                             <thead>
 
-                            <td colspan="4" class="info">Ultimos Servicios del alumno</td>
+                            <td colspan="5" class="info">Ultimos Servicios del alumno</td>
 
                             <tr>
                                 <th >Categoria</th>
                                 <th >Servicio</th>
                                 <th >Estatus</th>
                                 <th >Fecha Evento</th>
+                                <th >Fecha Pago</th>
                             </tr>
-
-
-                            </thead>
+                           </thead>
                             <tbody>
                                 <tr ng-repeat="ls in listadoHistorial">
                                     <td >{{ls.categoria}}</td>
@@ -363,6 +362,7 @@
                                         <span ng-if="ls.estatus == 'Pagado'" class="label label-primary">{{ls.estatus}}</span>
                                     </td>
                                     <td >{{ls.fecha_evento| date:'dd/MM/yyyy'}}</td>
+                                    <td >{{ls.fecha_pago}}</td>
                                 </tr>
 
 
