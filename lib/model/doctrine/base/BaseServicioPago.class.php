@@ -168,6 +168,15 @@ abstract class BaseServicioPago extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => '',
              ));
+		  $this->hasColumn('estatus', 'integer', 4, array(
+             'type' => 'integer',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => 4,
+             ));
     }
 
     public function setUp()

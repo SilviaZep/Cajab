@@ -674,7 +674,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
 		and sp.id_servicio=sc.id),0) as abonado,
 		(select count(*) from servicio_pago sp 
 		where sp.id_alumno=sc.id_alumno 
-		and sp.id_servicio=sc.id) as no_pagos,
+		and sp.id_servicio=sc.id and sp.estatus=1) as no_pagos,
 		sc.*
 		from 
 		servicio_cliente sc,servicio s,categoria_servicio cs
@@ -699,9 +699,9 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "
 
-select fecha_pago,forma_pago,ifnull(monto,0) as monto,ifnull(descuento,0) as descuento 
-from servicio_pago sp 
-where  sp.id_servicio={$idServicioCliente}";
+		select fecha_pago,forma_pago,ifnull(monto,0) as monto,ifnull(descuento,0) as descuento 
+		from servicio_pago sp 
+		where  sp.id_servicio={$idServicioCliente} AND sp.estatus=1";
 
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
@@ -714,22 +714,22 @@ where  sp.id_servicio={$idServicioCliente}";
     public static function getServiciosPagandoCliente($idCliente) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "
-select s.nombre as servicio,s.aplica_parcialidad,cs.descripcion as categoria,a.nombre as cliente,
-s.precio,
-ifnull((select sum(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) from servicio_pago sp 
-where sp.id_cliente=sc.id_cliente 
-and sp.id_servicio=sc.id),0) as abonado,
-(select count(*) from servicio_pago sp 
-where sp.id_cliente=sc.id_cliente 
-and sp.id_servicio=sc.id) as no_pagos,
-sc.*
-from 
-servicio_cliente sc,servicio s,categoria_servicio cs,clientes_externos a
-where sc.id_servicio=s.id 
-and s.categoria_id=cs.id
-and sc.id_cliente=a.id
-and sc.id_cliente={$idCliente}
-and sc.estatus=1;";
+		select s.nombre as servicio,s.aplica_parcialidad,cs.descripcion as categoria,a.nombre as cliente,
+		s.precio,
+		ifnull((select sum(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) from servicio_pago sp 
+		where sp.id_cliente=sc.id_cliente and sp.estatus=1
+		and sp.id_servicio=sc.id),0) as abonado,
+		(select count(*) from servicio_pago sp 
+		where sp.id_cliente=sc.id_cliente and sp.estatus=1
+		and sp.id_servicio=sc.id) as no_pagos,
+		sc.*
+		from 
+		servicio_cliente sc,servicio s,categoria_servicio cs,clientes_externos a
+		where sc.id_servicio=s.id 
+		and s.categoria_id=cs.id
+		and sc.id_cliente=a.id
+		and sc.id_cliente={$idCliente}
+		and sc.estatus=1;";
 
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
@@ -751,45 +751,45 @@ from servicio_cliente where id_servicio={$idServicio} and id_alumno is not null;
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
 
         $sql = "select *,if(estatus_descripcion='Cancelado',0,ifnull(((abonado+descuento)-precio),0)) as saldo 
-from (
-select * ,
-(select ifnull(s.precio,0) from servicio s where s.id=sc.id_servicio) as precio,
-(case tipo_cliente
-when 1 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
-when 2 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
-end) as abonado,
-(case tipo_cliente
-when 1 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
-when 2 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
-end) as descuento,
-(case tipo_cliente
-when 1 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
-when 2 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
-end) as no_abonos,
-(CASE sc.tipo_cliente
-WHEN 1 THEN 'na'
-WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
-ELSE  'na' END) as cliente,
-(CASE sc.tipo_cliente
-WHEN 1 THEN 'Alumno'
-WHEN 2 THEN 'Cliente Externo'
-ELSE  'na' END) as tipo_descripcion,
-(CASE sc.estatus
-WHEN 1 THEN 'Activo'
-WHEN 2 THEN 'Pagado'
-WHEN 3 THEN 'Cancelado'
-WHEN 4 THEN 'Condonado'
-ELSE  'na' END) as estatus_descripcion
-from servicio_cliente sc
-where sc.id_servicio={$idServicio})t 
-order by saldo asc,id_alumno asc
-limit {$limit} offset {$offset};";
+		from (
+		select * ,
+		(select ifnull(s.precio,0) from servicio s where s.id=sc.id_servicio) as precio,
+		(case tipo_cliente
+		when 1 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
+		when 2 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
+		end) as abonado,
+		(case tipo_cliente
+		when 1 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
+		when 2 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
+		end) as descuento,
+		(case tipo_cliente
+		when 1 then (select count(*) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
+		when 2 then (select count(*) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
+		end) as no_abonos,
+		(CASE sc.tipo_cliente
+		WHEN 1 THEN 'na'
+		WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
+		ELSE  'na' END) as cliente,
+		(CASE sc.tipo_cliente
+		WHEN 1 THEN 'Alumno'
+		WHEN 2 THEN 'Cliente Externo'
+		ELSE  'na' END) as tipo_descripcion,
+		(CASE sc.estatus
+		WHEN 1 THEN 'Activo'
+		WHEN 2 THEN 'Pagado'
+		WHEN 3 THEN 'Cancelado'
+		WHEN 4 THEN 'Condonado'
+		ELSE  'na' END) as estatus_descripcion
+		from servicio_cliente sc
+		where sc.id_servicio={$idServicio})t 
+		order by saldo asc,id_alumno asc
+		limit {$limit} offset {$offset};";
 
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
@@ -806,21 +806,21 @@ select * ,
 (select ifnull(s.precio,0) from servicio s where s.id=sc.id_servicio) as precio,
 (case tipo_cliente
 when 1 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 when 2 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and estatus=1)
 end) as abonado,
 (case tipo_cliente
 when 1 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 when 2 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as descuento,
 (case tipo_cliente
 when 1 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 when 2 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as no_abonos,
 (CASE sc.tipo_cliente
 WHEN 1 THEN 'na'
@@ -857,15 +857,15 @@ select * ,
 (select ifnull(s.precio,0) from servicio s where s.id=sc.id_servicio) as precio,
 (case tipo_cliente
 when 1 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 when 2 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as abonado,
 (case tipo_cliente
 when 1 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 when 2 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as descuento,
 (case tipo_cliente
 when 1 then (select count(*) from servicio_pago sp
@@ -898,7 +898,7 @@ where sc.id_servicio={$idServicio})t
     public static function getConsecutivoPago() {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select (ifnull(max(id_pago),0)+1) as consecutivo 
-from servicio_pago;";
+           from servicio_pago;";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -906,21 +906,21 @@ from servicio_pago;";
     public static function getTicketPago($idPago) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select 
-(select nombre 
-from servicio where id=
-(select sc.id_servicio from servicio_cliente sc where sc.id=sp.id_servicio)) as nombre_servicio,
-(CASE sp.tipo_cliente
-WHEN 1 THEN 'na'
-WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sp.id_cliente),'na')
-ELSE  'na' END) as cliente,
-(CASE sp.tipo_cliente
-WHEN 1 THEN 'Alumno'
-WHEN 2 THEN 'Cliente Externo'
-ELSE  'na' END) as tipo_descripcion,
-sp.monto,sp.descuento,
-sp.forma_pago,sp.id_pago,sp.fecha_pago,sp.id_alumno
-from servicio_pago sp
-where id_pago={$idPago};";
+	(select nombre 
+	from servicio where id=
+	(select sc.id_servicio from servicio_cliente sc where sc.id=sp.id_servicio)) as nombre_servicio,
+	(CASE sp.tipo_cliente
+	WHEN 1 THEN 'na'
+	WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sp.id_cliente),'na')
+	ELSE  'na' END) as cliente,
+	(CASE sp.tipo_cliente
+	WHEN 1 THEN 'Alumno'
+	WHEN 2 THEN 'Cliente Externo'
+	ELSE  'na' END) as tipo_descripcion,
+	sp.monto,sp.descuento,
+	sp.forma_pago,sp.id_pago,sp.fecha_pago,sp.id_alumno
+	from servicio_pago sp
+	where id_pago={$idPago};";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -928,51 +928,51 @@ where id_pago={$idPago};";
     public static function getListadoDiasMora($limit, $offset) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select *,if(estatus_descripcion='Cancelado',0,ifnull(((abonado+descuento)-precio),0)) as saldo    
-from (
-SELECT 
-s.nombre as servicio,
-(CASE sc.tipo_cliente
-WHEN 1 THEN 'Alumno'
-WHEN 2 THEN 'Cliente Externo'
-ELSE  'na' END) as tipo_descripcion,
-(CASE sc.tipo_cliente
-WHEN 1 THEN 'na'
-WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
-ELSE  'na' END) as cliente,
-s.precio,
-(case sc.tipo_cliente
-when 1 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
-when 2 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
-end) as abonado,
-(case sc.tipo_cliente
-when 1 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
-when 2 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
-end) as descuento,
-(case sc.tipo_cliente
-when 1 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
-when 2 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
-end) as no_abonos,
-date(s.fecha_fin) as fecha_fin,
-date(now()) as hoy,
-DATEDIFF(now(),s.fecha_fin) as dias_mora,
-(CASE sc.estatus
-WHEN 1 THEN 'Activo'
-WHEN 2 THEN 'Pagado'
-WHEN 3 THEN 'Cancelado'
-WHEN 4 THEN 'Condonado'
-ELSE  'na' END) as estatus_descripcion,
-sc.id_alumno,sc.id
-FROM servicio_cliente sc,servicio s
-where sc.id_servicio=s.id and sc.estatus=1)t 
-order by dias_mora desc,saldo asc
-limit {$offset},{$limit} ;
-";
+		from (
+		SELECT 
+		s.nombre as servicio,
+		(CASE sc.tipo_cliente
+		WHEN 1 THEN 'Alumno'
+		WHEN 2 THEN 'Cliente Externo'
+		ELSE  'na' END) as tipo_descripcion,
+		(CASE sc.tipo_cliente
+		WHEN 1 THEN 'na'
+		WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
+		ELSE  'na' END) as cliente,
+		s.precio,
+		(case sc.tipo_cliente
+		when 1 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
+		when 2 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
+		end) as abonado,
+		(case sc.tipo_cliente
+		when 1 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
+		when 2 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
+		end) as descuento,
+		(case sc.tipo_cliente
+		when 1 then (select count(*) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+		when 2 then (select count(*) from servicio_pago sp
+		where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+		end) as no_abonos,
+		date(s.fecha_fin) as fecha_fin,
+		date(now()) as hoy,
+		DATEDIFF(now(),s.fecha_fin) as dias_mora,
+		(CASE sc.estatus
+		WHEN 1 THEN 'Activo'
+		WHEN 2 THEN 'Pagado'
+		WHEN 3 THEN 'Cancelado'
+		WHEN 4 THEN 'Condonado'
+		ELSE  'na' END) as estatus_descripcion,
+		sc.id_alumno,sc.id
+		FROM servicio_cliente sc,servicio s
+		where sc.id_servicio=s.id and sc.estatus=1)t 
+		order by dias_mora desc,saldo asc
+		limit {$offset},{$limit} ;
+		";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -994,15 +994,15 @@ ELSE  'na' END) as cliente,
 s.precio,
 (case sc.tipo_cliente
 when 1 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 when 2 then (select ifnull(sum(ifnull(sp.monto,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as abonado,
 (case sc.tipo_cliente
 when 1 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 when 2 then (select ifnull(sum(ifnull(sp.descuento,0)),0) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as descuento,
 (case sc.tipo_cliente
 when 1 then (select count(*) from servicio_pago sp
@@ -1031,27 +1031,27 @@ where sc.id_servicio=s.id and sc.estatus=1)t ;
     public static function getEstadoCuentaAlumno($idAlumno, $fechaIni, $fechaFin) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select * from (
-select sc.id as id_sc,sc.fecha_registro,s.nombre,
-s.precio as adeuda, 0 as pago
-from servicio_cliente sc,servicio s
-where  sc.id_servicio=s.id
-and sc.id_alumno={$idAlumno}
-union 
-select sp.id_servicio as id_sc,sp.fecha_pago,s.nombre,
-0 as adeuda,(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) as pago
-from servicio_pago sp,servicio_cliente sc,servicio s
-where sp.id_servicio=sc.id
-and sc.id_servicio=s.id
-and sp.id_servicio in (select sc.id
-from servicio_cliente sc,servicio s
-where  sc.id_servicio=s.id
-and sc.id_alumno={$idAlumno})
-)t
-where date(fecha_registro)>='{$fechaIni}'
-and date(fecha_registro)<='{$fechaFin}'
-order by fecha_registro
-;
-";
+		select sc.id as id_sc,sc.fecha_registro,s.nombre,
+		s.precio as adeuda, 0 as pago
+		from servicio_cliente sc,servicio s
+		where  sc.id_servicio=s.id
+		and sc.id_alumno={$idAlumno}
+		union 
+		select sp.id_servicio as id_sc,sp.fecha_pago,s.nombre,
+		0 as adeuda,(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) as pago
+		from servicio_pago sp,servicio_cliente sc,servicio s
+		where sp.id_servicio=sc.id and sp.estatus=1
+		and sc.id_servicio=s.id
+		and sp.id_servicio in (select sc.id
+		from servicio_cliente sc,servicio s
+		where  sc.id_servicio=s.id
+		and sc.id_alumno={$idAlumno})
+		)t
+		where date(fecha_registro)>='{$fechaIni}'
+		and date(fecha_registro)<='{$fechaFin}'
+		order by fecha_registro
+		;
+		";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -1059,27 +1059,26 @@ order by fecha_registro
     public static function getEstadoCuentaCliente($idCliente, $fechaIni, $fechaFin) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "select * from (
-select sc.id as id_sc,sc.fecha_registro,s.nombre,
-s.precio as adeuda, 0 as pago
-from servicio_cliente sc,servicio s
-where  sc.id_servicio=s.id
-and sc.id_cliente={$idCliente}
-union 
-select sp.id_servicio as id_sc,sp.fecha_pago,s.nombre,
-0 as adeuda,(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) as pago
-from servicio_pago sp,servicio_cliente sc,servicio s
-where sp.id_servicio=sc.id
-and sc.id_servicio=s.id
-and sp.id_servicio in (select sc.id
-from servicio_cliente sc,servicio s
-where  sc.id_servicio=s.id
-and sc.id_cliente={$idCliente})
-)t
-where date(fecha_registro)>='{$fechaIni}'
-and date(fecha_registro)<='{$fechaFin}'
-order by fecha_registro
-;
-";
+			select sc.id as id_sc,sc.fecha_registro,s.nombre,
+			s.precio as adeuda, 0 as pago
+			from servicio_cliente sc,servicio s
+			where  sc.id_servicio=s.id
+			and sc.id_cliente={$idCliente}
+			union 
+			select sp.id_servicio as id_sc,sp.fecha_pago,s.nombre,
+			0 as adeuda,(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) as pago
+			from servicio_pago sp,servicio_cliente sc,servicio s
+			where sp.id_servicio=sc.id and sp.estatus=1
+			and sc.id_servicio=s.id
+			and sp.id_servicio in (select sc.id
+			from servicio_cliente sc,servicio s
+			where  sc.id_servicio=s.id
+			and sc.id_cliente={$idCliente})
+			)t
+			where date(fecha_registro)>='{$fechaIni}'
+			and date(fecha_registro)<='{$fechaFin}'
+			order by fecha_registro
+			;";
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -1172,7 +1171,7 @@ order by no_servicios)t
 		ELSE  'na' END) as tipo_descripcion,
 		(select count(*) from servicio_cliente sc where sc.estatus in (1,2) and sc.id_servicio=s.id) as inscritos
 		from servicio_pago sp,servicio_cliente sc,servicio s
-		where sp.id_servicio=sc.id 
+		where sp.id_servicio=sc.id  and sp.estatus=1
 		and sc.id_servicio=s.id
 		and s.id={$idServicio}
 		union 
