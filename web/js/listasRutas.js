@@ -50,11 +50,15 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
         };
 
 
-        $scope.imprimirListasRutasAlumnos = function () {
-            var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');           
-            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/transporte_imprimir_rutas_alumnos?fecha='+fechaIni+'&idRuta='+ $scope.idRuta, '_blank');
+        $scope.imprimirListasRutasAlumnos = function (r) {
+            if (r) {
+                $scope.idRuta = r;
+            }
+            var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/transporte_imprimir_rutas_alumnos?fecha=' + fechaIni + '&idRuta=' + $scope.idRuta, '_blank');
             return;
         };
+
 
 
         $scope.listadoRutas = function () {
@@ -342,7 +346,7 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
         $scope.guardarCambioEstatus = function () {
             var idAlumnoListaCambio = $scope.idAlumnoListaCambio;
             var estatus = $scope.estatusCambioA;
-            
+
 
             $http({
                 method: 'POST',
@@ -354,7 +358,7 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
             }).then(
                     function (r) {
                         cerrarModal('modalCambiarEstatus');
-                        alert(r.data.mensaje);                        
+                        alert(r.data.mensaje);
                         $scope.listadoAlumnosPorDiaRuta($scope.ruta);
                         for (i = 0; i < $scope.listaAlumnos.length; i++) {
                             $scope.listaAlumnos[i].seleccionado = false;

@@ -305,7 +305,7 @@ class transporteActions extends baseCajabProjectActions {
         }
     }
 
-    public function executeAlumnosPorRutaDia(sfWebRequest $request) {
+     public function executeAlumnosPorRutaDia(sfWebRequest $request) {
         try {
             if ($request->isMethod(sfWebRequest::POST)) {
 
@@ -347,8 +347,13 @@ class transporteActions extends baseCajabProjectActions {
                 for ($i = 0; $i < sizeof($listaAlumnos); $i ++) {
                     $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$i]['id_alumno']);
                     $listaAlumnos[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
-                    $vecDatosAlumno = consultasInstituto::getSoloDatosAlumnoXId($listaAlumnos[$i]['id_alumno']);
+                    $vecDatosAlumno = consultasInstituto::getMasDatosAlumnoXId($listaAlumnos[$i]['id_alumno'], $fecha);
                     $listaAlumnos[$i]['datos'] = $vecDatosAlumno[0]['datos'];
+                    $listaAlumnos[$i]['baja_solo'] = $vecDatosAlumno[0]['baja_solo'];
+                    $listaAlumnos[$i]['direccion_baja'] = $vecDatosAlumno[0]['direccion_baja'];
+                    $listaAlumnos[$i]['persona_recibe'] = $vecDatosAlumno[0]['persona_recibe'];
+                    $listaAlumnos[$i]['observaciones'] = $vecDatosAlumno[0]['observaciones'];
+                    $listaAlumnos[$i]['extracurricular'] = $vecDatosAlumno[0]['extracurricular'];
                 }
 
 
@@ -546,11 +551,16 @@ class transporteActions extends baseCajabProjectActions {
                 $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$i]['id_alumno']);
                 $listaAlumnos[$i]['nombre'] = $vecNombreAlumno[0]['nombre'];
 
-                $vecDatosAlumno = consultasInstituto::getSoloDatosAlumnoXId($listaAlumnos[$i]['id_alumno']);
+                $vecDatosAlumno = consultasInstituto::getMasDatosAlumnoXId($listaAlumnos[$i]['id_alumno'], $fecha);
                 $listaAlumnos[$i]['datos'] = $vecDatosAlumno[0]['datos'];
+                $listaAlumnos[$i]['baja_solo'] = $vecDatosAlumno[0]['baja_solo'];
+                $listaAlumnos[$i]['direccion_baja'] = $vecDatosAlumno[0]['direccion_baja'];
+                $listaAlumnos[$i]['persona_recibe'] = $vecDatosAlumno[0]['persona_recibe'];
+                $listaAlumnos[$i]['observaciones'] = $vecDatosAlumno[0]['observaciones'];
+                $listaAlumnos[$i]['extracurricular'] = $vecDatosAlumno[0]['extracurricular'];
             }
             $rutaDetail = Doctrine::getTable('Ruta')->find((int) $idRuta);
-            //print_r($listaAlumnos);die();    			
+            //print_r($listaAlumnos);die();             
             $pdf->SetFont('Arial', '', 11);
             $pdf->SetTextColor(88, 89, 91);
             $pdf->Cell(0, 8, utf8_decode($rutaDetail->getNombre()), 'B', 0, 'C');
@@ -570,34 +580,39 @@ class transporteActions extends baseCajabProjectActions {
 
                 $listaAlumnos = consultasBd::getListasInscritosDiaRuta($fecha, $dia, (int) $listaRutas[$i]['id']);
                 for ($j = 0; $j < sizeof($listaAlumnos); $j ++) {
-                    $vecNombreAlumno = consultasInstituto::getAlumnoXId("*" . $listaAlumnos[$j]['id_alumno']);
+                    $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$j]['id_alumno']);
                     $listaAlumnos[$j]['nombre'] = $vecNombreAlumno[0]['nombre'];
 
-                    $vecDatosAlumno = consultasInstituto::getSoloDatosAlumnoXId($listaAlumnos[$i]['id_alumno']);
-                    $listaAlumnos[$i]['datos'] = $vecDatosAlumno[0]['datos'];
+                    $vecDatosAlumno = consultasInstituto::getMasDatosAlumnoXId($listaAlumnos[$i]['id_alumno'], $fecha);
+                    $listaAlumnos[$j]['datos'] = $vecDatosAlumno[0]['datos'];
+                    $listaAlumnos[$i]['baja_solo'] = $vecDatosAlumno[0]['baja_solo'];
+                    $listaAlumnos[$i]['direccion_baja'] = $vecDatosAlumno[0]['direccion_baja'];
+                    $listaAlumnos[$i]['persona_recibe'] = $vecDatosAlumno[0]['persona_recibe'];
+                    $listaAlumnos[$i]['observaciones'] = $vecDatosAlumno[0]['observaciones'];
+                    $listaAlumnos[$i]['extracurricular'] = $vecDatosAlumno[0]['extracurricular'];
                 }
                 if (sizeof($listaAlumnos) > 0) {
-                    if ($y == 1) {//si es la primera fila 
-                        $y = 2;
-                    } else {
-                        $pdf->Ln(30);
+                    if ($y > 1) {
+                        //  $pdf->Ln(30);
+                        $pdf->AddPage('L');
                     }
                     $pdf->SetFont('Arial', '', 10);
                     $pdf->SetTextColor(88, 89, 91);
-                    $pdf->Cell(0, 8, utf8_decode(''), 'B', 0, 'C');
-                    $pdf->Ln(10);
+                    $pdf->Cell(0, 8, utf8_decode($listaRutas[$i]['nombre']), 'B', 0, 'C');
+                    $pdf->Ln(8);
                     $pdf->SetFont('Arial', '', 10);
                     $pdf->SetTextColor(88, 89, 91);
-                    $pdf->Cell(50, 8, utf8_decode('Ruta: ' . $listaRutas[$i]['nombre']), 'B', 0, 'L');
+                    //$pdf->Cell(100, 8, utf8_decode('Ruta: ' . $listaRutas[$i]['nombre']), 'B', 0, 'L');
                     $pdf->Cell(50, 8, utf8_decode('Horario: ' . $listaRutas[$i]['horario']), 'B', 0, 'L');
                     $pdf->Cell(40, 8, utf8_decode('Fecha: ' . $fecha), 'B', 0, 'L');
                     $pdf->Cell(50, 8, utf8_decode('Conductor: ' . $listaRutas[$i]['chofer']), 'B', 0, 'L');
-                    $pdf->Ln(15);
+                    $pdf->Ln(8);
                     $this->pdfListaAlumnos($pdf, $listaAlumnos);
-                    // $y++;
-                    //if ($y <= sizeof($listaRutas)) {
-                    //$pdf->AddPage();
-                    // }
+                    //   $pdf->AddPage('L');
+                    $y++;
+                    /* if ($y <= sizeof($listaRutas)) {
+                      $pdf->AddPage();
+                      } */
                 }
             }
         }

@@ -1,7 +1,7 @@
 var app = angular.module('servicio', []);
 
 app.controller('servicioController', ['$http', '$scope', function ($http, $scope) {
-       
+
         $scope.paginaActual = 1;
 
         var date = new Date();
@@ -14,6 +14,11 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         $scope.fechaIni = primerDia;
         $scope.fechaFin = ultimoDia;
         $scope.categoria = "0";
+
+        $scope.selCiclo = "0";
+        $scope.selGrado = "0";
+        $scope.selGrupo = "0";
+
 
 
         $scope.limpiarModalServicio = function () {
@@ -30,6 +35,9 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.estatus = "NUEVO";
             $scope.mIdServicio = 0;
             $scope.mTipoServicio = 0;
+            $scope.selCiclo = "0";
+            $scope.selGrado = "0";
+            $scope.selGrupo = "0";
 
         };
 
@@ -96,7 +104,10 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
                     mCapacidad: mCapacidad,
                     mIdServicioReferencia: mIdServicioReferencia, //para clonar
                     mIdServicioPadre: mIdServicioPadre, //para hacer su hijo
-                    mTipoServicio: mTipoServicio
+                    mTipoServicio: mTipoServicio,
+                    mselCiclo: $scope.selCiclo,
+                    mselGrado: $scope.selGrado,
+                    mselGrupo: $scope.selGrupo
                 }
             }).then(
                     function (r) {
@@ -132,6 +143,9 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.mFechaFin = new Date(s.fecha_fin);
             $scope.mTipoServicio = s.tipo_transporte;
             $scope.estatus = "DETALLE";
+            $scope.selCiclo = s.ciclo_id;
+            $scope.selGrado = s.grado_id;
+            $scope.selGrupo = s.grupo_id;
         };
 
         $scope.editarServicio = function (s) {
@@ -150,6 +164,9 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             $scope.mFechaFin = new Date(s.fecha_fin);
             $scope.mTipoServicio = s.tipo_transporte;
             $scope.estatus = "EDITAR";
+            $scope.selCiclo = s.ciclo_id;
+            $scope.selGrado = s.grado_id;
+            $scope.selGrupo = s.grupo_id;
         };
 
         $scope.clonarServicio = function (s) {
@@ -182,10 +199,10 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             var idServicio = id;
 
             var r = confirm("Confirma la Eliminacion del servicio");
-            
+
             debugger;
-            if (r == false) {                
-                return ;
+            if (r == false) {
+                return;
             }
 
 
@@ -444,7 +461,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
 
 //Funcion relocate
 
-        $scope.llamarPagos = function (tipo, nombre) {            
+        $scope.llamarPagos = function (tipo, nombre) {
             var myWindow = window.open('');//, '_blank');
             if (tipo == 'Alumno') {
                 myWindow.location = 'pagos_pagar_servicio';
@@ -453,6 +470,73 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
             }
             document.cookie = "nombre=" + nombre;
         };
+
+        //---------------CONSULTAS--------------------
+        $scope.cicloCambio = function () {
+
+            if ($scope.selCiclo != "0") {
+                $scope.selGrado = "0";
+                $scope.consultaGrados();
+            }
+
+        };
+        $scope.gradoCambio = function () {
+            if ($scope.selGrado != "0") {
+                $scope.selGrupo = "0";
+                $scope.consultaGrupos();
+            }
+
+        };
+
+        $scope.consultaCiclos = function () {
+            $http({
+                method: 'POST',
+                url: 'filtros-ciclos',
+                params: {
+                }
+            }).then(
+                    function (r) {
+                    	debugger
+                        $scope.listaCiclos = r.data.listaCiclos;
+                    }
+            );
+        };
+
+        $scope.consultaGrados = function () {
+            $http({
+                method: 'POST',
+                url: 'filtros-grados',
+                params: {
+                    idCiclo: $scope.selCiclo
+                }
+            }).then(
+                    function (r) {
+                        $scope.listaGrados = r.data.listaGrados;
+                    }
+            );
+        };
+
+        $scope.consultaGrupos = function () {
+            $http({
+                method: 'POST',
+                url: 'filtros-grupos',
+                params: {
+                    grado: $scope.selGrado,
+                    idCiclo: $scope.selCiclo
+                }
+            }).then(
+                    function (r) {
+                        $scope.listaGrupos = r.data.listaGrupos;
+                    }
+            );
+        };
+
+
+
+
+
+        $scope.consultaCiclos();
+
 
 
     }]);
@@ -481,6 +565,6 @@ function inicioActualizarBoton(idBoton) {
     $("#" + idBoton).prop("disabled", true);
 }
 
-function finActualizarBoton(idBoton) {    
+function finActualizarBoton(idBoton) {
     $("#" + idBoton).prop("disabled", false);
 }

@@ -16,9 +16,19 @@
                 </button>
 
 
-                <button ng-show="flagGuardar == true" type="button" class="btn btn-success pull-right" ng-click="guardarListasPorRuta()">
-                    <i class="fa fa-floppy-o" aria-hidden="true"> Guardar Listas</i> 
-                </button>
+
+                <div class="pull-right">
+                    <div class="btn-group ">
+                        <button ng-show="flagGuardar == false && fechaIni <= fechaHoy" type="button" class="btn btn-default" ng-click="imprimirListasRutasAlumnos(0)">
+                            <i class="fa fa-print" aria-hidden="true"> Imprimir Lista</i>
+                        </button>
+                    </div>
+                    <div class="btn-group ">
+                        <button ng-show="flagGuardar == true" type="button" class="btn btn-success pull-right" ng-click="guardarListasPorRuta()">
+                            <i class="fa fa-floppy-o" aria-hidden="true"> Guardar Listas</i> 
+                        </button>
+                    </div>
+                </div>
 
 
 
