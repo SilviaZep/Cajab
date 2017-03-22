@@ -31,7 +31,6 @@
                     </h4>
 
                 </td>
-
                 <tr>
                     <th class="col-md-2">Nombre</th>
                     <th class="col-md-1">Seccion</th> 
@@ -40,6 +39,7 @@
                    <!-- <th class="col-md-1"></th>-->
                     <th class="col-md-1"></th>
                 </tr>
+
                 </thead>
                 <tbody>
                     <tr ng-repeat="a in listaAlumnos">
@@ -56,7 +56,7 @@
                         </td>-->
                         <td>
                             <span >                            
-                                <button type="button" class="btn btn-info btn-xs" ng-click="contraer(a.id)">
+                                <button type="button" class="btn btn-info btn-xs" ng-click="contraer(a);listadoServicios(a);">
                                     <i class="fa fa-angle-double-right" aria-hidden="true"></i> Agregar Servicio
                                 </button>
 
@@ -88,104 +88,75 @@
     <div ng-show="detalle == true">
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
+                <tr>
+                    <td colspan="7" class="info">
+                        <h3>Lista de Servicios que puede inscribirse el alumno 
+                            <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"> Cerrar</button>
+                        </h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" class="default">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label for="exampleInputName2">Buscar Servicio: </label>
+                                <input type="text" ng-model="mNombreServicio" class="form-control" id="exampleInputEmail2" >
+                                <button type="button" ng-click="listadoServicios();" class="btn btn-info btn-sm">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                </button>  
 
-            <td colspan="11" class="info"><h3>Servicios del alumno <small>(Pagando)</small>
-                    <button type="button" class="btn btn-default btn-sx " ng-click="historialServicios()" data-toggle="modal" data-target="#mListaServicios"><i class="fa fa-list-ol" aria-hidden="true"></i> Servicios Alumno</button>
-                    <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
-                </h3>
-            </td>
 
-            <tr>
-                <th class="col-md-2">Categoria</th>
-                <th class="col-md-2">Servicio</th>
-                <th class="col-md-2">Cliente </th>
-                <th >Parcialidad</th>
-                <th >Precio</th>
-                <th >Abonado</th>
-                <th >No.Abonos</th>
-                <th >Adeuda</th>               
-                <th class="col-md-2">Pagara</th>
-                <th class="col-md-2">Descuento</th>
-                <th class="col-md-2">Forma Pago<br/>
-                    <select class="form-control" ng-model="globalFormaPago" ng-change="actualizarFormaPago()">
-                        <option value="EFECTIVO">EFECTIVO</option>
-                        <option value="TARDEB">TARJETA DEBITO</option>
-                        <option value="TARCRE">TARJETA CREDITO</option>
-                        <option value="CHEQUE">CHEQUE</option>
-                        <option value="PAYPAL">PAYPAL</option>
-                    </select>
-                </th>
 
-            </tr>
+                            </div>
+                            <div class="form-group pull-right">
+                                <button type="button" ng-click="asignarServiciosSeleccionados();" class="btn btn-success btn-sm">
+                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Asignar Servicios
+                                </button>  
+                            </div>
+                        </form>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="col-md-2">Servicio Padre</th>
+                    <th class="col-md-2">Categoria</th>
+                    <th class="col-md-2">Nombre Servicio</th>
+                    <th >Precio</th>
+                    <th >Fecha Inicio</th>
+                    <th >Fecha Fin</th>
+                    <th></th>
+
+
+                </tr>
 
 
             </thead>
             <tbody>
                 <tr ng-repeat="s in listaServicios">
+                    <td>{{s.nombre_padre}}</td>
                     <td>{{s.categoria}}</td>
-                    <td><b>{{s.servicio}}</b></td>
-                    <td>{{s.cliente}}</td>
-                    <td>
-                        <span ng-show="s.aplica_parcialidad == 1" class="label label-success">Aplica</span>
-                        <span ng-show="s.aplica_parcialidad == 0" class="label label-default">No aplica</span>
-                    </td>
-
+                    <td><b>{{s.nombre}}</b></td>
                     <td align="right">{{s.precio| currency}}</td>
-                    <td align="right">
-                        {{s.abonado| currency}}
-                    </td>
-                    <td >
-                        <button ng-show="s.no_pagos > 0" type="button" class="btn btn-info btn-xs" ng-click="listaPagos(s.id)" data-toggle="modal" data-target="#mListaPagos">
-                            Detalle <span class="badge">{{s.no_pagos}}</span>
-                        </button>
-
-
-                    </td>
-
-                    <td align="right" class="warning">{{(s.precio - s.abonado)| currency}}</td>
-
+                    <td align="right">{{s.f_evento| date:'dd/MM/yyyy'}}</td>
+                    <td align="right">{{s.f_fin| date:'dd/MM/yyyy'}}</td>
                     <td>
-                        <input type="number" step="any" min="0" class="form-control" ng-model="s.pagara" ng-change="totalPagaraCalculo()">
-                    </td>
-                    <td>
-                        <input type="number" step="any" min="0" class="form-control" ng-model="s.descuento" ng-change="totalPagaraCalculo()">
-                    </td>
-                    <td >
-                        <select class="form-control" ng-model="s.formaPago">
-                            <option value="EFECTIVO">EFECTIVO</option>
-                            <option value="TARDEB">TARJETA DEBITO</option>
-                            <option value="TARCRE">TARJETA CREDITO</option>
-                            <option value="CHEQUE">CHEQUE</option>
-                            <option value="PAYPAL">PAYPAL</option>
-                        </select>
-                    </td>
-                </tr>
 
-                <tr >
-                    <td colspan="3"></td>
-                    <td class="success"><h4><b>Total:</b></h4></td>
+                        <span ng-show="!s.seleccionado">
+                            <button type="button" class="btn btn-success btn-xs" ng-click="s.seleccionado = true">
+                                <i class="fa fa-plus"> Agregar</i>
+                            </button>
+                        </span>
+                        <span ng-show="s.seleccionado">
+                            <button class="btn btn-danger btn-xs" ng-click="s.seleccionado = false">
+                                <i class="fa fa-times" aria-hidden="true"> Quitar</i>
+                            </button>
+                        </span>
 
-                    <td align="right" class="success"><h4><b>{{totalPrecio| currency}}</b></h4></td>
-                    <td align="right" class="success"><h4><b>{{totalAbonado| currency}}</b></h4></td>
-                    <td></td>
-                    <td align="right" class="success"><h4><b>{{(totalPrecio - totalAbonado)| currency}}</b></h4></td>
-                    <td align="right" class="success"><h4><b>{{totalPagara| currency}}</b></h4></td>
-                    <td align="right" class="info"><h4><b>{{totalDescuento| currency}}</b></h4></td>
+                    </td>
 
                 </tr>
-                <tr >
-                    <td colspan="7"></td>
-                    <td><h4><b>Total Pagado:</b></h4></td>  
-                    <td align="right" class="success"><input type="number" step="any" min="0" class="form-control" ng-model="totalIngresado" ></td>                   
-                </tr>
-                <tr >
-                    <td colspan="7"></td>
-                    <td><h4><b>Cambio:</b></h4></td>  
-                    <td align="right" class="warning"><h4><b>{{(totalIngresado - totalPagara)| currency}}</b></h4></td>
-                    <td align="center" class="success">
-                        <button type="button" class="btn btn-success" id="botonGuardarPago" ng-click="guardarPago()"><i class="fa fa-usd" aria-hidden="true"></i> Guardar Pago <span class="badge ng-binding" >{{numPagos}}</span> </button>
-                    </td>
-                </tr>
+
 
 
             </tbody>
@@ -351,7 +322,7 @@
                                 <th >Fecha Evento</th>
                                 <th >Fecha Pago</th>
                             </tr>
-                           </thead>
+                            </thead>
                             <tbody>
                                 <tr ng-repeat="ls in listadoHistorial">
                                     <td >{{ls.categoria}}</td>
