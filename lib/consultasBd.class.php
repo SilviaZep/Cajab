@@ -76,7 +76,7 @@ class consultasBd {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT *
           FROM usuario ORDER by nombre_completo ASC";
-       
+    $sql = sprintf($sql);
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -682,10 +682,10 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
 		and s.categoria_id=cs.id
 		and sc.id_alumno={$idAlumno}
 		and sc.estatus=1;";
-		
-		        $st = $conn->execute($sql);
-		        return $st->fetchAll(PDO::FETCH_ASSOC);
-		    }
+
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public static function getActualizarEstatusServicioCliente($idServicioCliente) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
@@ -794,8 +794,8 @@ from servicio_cliente where id_servicio={$idServicio} and id_alumno is not null;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-       public static function getPagadoClientesServicioAgrupado($idServicio, $limit, $offset) {
+
+    public static function getPagadoClientesServicioAgrupado($idServicio, $limit, $offset) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
 
         $sql = "select *,sum(precio) as precio_suma,
@@ -1187,9 +1187,9 @@ order by no_servicios)t
 		
 		order by fecha_pago;
 		";
-		        $st = $conn->execute($sql);
-		        return $st->fetchAll(PDO::FETCH_ASSOC);
-	}
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago, $nombreServicio) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
@@ -1280,17 +1280,18 @@ order by no_servicios)t
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+
 //nuevo silvia
     public static function getHistorialServiciosDetallePago($idAC, $tipoCliente) {
-    	$conn = Doctrine_Manager::getInstance()->getConnection("default");
-    	$filtro = " ";
-    	if ($tipoCliente == "A") {
-    		$filtro = " sc.id_alumno={$idAC} ";
-    	} else {
-    		$filtro = " sc.id_cliente={$idAC} ";
-    	}
-    
-    	$sql = "select
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $filtro = " ";
+        if ($tipoCliente == "A") {
+            $filtro = " sc.id_alumno={$idAC} ";
+        } else {
+            $filtro = " sc.id_cliente={$idAC} ";
+        }
+
+        $sql = "select
     	sc.id,
     	c.categoria,
     	s.nombre ,
@@ -1309,10 +1310,11 @@ order by no_servicios)t
     	order by categoria,s.nombre;
     	 
     	";
-    	// echo $sql; die();
-    	$st = $conn->execute($sql);
-    	return $st->fetchAll(PDO::FETCH_ASSOC);
+        // echo $sql; die();
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+
 //***
     public static function getListaServiciosHijos($idPapa) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
@@ -1324,6 +1326,54 @@ order by no_servicios)t
                     and date(now())<=date(fecha_fin) 
                     and activo=1  ";
 // echo $sql;
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /* Consultar servicios que le puedem aplicar al alumno     */
+
+    public static function getListadoServiciosAplicanAlumno($idAlumno, $idCiclo, $idGrado, $idGrupo, $nombreServicio) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        $sql = " 
+            select 
+ s.*,cs.descripcion as categoria,date(s.fecha_evento) as f_evento,date(s.fecha_fin) as f_fin,
+ ifnull((select san.nombre from servicio san where san.id =s.id_servicio),'') as nombre_padre
+ from servicio s,categoria_servicio cs
+ where s.categoria_id=cs.id 
+ and (s.ciclo_id=0 or s.ciclo_id={$idCiclo})
+ and (s.grado_id=0 or s.grado_id={$idGrado})
+ and (s.grupo_id=0 or s.grupo_id={$idGrupo})
+ and ( (select count(*) from servicio_cliente sc where sc.id_alumno={$idAlumno}) = 0 or s.categoria_id=4 or (s.categoria_id=1 and s.tipo_transporte=3) )
+ and date(s.fecha_inicio)<=date(now()) 
+ and date(now())<=date(s.fecha_fin) 
+ and s.nombre like '%{$nombreServicio}%'
+ order by nombre;";
+
+//  $rsql = sprintf($sql);
+// echo $sql;
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getTotalListadoServiciosAplicanAlumno($idAlumno, $idCiclo, $idGrado, $idGrupo, $nombreServicio) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        $sql = " 
+            select 
+ count(*) as total
+ from servicio s,categoria_servicio cs
+ where s.categoria_id=cs.id 
+ and (s.ciclo_id=0 or s.ciclo_id={$idCiclo})
+ and (s.grado_id=0 or s.grado_id={$idGrado})
+ and (s.grupo_id=0 or s.grupo_id={$idGrupo})
+ and ( (select count(*) from servicio_cliente sc where sc.id_alumno={$idAlumno}) = 0 or s.categoria_id=4 or (s.categoria_id=1 and s.tipo_transporte=3) )
+ and date(s.fecha_inicio)<=date(now()) 
+ and date(now())<=date(s.fecha_fin) 
+ and s.nombre like '%{$nombreServicio}%'  ;";
+
+//  $rsql = sprintf($sql);
+//echo $sql;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
