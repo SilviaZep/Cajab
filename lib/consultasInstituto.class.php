@@ -3,16 +3,16 @@
 /*
   Clase para hacer consultas a la bd
  */
-$GLOBALS['instBD'] = "default";
+//$GLOBALS['instBD'] = "default";
 
-//$GLOBALS['instBD']="instituto";
+$GLOBALS['instBD']="instituto";
 class consultasInstituto {
 
     //SISE DESEA USAR EL LOCAL  CAMBIAR
     //'instutto' en $conn = Doctrine_Manager::getInstance()->getConnection("instituto"); por 'default'  
     public static function getListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo, $alumno, $limit, $offset, $idsVenta, $idsPadre) {
 
-        $campos = "select idalumno as id,CONCAT(appat,' ',apmat,' ',nombre) as nombre,seccion as nivel,GradoPuro as grado,NombreGrupo as grupo";
+        $campos = "select idalumno as id,CONCAT(appat,' ',apmat,' ',nombre) as nombre,seccion as nivel,GradoPuro as grado,NombreGrupo as grupo,ifnull(idseccion,0) as idCiclo,ifnull(idgrado,0) as idGrado,ifnull(idgrupo,0) as idGrupo";
 
         $condicion = " WHERE alumnoactivo=1 ";
 
