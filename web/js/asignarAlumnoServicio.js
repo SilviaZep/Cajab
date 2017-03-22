@@ -27,8 +27,8 @@ app.controller('asignarAlumnoServicioController', ['$http', '$scope', function (
 
         $scope.fechaIniEC = primerDia;
         $scope.fechaFinEC = ultimoDia;
-        
-        $scope.idAlumnoSel=0;
+
+        $scope.alumnoSel;
 
 
         $scope.sumTotal = function (listaFiltro) {
@@ -42,9 +42,9 @@ app.controller('asignarAlumnoServicioController', ['$http', '$scope', function (
             }
         };
 
-        $scope.contraer = function (idAlumno) {
-            $scope.listadoServicios(idAlumno);
-            $scope.idAlumnoSel=idAlumno;
+        $scope.contraer = function (alumno) {
+            // $scope.listadoServicios(idAlumno);
+            $scope.alumnoSel = alumno;
             $scope.detalle = true;
             // contraerElemento('serviciosVigentesDiv');
             // expandirElemento('edicionServiciosDiv');
@@ -86,141 +86,18 @@ app.controller('asignarAlumnoServicioController', ['$http', '$scope', function (
             }
         };
 
-        $scope.guardarPago = function () {
-
-            var idServicios = "";
-            var idAlumno = "";
-            var montosPagara = "";
-            var montosDescuento = "";
-            var formaPagos = "";
-
-
-            for (i = 0; i < $scope.listaServicios.length; i++) {
-
-                if (Number.isNaN($scope.listaServicios[i].descuento) || $scope.listaServicios[i].descuento == null || $scope.listaServicios[i].descuento == undefined) {
-                    $scope.listaServicios[i].descuento = 0;
-                }
-                if (Number.isNaN($scope.listaServicios[i].pagara) || $scope.listaServicios[i].pagara == null || $scope.listaServicios[i].pagara ==undefined) {
-                    $scope.listaServicios[i].pagara = 0;
-                }
-
-                if (parseFloat($scope.listaServicios[i].pagara) > 0 || $scope.listaServicios[i].descuento > 0) {
-
-                    if ((parseFloat($scope.listaServicios[i].abonado) + parseFloat($scope.listaServicios[i].pagara) + parseFloat($scope.listaServicios[i].descuento)) > parseFloat($scope.listaServicios[i].precio)) {
-                        alert("No puedes pagar mas del precio que especifica el servicio: " +
-                                $scope.listaServicios[i].servicio);
-                        return;
-                    }
-                    if ($scope.listaServicios[i].aplica_parcialidad == '0') {//no hay parcialidades
-                        if ((parseFloat($scope.listaServicios[i].pagara)+parseFloat($scope.listaServicios[i].descuento)) < parseFloat($scope.listaServicios[i].precio)) {//tiene que pagar completo
-                            alert("Tienes que pagar el monto completo ya que no aplica parcialidad el servicio: " +
-                                    $scope.listaServicios[i].servicio);
-                            return;
-                        }
-                    }
-
-                    idServicios += $scope.listaServicios[i].id + ",";
-                    idAlumno = $scope.listaServicios[i].id_alumno;
-                    montosPagara += $scope.listaServicios[i].pagara + ",";
-                    montosDescuento += $scope.listaServicios[i].descuento + ",";
-                    formaPagos += $scope.listaServicios[i].formaPago + ",";
 
 
 
-
-                }
-
-            }
-            
-            $scope.totalPagaraCalculo();
-
-
-            if (idServicios.length == 0) {
-                alert("no se selecciono ningun servicio para pagar");
-                return;
-
-            }
-            if ($scope.totalIngresado < $scope.totalPagara) {
-                alert("El monto ingresado no cubre el total que se pagara");
-                return;
-            }
-            if ($scope.totalPagara == undefined || $scope.totalPagara == null || Number.isNaN($scope.totalPagara)) {
-                alert('Los montos que no son abonados tienen que estar en ceros');
-                return;
-            }
-
-
-            inicioActualizarBoton('botonGuardarPago');
-            var myWindow = window.open('', '_blank');
-
-            $http({
-                method: 'POST',
-                url: 'pagos_pagos_servicios_alumno',
-                params: {
-                    idAlumno: idAlumno,
-                    idServicios: idServicios,
-                    montosPagara: montosPagara,
-                    montosDescuento: montosDescuento,
-                    formaPagos: formaPagos
-                }
-            }).then(
-                    function (r) {
-
-                        alert(r.data.mensaje);
-
-                        $scope.listadoServicios(parseInt(idAlumno));
-                        $scope.totalPagara = 0;
-                        $scope.numPagos = 0;
-                        finActualizarBoton('botonGuardarPago');
-                        myWindow.location = 'http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_imprimir_ticket?idPago=' + r.data.idPago + '&totalIngresado=' + $scope.totalIngresado;
-                        $scope.totalIngresado = 0;
-                        //window.open('pagos_imprimir_ticket?idPago=' +
-                        //      r.data.idPago, '_blank');
-                        return;
-
-
-                    }
-            );
-
-
-
-
-        };
-
-
-
-
-
-
-
-        $scope.listaPagos = function (idServicioCliente) {
-
-            $scope.listaPagosServicioCliente = [];
-
-            $http({
-                method: 'POST',
-                url: 'pagos_detalles_pagos_servicio_cliente',
-                params: {
-                    idServicioCliente: idServicioCliente
-                }
-            }).then(
-                    function (r) {
-                        $scope.listaPagosServicioCliente = r.data.listaPagos;
-                    }
-            );
-
-        };
-        
-        
         $scope.historialServicios = function () {
-//alert("hello "+$scope.idAlumnoSel);
+
             $scope.listadoHistorial = [];
 
             $http({
                 method: 'POST',
                 url: 'pagos_historial_pagos',
                 params: {
-                    idAlumno: $scope.idAlumnoSel
+                    idAlumno: $scope.alumnoSel.id
                 }
             }).then(
                     function (r) {
@@ -231,79 +108,74 @@ app.controller('asignarAlumnoServicioController', ['$http', '$scope', function (
         };
 
 
-        $scope.listaMovimientos = function (idAlumno) {
-
-            if (!idAlumno) {
-                idAlumno = $scope.idAlumnoEC;
-            }
-
-            $scope.listadoMovimientos = [];
-            var fechaIni = moment($scope.fechaIniEC).format('YYYY-MM-DD');
-            var fechaFin = moment($scope.fechaFinEC).format('YYYY-MM-DD');
-
-            $http({
-                method: 'POST',
-                url: 'pagos_estado_cuenta_alumno',
-                params: {
-                    idAlumno: idAlumno,
-                    fechaIni: fechaIni,
-                    fechaFin: fechaFin
-                }
-            }).then(
-                    function (r) {
-                        $scope.listadoMovimientos = r.data.listadoMovimientos;
-                    }
-            );
-
-        };
-
-
-
-
-
-
 
         //-----------------Listado de servicios--------------
 
-        $scope.listadoServicios = function (idAlumno) {
+        $scope.listadoServicios = function (alumno) {
 
-            $scope.totalPrecio = 0;
-            $scope.totalAbonado = 0;
-            $scope.totalAdeuda = 0;
-            $scope.totalPagara = 0;
-            $scope.totalDescuento = 0;
-            $scope.listaServicios = [];
-
+            if (!alumno) {
+                alumno = $scope.alumnoSel;
+            }
+            console.log("idAlumno: " + alumno);
             $http({
                 method: 'POST',
-                url: 'pagos_servicios_pagando_alumno',
+                url: 'servicios_aplican_alumno',
                 params: {
-                    idAlumno: idAlumno
+                    idAlumno: alumno.id,
+                    idCiclo: alumno.idCiclo,
+                    idGrado: alumno.idGrado,
+                    idGrupo: alumno.idGrupo,
+                    nombreServicio: $scope.mNombreServicio
+
                 }
             }).then(
                     function (r) {
                         $scope.listaServicios = r.data.listaServicios;
 
-                        for (i = 0; i < $scope.listaServicios.length; i++) {
-                            $scope.totalPrecio += parseFloat($scope.listaServicios[i].precio);
-                            $scope.totalAbonado += parseFloat($scope.listaServicios[i].abonado);
-                            $scope.totalAdeuda += (parseFloat($scope.listaServicios[i].precio) - parseFloat($scope.listaServicios[i].abonado));
-                            $scope.listaServicios[i].pagara = 0;
-                            $scope.listaServicios[i].descuento = 0;
-                            $scope.listaServicios[i].formaPago = "EFECTIVO";
-
+                        if ($scope.listaServicios.length == 0) {
+                            alert("no se encontraron registros de servicios para este alumno");
                         }
-
-
                     }
             );
 
         };
 
+        $scope.asignarServiciosSeleccionados = function () {
 
+            var seleccionados = "";
+            for (var i = 0; i < $scope.listaServicios.length; i++) {
+                if ($scope.listaServicios[i].seleccionado) {
+                    seleccionados += $scope.listaServicios[i].id.toString() + ",";
+                }
+            }
+            if (seleccionados == "") {
+                alert("No se selecciono ningun servicio");
+                return;
+            }
 
+            console.log($scope.alumnoSel + "," + seleccionados);
 
+            $http({
+                method: 'POST',
+                url: 'servicios_asignar_servicio_seleccionados',
+                params: {
+                    idAlumno: $scope.alumnoSel.id,
+                    seleccionados: seleccionados
+                }
+            }).then(
+                    function (r) {
+                        $scope.listaServicios = [];
 
+                        if (r.data.mensaje == 'Ok') {
+                            alert("Los servicios se asignaron correctamente ");
+                        } else {
+                            alert("Ocurrio un problema con los servicios asignados");
+                        }
+                        $scope.listadoServicios();
+
+                    }
+            );
+        };
 
 
 
