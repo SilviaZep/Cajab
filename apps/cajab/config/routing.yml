@@ -128,7 +128,14 @@ servicios_imprimir_asignados_a_servicio:
   param: { module: servicios, action:  imprimirAsignadosAServicio }    
 servicios_asignar_alumno_servicio:
  url:   /servicios_asignar_alumno_servicio
- param: { module: servicios, action:  asignarAlumnoServicio }    
+ param: { module: servicios, action:  asignarAlumnoServicio }   
+servicios_aplican_alumno:
+ url:   /servicios_aplican_alumno
+ param: { module: servicios, action:  serviciosAplicanAlumno }   
+servicios_asignar_servicio_seleccionados:
+ url:   /servicios_asignar_servicio_seleccionados
+ param: { module: servicios, action:  asignarServicioSeleccionados } 
+
 
 
 #Fin SERVICIOS
