@@ -59,13 +59,7 @@
                     <th class="col-md-1">Detalles por Alumno</th>
                     <th class="col-md-1">Detalles por Movimientos</th>
                     <th class="col-md-1">Detalles por Alumno Agrupado</th>
-
-
-
-
-
-
-
+                    
                 </tr>
 
 
@@ -99,10 +93,6 @@
                             <button type="button" ng-click="asignadosServicioAgrupado(s)" class="btn btn-warning " >
                                 <i class="fa fa-user" aria-hidden="true"></i></button>
                         </td>
-
-
-
-
                     </tr>
 
 
@@ -227,7 +217,8 @@
 
             <tr>
                 <th class="col-md-1"></th>
-                <th class="col-md-1">Tipo Cliente</th>                      
+                <th class="col-md-1">Tipo Cliente</th>
+                <th class="col-md-1">No. recibo</th>                       
                 <th class="col-md-2">Nombre</th> 
                 <th class="col-md-1">Tipo Movimiento</th>
                 <th class="col-md-1">Fecha Registro</th>
@@ -240,19 +231,16 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="lie in listaIngresosEgresos| orderBy:'cliente'" class="{{colorRow(a)}}">
+                <tr ng-repeat="lie in listaIngresosEgresos| orderBy:'cliente'">
                     <td>{{$index + 1}}</td>
                     <td>{{lie.tipo_descripcion}}</td>
+                    <td>{{lie.idPago}}</td>
                     <td >{{lie.cliente}}</td>
                     <td class="{{colorRowIngEgr(lie.modo_pago)}}">{{lie.modo_pago}}</td>
                     <td>{{lie.fecha_pago| date:'dd/MM/yyyy'}}</td>
-
                     <td align="right">{{lie.pago| currency}}</td> 
                     <td align="right">{{lie.descuento| currency}}</td>
                     <td align="right">{{lie.egreso| currency}}</td>
-
-
-
                     <td>
                         <span ng-show="lie.modo_pago == 'INGRESO'">
                             <button type="button" class="btn btn-primary btn-xs" ng-click="llamarPagos(lie.tipo_descripcion, lie.cliente)">

@@ -33,8 +33,10 @@
                                 <div class="col-xs-8">
                                     <select class="form-control" id="rol" name="rol">
                                         <option value="1">Administrador</option>
-                                        <option value="2">Cajero</option>
-                                        <option value="3">Empleado</option>
+                                        <option value="2">Supervisor</option>
+                                        <option value="3">Transporte</option>
+                                        <option value="4">Cajero</option>
+                                        <option value="5">Director</option>
                                     </select>
                                 </div>
                             </div>

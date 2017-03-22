@@ -76,7 +76,7 @@ class consultasBd {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT *
           FROM usuario ORDER by nombre_completo ASC";
-        $sql = sprintf($sql);
+       
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -1160,7 +1160,7 @@ order by no_servicios)t
 
         $sql = "
 		select s.nombre,s.precio,sp.monto as pago,ifnull(sp.descuento,0) as descuento,0 as egreso,sp.fecha_pago,
-		sp.tipo_cliente,sp.id_alumno,sp.id_cliente,
+		sp.tipo_cliente,sp.id_alumno,sp.id_cliente,sp.id as idPago,
 		CASE sc.tipo_cliente
 		WHEN 1 THEN ifnull((select nombre from alumno_pruebas where id=sc.id_alumno),'na')
 		WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sc.id_cliente),'na')
@@ -1171,13 +1171,13 @@ order by no_servicios)t
 		ELSE  'na' END) as tipo_descripcion,
 		(select count(*) from servicio_cliente sc where sc.estatus in (1,2) and sc.id_servicio=s.id) as inscritos
 		from servicio_pago sp,servicio_cliente sc,servicio s
-		where sp.id_servicio=sc.id  and sp.estatus=1
+		where sp.id_servicio=sc.id and sp.estatus=1
 		and sc.id_servicio=s.id
 		and s.id={$idServicio}
 		union 
 		select 
 		s.nombre,s.precio,0 as pago,0 as descuento,e.cantidad as egreso,e.fecha_registro as fecha_pago,
-		2 as tipo_cliente,null as id_alumno,0 as id_cliente,
+		2 as tipo_cliente,null as id_alumno,0 as id_cliente,0 as idPago,
 		p.nombre as cliente,'EGRESO' as modo_pago,'PROVEEDOR' as tipo_descripcion,
 		(select count(*) from servicio_cliente sc where sc.estatus in (1,2) and sc.id_servicio=s.id) as inscritos
 		from egresos e,servicio s,proveedores p

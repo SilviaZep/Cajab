@@ -172,15 +172,158 @@
 
                                                                     <?php endif; ?>
 
-                                                                    <?php if ($sf_user->getRol() == 2): ?>
+                                                                   <?php if ($sf_user->getRol() == 2): ?>
+                                                                        
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-server"> Servicio</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a href="<?php echo url_for("@servicios"); ?>"> <i class="fa fa-list"> Lista de Servicios</i> </a></li> 
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>                                                                                
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-cart-arrow-down"> Caja</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a href="<?php echo url_for("@pagos_pagar_servicio"); ?>"> <i class="fa fa-usd" aria-hidden="true"> Pagar Servicio Alumno</i></a></li> 
+                                                                                <li><a href="<?php echo url_for("@pagos_pagar_servicio_cliente"); ?>"> <i class="fa fa-usd" aria-hidden="true"> Pagar Servicio Cliente</i></a></li>
+                                                                                <li><a href="<?php echo url_for("@pagos_movimientos_caja"); ?>"> <i class="fa fa-exchange" aria-hidden="true"> Movimientos Caja</i></a></li>
+                                                                                <!--<li><a href="<?php echo url_for("@transporte_listas_rutas"); ?>"> <i class="fa fa-list"> EstadoCuentaAlumno</i> </a></li>                                                      -->
+                                                                                <li id="mClientes"><a href="<?php echo url_for("@egresos_list"); ?>"><i class="fa fa-users"> Registro de Egresos</i></a></li>    
 
-                                                                        <li id="mHome"><a onclick="" href="<?php echo url_for("@homepage"); ?>"><i class="fa fa-list-alt"> Agenda</i></a></li>                            						     
-                                                                        <li id="mCaja"><a href="<?php echo url_for("@homepage"); ?>"><i class="fa fa-money">Punto de venta</i></a></li> 
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-bus"> Transporte</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a href="<?php echo url_for("@transporte_listas_rutas"); ?>"> <i class="fa fa-list"> Listas por Ruta</i> </a></li> 
+                                                                                <li><a href="<?php echo url_for("@transporte_horarios"); ?>"><i class="fa fa-table"> Horarios</i> </a></li>
+                                                                                <li><a href="<?php echo url_for("@transporte_rutas"); ?>"><i class="fa fa-bus"> Rutas</i> </a></li>
 
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-book"> Reportes</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li id="mEcAlumno"><a href="<?php echo url_for("@estado_cuenta_servicios_estatus"); ?>"><i class="fa fa-bars" aria-hidden="true"> Estado de cuenta por servicio</i></a></li>  
+                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_dias_mora"); ?>"><i class="fa fa-newspaper-o" aria-hidden="true"> Cartera Vencida </i></a></li>  		  
+                                                                                <!--<li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_activos_alumnos"); ?>"><i class="fa fa-bookmark-o" aria-hidden="true"> Reporte Alumnos con servicios vigentes</i></a></li>  		  -->
+
+                                                                            </ul>
+                                                                        </li>
                                                                     <?php endif; ?>
-                                                                    <?php if ($sf_user->getRol() == 3): ?>
-                                                                        <li id="mHome"><a onclick="" href="<?php echo url_for("@homepage"); ?>"><i class="fa fa-list-alt"> Transporte</i></a></li>
-                                                                        <?php endif; ?>
+                                                                    <?php if ($sf_user->getRol() == 3): ?>                                                                       
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-server"> Servicio</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a href="<?php echo url_for("@servicios"); ?>"> <i class="fa fa-list"> Lista de Servicios</i> </a></li> 
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>                                                                                
+                                                                            </ul>
+                                                                        </li>
+                                                                       
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-bus"> Transporte</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a href="<?php echo url_for("@transporte_listas_rutas"); ?>"> <i class="fa fa-list"> Listas por Ruta</i> </a></li> 
+                                                                                <li><a href="<?php echo url_for("@transporte_horarios"); ?>"><i class="fa fa-table"> Horarios</i> </a></li>
+                                                                                <li><a href="<?php echo url_for("@transporte_rutas"); ?>"><i class="fa fa-bus"> Rutas</i> </a></li>
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-book"> Reportes</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li id="mEcAlumno"><a href="<?php echo url_for("@estado_cuenta_servicios_estatus"); ?>"><i class="fa fa-bars" aria-hidden="true"> Estado de cuenta por servicio</i></a></li>  
+                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_dias_mora"); ?>"><i class="fa fa-newspaper-o" aria-hidden="true"> Cartera Vencida </i></a></li>  		  
+                                                                                <!--<li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_activos_alumnos"); ?>"><i class="fa fa-bookmark-o" aria-hidden="true"> Reporte Alumnos con servicios vigentes</i></a></li>  		  -->
+                                                                            </ul>
+                                                                        </li>
+                                                                    <?php endif; ?>
+                                                                     <?php if ($sf_user->getRol() == 4): ?>
+
+                                                                       
+
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-server"> Servicio</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a href="<?php echo url_for("@servicios"); ?>"> <i class="fa fa-list"> Lista de Servicios</i> </a></li> 
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>                                                                                
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-cart-arrow-down"> Caja</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a href="<?php echo url_for("@pagos_pagar_servicio"); ?>"> <i class="fa fa-usd" aria-hidden="true"> Pagar Servicio Alumno</i></a></li> 
+                                                                                <li><a href="<?php echo url_for("@pagos_pagar_servicio_cliente"); ?>"> <i class="fa fa-usd" aria-hidden="true"> Pagar Servicio Cliente</i></a></li>
+                                                                                <li><a href="<?php echo url_for("@pagos_movimientos_caja"); ?>"> <i class="fa fa-exchange" aria-hidden="true"> Movimientos Caja</i></a></li>
+                                                                                <!--<li><a href="<?php echo url_for("@transporte_listas_rutas"); ?>"> <i class="fa fa-list"> EstadoCuentaAlumno</i> </a></li>                                                      -->
+                                                                                <li id="mClientes"><a href="<?php echo url_for("@egresos_list"); ?>"><i class="fa fa-users"> Registro de Egresos</i></a></li>    
+
+                                                                            </ul>
+                                                                        </li>                                                                       
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-book"> Reportes</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li id="mEcAlumno"><a href="<?php echo url_for("@estado_cuenta_servicios_estatus"); ?>"><i class="fa fa-bars" aria-hidden="true"> Estado de cuenta por servicio</i></a></li>  
+                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_dias_mora"); ?>"><i class="fa fa-newspaper-o" aria-hidden="true"> Cartera Vencida </i></a></li>  		  
+                                                                                <!--<li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_activos_alumnos"); ?>"><i class="fa fa-bookmark-o" aria-hidden="true"> Reporte Alumnos con servicios vigentes</i></a></li>  		  -->
+
+                                                                            </ul>
+                                                                        </li>
+                                                                    <?php endif; ?>
+                                                                     <?php if ($sf_user->getRol() == 5): ?>
+                                                                      
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-bus"> Transporte</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><a href="<?php echo url_for("@transporte_listas_rutas"); ?>"> <i class="fa fa-list"> Listas por Ruta</i> </a></li> 
+
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li id="mConfiguracion" class="dropdown">
+                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                                <i class="fa fa-book"> Reportes</i>
+                                                                                <b class="caret"></b>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li id="mEcAlumno"><a href="<?php echo url_for("@estado_cuenta_servicios_estatus"); ?>"><i class="fa fa-bars" aria-hidden="true"> Estado de cuenta por servicio</i></a></li>  
+                                                                                <li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_dias_mora"); ?>"><i class="fa fa-newspaper-o" aria-hidden="true"> Cartera Vencida </i></a></li>  		  
+                                                                                <!--<li id="mEcServicio"><a href="<?php echo url_for("@estado_cuenta_servicios_activos_alumnos"); ?>"><i class="fa fa-bookmark-o" aria-hidden="true"> Reporte Alumnos con servicios vigentes</i></a></li>  		  -->
+
+                                                                            </ul>
+                                                                        </li>
+                                                                    <?php endif; ?>
                                                                 </ul>
                                                             </div><!-- /.navbar-collapse -->
                                                         </nav>

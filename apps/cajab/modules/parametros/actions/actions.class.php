@@ -20,7 +20,7 @@ class parametrosActions extends baseCajabProjectActions
        $this->setLayout('menu');
      try {
            $this->empleados=consultasBd::getUsuarios();     //se envia la lista de inscritos en JSON
-		   $this->newALumnos=consultasBd::getAlumnosInstituto();
+		   //$this->newALumnos=consultasBd::getAlumnosInstituto();
 		  // print_r($this->newALumnos);die();
          } catch (Doctrine_Exception $e) {
       throw new Exception($e);
