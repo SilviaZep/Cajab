@@ -41,7 +41,7 @@ class serviciosActions extends baseCajabProjectActions {
                 $capacidad = $request->getParameter("mCapacidad", 0);
                 $tipoTransporte = $request->getParameter("mTipoServicio", 0);
 
-                $ciclo = $request->getParameter("mselCiclo", 0);// id de los grados y grupos 
+                $ciclo = $request->getParameter("mselCiclo", 0); // id de los grados y grupos 
                 $grado = $request->getParameter("mselGrado", 0);
                 $grupo = $request->getParameter("mselGrupo", 0);
 
@@ -85,7 +85,7 @@ class serviciosActions extends baseCajabProjectActions {
                 $servicioForm->setCicloId((int) $ciclo);
                 $servicioForm->setGradoId((int) $grado);
                 $servicioForm->setGrupoId((int) $grupo);
-                
+
                 $servicioForm->save();
 
 
@@ -628,6 +628,71 @@ class serviciosActions extends baseCajabProjectActions {
             $pdf->Cell(30, 8, utf8_decode($listaAsignados[$x]['estatus_descripcion']), 'B', 0, 'L');
             $y++;
             $pdf->Ln(8);
+        }
+    }
+
+    public function executeServiciosAplicanAlumno(sfWebRequest $request) {
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                date_default_timezone_set('America/Mexico_City');
+
+                $idAlumno = $request->getParameter("idAlumno", 0);
+                $idCiclo = $request->getParameter("idCiclo", 0);
+                $idGrado = $request->getParameter("idGrado", 0);
+                $idGrupo = $request->getParameter("idGrupo", 0);
+                $nombreServicio = $request->getParameter("nombreServicio", "");
+                
+                $listaServicios = consultasBd::getListadoServiciosAplicanAlumno($idAlumno, $idCiclo, $idGrado, $idGrupo, $nombreServicio);
+                $totalListaServicios = consultasBd::getTotalListadoServiciosAplicanAlumno($idAlumno, $idCiclo, $idGrado, $idGrupo, $nombreServicio);
+                $totalListaServicios = $totalListaServicios[0]['total'];
+
+
+                $r = array("mensaje" => "Ok", "listaServicios" => $listaServicios, "total" => $totalListaServicios); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("mensaje" => "Error Desconocido", "valor" => "0"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            throw new sfException($e);
+        }
+    }
+
+    public function executeAsignarServicioSeleccionados(sfWebRequest $request) {
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                date_default_timezone_set('America/Mexico_City');
+                $fechaActual = new DateTime();
+
+                $idAlumno = $request->getParameter("idAlumno", 0);
+                $seleccionados = $request->getParameter("seleccionados", "");
+
+
+                $vecServicios = explode(",", $seleccionados);
+                $max = (sizeof($vecServicios) - 1); //agarra uno de mas  
+               
+                for ($i = 0; $i < $max; $i++) {
+                    $servicioCliente = new ServicioCliente();
+                    $servicioCliente->setIdServicio((int) $vecServicios[$i]);
+                    $servicioCliente->setIdAlumno((int) $idAlumno);
+                    $servicioCliente->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
+                    $servicioCliente->setUsuarioRegistro($this->getUser()->getUserId());
+                    $servicioCliente->setTipoCliente(1); //1.- Alumno; 2.- Cliente Externo
+                    $servicioCliente->setEstatus(1); //1.- PAGANDO; 2.- PAGADO;3.-Cancelado; 4.-Condonado
+                    $servicioCliente->save();
+                }
+
+
+                $r = array("mensaje" => "Ok"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("mensaje" => "Error Desconocido", "valor" => "0"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            throw new sfException($e);
         }
     }
 
