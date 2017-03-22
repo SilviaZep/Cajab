@@ -192,7 +192,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
                 }
             }).then(
                     function (r) {
-                        debugger
+                       // debugger
                         $scope.listaAsignadosAgrupado = r.data.listaAsignados;
                         //  $scope.numeroRegistrosAsignadosAgrupado = r.data.total;
                         //$scope.paginadorAsignados(max);
@@ -333,7 +333,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
         };
 
         $scope.colorRow = function (a) {
-
+        debugger
             if (a.estatus_descripcion == 'Cancelado') {
                 return 'success';
             }
@@ -411,14 +411,16 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
                 }
             }).then(
                     function (r) {
+                    	debugger
                         $scope.listaIngresosEgresos = r.data.listaIngresosEgresos;
-                        for (var i = 0; i < $scope.listaIngresosEgresos.length; i++) {
-                            $scope.totalPagadoIE += parseFloat($scope.listaIngresosEgresos[i]['pago']);
-                            $scope.totalDescuentoIE += parseFloat($scope.listaIngresosEgresos[i]['descuento']);
-                            $scope.totalEgresoIE += parseFloat($scope.listaIngresosEgresos[i]['egreso']);
+	                    if($scope.listaIngresosEgresos!=null &&  $scope.listaIngresosEgresos!="" &&  $scope.listaIngresosEgresos!=undefined){
+	                        for (var i = 0; i < $scope.listaIngresosEgresos.length; i++) {
+	                            $scope.totalPagadoIE += parseFloat($scope.listaIngresosEgresos[i]['pago']);
+	                            $scope.totalDescuentoIE += parseFloat($scope.listaIngresosEgresos[i]['descuento']);
+	                            $scope.totalEgresoIE += parseFloat($scope.listaIngresosEgresos[i]['egreso']);
+	                        }
+	                        $scope.totalTotalIE = ($scope.totalPagadoIE - $scope.totalEgresoIE);
                         }
-                        $scope.totalTotalIE = ($scope.totalPagadoIE - $scope.totalEgresoIE);
-
                     }
             );
 
