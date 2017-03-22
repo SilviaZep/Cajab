@@ -210,6 +210,35 @@
                                     <input type="number"  ng-model="mCapacidad" class="form-control" >
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="form-inline">
+                                    <span >
+                                        <label for="exampleInputName2">&nbsp;&nbsp;&nbsp;  Ciclo:</label>
+                                        <select class="form-control" ng-model="selCiclo" ng-change="cicloCambio()">
+                                            <option value="0">TODOS</option>
+                                            <option ng-repeat="lce in listaCiclos" value="{{lce.idcicloescolar}}">{{lce.nombre}}</option>
+                                        </select>
+                                    </span>
+                                    <span ng-show="selCiclo > 0" >
+                                        <label for="exampleInputName2"> Grado:</label>
+                                        <select  class="form-control" ng-model="selGrado" ng-change="gradoCambio()">
+                                            <option value="0">TODOS</option>
+                                            <option ng-repeat="lcg in listaGrados" value="{{lcg.idgrado}}">{{lcg.grado}}</option>
+                                        </select >
+
+                                    </span>
+                                    <span ng-show="selCiclo > 0 && selGrado > 0" >
+                                        <label for="exampleInputName2"> Grupo:</label>
+                                        <select  class="form-control" ng-model="selGrupo">
+                                            <option value="0">TODOS</option>
+                                            <option ng-repeat="lcgs in listaGrupos" value="{{lcgs.idgrupo}}">{{lcgs.nombre}}</option>
+                                        </select>
+                                    </span>
+
+                                </div>
+
+                            </div>
+
 
                             <div class="form-group">
                                 <label  class="col-sm-3 control-label "  style="text-align: left !important">Fecha Evento:</label>
@@ -312,7 +341,7 @@
                                         </button>
 
                                     </td>
-                                    <td>{{a.fecha_registro | date:"dd/MM/yyyy"}}</td>
+                                    <td>{{a.fecha_registro| date:"dd/MM/yyyy"}}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -41,12 +41,12 @@ class consultasInstituto {
         $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion 
         $sql = $campos . " FROM ListaAlumnoB" . $condicion . "
           ORDER BY nombre ASC  limit " . $limit . " offset  " . $offset . "  ;";
-        
+
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getTotalListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo, $alumno,$idsVenta, $idsPadre) {
+    public static function getTotalListaAlumnosFiltros($idCiclo, $idGrado, $idgrupo, $alumno, $idsVenta, $idsPadre) {
 
         $campos = "select count(*) as total ";
 
@@ -112,25 +112,27 @@ class consultasInstituto {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-     public static function getDatosAlumnoXId($idAlumno) {
+
+    public static function getDatosAlumnoXId($idAlumno) {
         $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre,'  *' ,ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') as nombre 
                    from ListaAlumnoB where idalumno =" . $idAlumno . " limit 0,1;";
         $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+
     //nueva---
     public static function getDatosCompletosAlumnoXId($idAlumno) {
-    	  $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre,'  * Seccion: ' ,ifnull(seccion,' '),' Grado: ',ifnull(GradoPuro,'NA'),' Grupo: ',ifnull(NombreGrupo,'NA ')),' ') as nombre 
+        $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre,'  * Seccion: ' ,ifnull(seccion,' '),' Grado: ',ifnull(GradoPuro,'NA'),' Grupo: ',ifnull(NombreGrupo,'NA ')),' ') as nombre 
                    from ListaAlumnoB where idalumno =" . $idAlumno . " limit 0,1;";
         $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+
     //----
-    
-     public static function getDatosAlumnoXIdSeccion($idAlumno,$seccion) {
+
+    public static function getDatosAlumnoXIdSeccion($idAlumno, $seccion) {
         $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre,'  *' ,ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') as nombre 
                    from ListaAlumnoB where idalumno =" . $idAlumno .
                 " and ifnull(CONCAT(ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') like '%" . $seccion . "%'   limit 0,1;";
@@ -138,7 +140,8 @@ class consultasInstituto {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-     public static function getDatosAlumnoXIdSeccionSeparados($idAlumno,$seccion) {
+
+    public static function getDatosAlumnoXIdSeccionSeparados($idAlumno, $seccion) {
         $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre),' ') as nombre ,
                 ifnull(CONCAT('* ',ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') as seccion
                    from ListaAlumnoB where idalumno =" . $idAlumno .
@@ -147,7 +150,7 @@ class consultasInstituto {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     public static function getSoloDatosAlumnoXId($idAlumno) {
         $sql = "select ifnull(CONCAT(ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') as datos 
                    from ListaAlumnoB where idalumno =" . $idAlumno . " limit 0,1;";
@@ -165,7 +168,7 @@ class consultasInstituto {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     public static function getNombreGrupoPorId($idGrupo) {
         $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
         $sql = "select nombre
@@ -173,8 +176,17 @@ class consultasInstituto {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    
-    
+
+    public static function getMasDatosAlumnoXId($idAlumno, $fecha) {
+        $sql = "select ifnull(CONCAT(ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') as datos,
+            if(bajasolo=1,'SI','NO') as baja_solo,ifnull(direccionBajada,'NA') as direccion_baja,
+            ifnull(personarecibe,'NA') as persona_recibe,ifnull(Observaciones,'NA') as observaciones,
+            @dia:=(WEEKDAY('$fecha')+1) as dia_hoy,
+            if(ifnull(dia,' ') like concat('%',@dia,'%') ,'SI','NO') as extracurricular
+            from ListaAlumnoB where idalumno =" . $idAlumno . " limit 0,1;";
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }

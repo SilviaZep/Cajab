@@ -30,6 +30,9 @@ abstract class BaseServicioForm extends BaseFormDoctrine {
             'tipo_cliente' => new sfWidgetFormInputText(),
             'tipo_transporte' => new sfWidgetFormInputText(),
             'categoria_id' => new sfWidgetFormInputText(),
+            'ciclo_id' => new sfWidgetFormInputText(),
+            'grado_id' => new sfWidgetFormInputText(),
+            'grupo_id' => new sfWidgetFormInputText(),
         ));
 
         $this->setValidators(array(
@@ -49,6 +52,9 @@ abstract class BaseServicioForm extends BaseFormDoctrine {
             'tipo_cliente' => new sfValidatorInteger(array('required' => false)),
             'tipo_transporte' => new sfValidatorInteger(array('required' => false)),
             'categoria_id' => new sfValidatorInteger(array('required' => false)),
+            'ciclo_id' => new sfValidatorInteger(array('required' => false)),
+            'grado_id' => new sfValidatorInteger(array('required' => false)),
+            'grupo_id' => new sfValidatorInteger(array('required' => false)),
         ));
 
         $this->widgetSchema->setNameFormat('servicio[%s]');

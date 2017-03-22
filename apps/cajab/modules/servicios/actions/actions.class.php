@@ -18,6 +18,10 @@ class serviciosActions extends baseCajabProjectActions {
         $this->setTemplate('asignarServicios');
     }
 
+    public function executeAsignarAlumnoServicio(sfWebRequest $request) {
+        $this->setTemplate('asignarAlumnoServicio');
+    }
+
     public function executeGuardarNuevoServicio(sfWebRequest $request) {//guarda y edita
         try {
             if ($request->isMethod(sfWebRequest::POST)) {
@@ -36,6 +40,10 @@ class serviciosActions extends baseCajabProjectActions {
                 $tipoClientes = $request->getParameter("mTipoClientes", 0);
                 $capacidad = $request->getParameter("mCapacidad", 0);
                 $tipoTransporte = $request->getParameter("mTipoServicio", 0);
+
+                $ciclo = $request->getParameter("mselCiclo", 0);// id de los grados y grupos 
+                $grado = $request->getParameter("mselGrado", 0);
+                $grupo = $request->getParameter("mselGrupo", 0);
 
 
 
@@ -74,6 +82,10 @@ class serviciosActions extends baseCajabProjectActions {
                 $servicioForm->setCapacidad((int) $capacidad);
                 // $servicioForm->setIdServicio(null);
                 $servicioForm->setTipoTransporte((int) $tipoTransporte);
+                $servicioForm->setCicloId((int) $ciclo);
+                $servicioForm->setGradoId((int) $grado);
+                $servicioForm->setGrupoId((int) $grupo);
+                
                 $servicioForm->save();
 
 

@@ -125,9 +125,10 @@ servicios_cambiar_estatus_servicio_cliente:
   param: { module: servicios, action:  cambiarEstatusServicioCliente } 
 servicios_imprimir_asignados_a_servicio:
   url:   /servicios_imprimir_asignados_a_servicio
-  param: { module: servicios, action:  imprimirAsignadosAServicio }   
-  
-  
+  param: { module: servicios, action:  imprimirAsignadosAServicio }    
+servicios_asignar_alumno_servicio:
+ url:   /servicios_asignar_alumno_servicio
+ param: { module: servicios, action:  asignarAlumnoServicio }    
 
 
 #Fin SERVICIOS

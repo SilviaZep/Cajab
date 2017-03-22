@@ -128,7 +128,8 @@
                                                                             </a>
                                                                             <ul class="dropdown-menu">
                                                                                 <li><a href="<?php echo url_for("@servicios"); ?>"> <i class="fa fa-list"> Lista de Servicios</i> </a></li> 
-                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>                                                                                
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_alumno_servicio"); ?>"><i class="fa fa-user" aria-hidden="true"> Asignar Alumno a Servicios </i></a></li>                                                                                
                                                                             </ul>
                                                                         </li>
                                                                         <li id="mConfiguracion" class="dropdown">
@@ -181,7 +182,8 @@
                                                                             </a>
                                                                             <ul class="dropdown-menu">
                                                                                 <li><a href="<?php echo url_for("@servicios"); ?>"> <i class="fa fa-list"> Lista de Servicios</i> </a></li> 
-                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>                                                                                
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_alumno_servicio"); ?>"><i class="fa fa-user" aria-hidden="true"> Asignar Alumno a Servicios </i></a></li>                                                                                
                                                                             </ul>
                                                                         </li>
                                                                         <li id="mConfiguracion" class="dropdown">
@@ -231,7 +233,8 @@
                                                                             </a>
                                                                             <ul class="dropdown-menu">
                                                                                 <li><a href="<?php echo url_for("@servicios"); ?>"> <i class="fa fa-list"> Lista de Servicios</i> </a></li> 
-                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>                                                                                
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_alumno_servicio"); ?>"><i class="fa fa-user" aria-hidden="true"> Asignar Alumno a Servicios </i></a></li>                                                                                
                                                                             </ul>
                                                                         </li>
                                                                        
@@ -269,7 +272,8 @@
                                                                             </a>
                                                                             <ul class="dropdown-menu">
                                                                                 <li><a href="<?php echo url_for("@servicios"); ?>"> <i class="fa fa-list"> Lista de Servicios</i> </a></li> 
-                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>                                                                                
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_servicios"); ?>"><i class="fa fa-th" aria-hidden="true"> Asignacion de Servicios</i></a></li>
+                                                                                <li><a href="<?php echo url_for("@servicios_asignar_alumno_servicio"); ?>"><i class="fa fa-user" aria-hidden="true"> Asignar Alumno a Servicios </i></a></li>                                                                                
                                                                             </ul>
                                                                         </li>
                                                                         <li id="mConfiguracion" class="dropdown">

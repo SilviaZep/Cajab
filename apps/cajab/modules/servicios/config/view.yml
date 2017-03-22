@@ -4,4 +4,6 @@ serviciosSuccess:
   javascripts: [moment.min.js,servicios.js]
 asignarServiciosSuccess:
   javascripts: [moment.min.js,asignarServicios.js]
+asignarAlumnoServicioSuccess:
+  javascripts: [moment.min.js,asignarAlumnoServicio.js]
   
