@@ -127,6 +127,29 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
 
         };
 
+
+        $scope.clonarServicioActualEHijos = function (idServicio) {
+
+            $http({
+                method: 'POST',
+                url: 'servicios_clonar_actual_hijos',
+                //url: '/web/skin_dev.php/guardar_pago',
+                params: {
+                    idServicio: idServicio
+                }
+            }).then(
+                    function (r) {
+                        if (r.data.error) {
+                            alert("No se clonaron correctamente los servicios");
+                        } else {
+                            alert("Servicios clonados correctamente");
+                        }
+                        $scope.listadoServicios($scope.paginaActual);
+                    }
+            );
+
+        };
+
         $scope.detalleServicio = function (s) {
 
             $scope.limpiarModalServicio();
@@ -496,7 +519,7 @@ app.controller('servicioController', ['$http', '$scope', function ($http, $scope
                 }
             }).then(
                     function (r) {
-                    	debugger
+                        debugger
                         $scope.listaCiclos = r.data.listaCiclos;
                     }
             );
