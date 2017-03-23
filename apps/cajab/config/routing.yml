@@ -135,6 +135,9 @@ servicios_aplican_alumno:
 servicios_asignar_servicio_seleccionados:
  url:   /servicios_asignar_servicio_seleccionados
  param: { module: servicios, action:  asignarServicioSeleccionados } 
+servicios_clonar_actual_hijos:
+ url:   /servicios_clonar_actual_hijos
+ param: { module: servicios, action:  clonarActualEHijos } 
 
 
 
