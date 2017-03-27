@@ -642,7 +642,7 @@ class serviciosActions extends baseCajabProjectActions {
                 $idGrado = $request->getParameter("idGrado", 0);
                 $idGrupo = $request->getParameter("idGrupo", 0);
                 $nombreServicio = $request->getParameter("nombreServicio", "");
-                
+
                 $listaServicios = consultasBd::getListadoServiciosAplicanAlumno($idAlumno, $idCiclo, $idGrado, $idGrupo, $nombreServicio);
                 $totalListaServicios = consultasBd::getTotalListadoServiciosAplicanAlumno($idAlumno, $idCiclo, $idGrado, $idGrupo, $nombreServicio);
                 $totalListaServicios = $totalListaServicios[0]['total'];
@@ -672,7 +672,7 @@ class serviciosActions extends baseCajabProjectActions {
 
                 $vecServicios = explode(",", $seleccionados);
                 $max = (sizeof($vecServicios) - 1); //agarra uno de mas  
-               
+
                 for ($i = 0; $i < $max; $i++) {
                     $servicioCliente = new ServicioCliente();
                     $servicioCliente->setIdServicio((int) $vecServicios[$i]);
@@ -693,6 +693,92 @@ class serviciosActions extends baseCajabProjectActions {
             }
         } catch (Doctrine_Exception $e) {
             throw new sfException($e);
+        }
+    }
+
+    /* Clonar servicio padre y sus hijos; con la fecha actual */
+
+    public function executeClonarActualEHijos(sfWebRequest $request) {
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                date_default_timezone_set('America/Mexico_City');
+                $fechaActual = new DateTime();
+
+
+                $idServicio = $request->getParameter("idServicio", 0);
+
+                if ($idServicio > 0) {
+                    $servicioFormOriginal = Doctrine::getTable('Servicio')->find((int) $idServicio);
+
+
+                    $instServicioClon = new Servicio(); // servicio clon
+
+                    $instServicioClon->setCategoriaId($servicioFormOriginal->getCategoriaId());
+                    $instServicioClon->setNombre($servicioFormOriginal->getNombre()."_copia");
+                    $instServicioClon->setPrecio($servicioFormOriginal->getPrecio());
+                    $instServicioClon->setAplicaParcialidad($servicioFormOriginal->getAplicaParcialidad());
+                    $instServicioClon->setFechaEvento($fechaActual->format('Y-m-d'));
+                    $instServicioClon->setFechaInicio($fechaActual->format('Y-m-d'));
+                    $instServicioClon->setFechaFin($fechaActual->format('Y-m-d'));
+                    $instServicioClon->setUsuarioRegistro((int) $this->getUser()->getUserId());
+                    $instServicioClon->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
+                    $instServicioClon->setActivo(1);
+                    $instServicioClon->setTipoCliente($servicioFormOriginal->getTipoCliente());
+                    $instServicioClon->setCapacidad($servicioFormOriginal->getCapacidad());
+                    $instServicioClon->setIdServicio(null);
+                    $instServicioClon->setTipoTransporte($servicioFormOriginal->getTipoTransporte());
+                    $instServicioClon->setCicloId($servicioFormOriginal->getCicloId());
+                    $instServicioClon->setGradoId($servicioFormOriginal->getGradoId());
+                    $instServicioClon->setGrupoId($servicioFormOriginal->getGrupoId());
+
+                    $instServicioClon->save();
+
+
+                    $serviciosHijos = consultasBd::getListaServiciosHijosParaClonar((int) $idServicio);
+                    $totHijos = sizeof($serviciosHijos); //agarra uno de mas 
+
+                    for ($i = 0; $i < $totHijos; $i++) {
+                        $servicioFormOriginalHijo = Doctrine::getTable('Servicio')->find((int) $serviciosHijos[$i]['id']);
+
+
+                        $instServicioClonHijo = new Servicio(); // servicio clon
+
+                        $instServicioClonHijo->setCategoriaId($servicioFormOriginalHijo->getCategoriaId());
+                        $instServicioClonHijo->setNombre($servicioFormOriginalHijo->getNombre()."_copia");
+                        $instServicioClonHijo->setPrecio($servicioFormOriginalHijo->getPrecio());
+                        $instServicioClonHijo->setAplicaParcialidad($servicioFormOriginalHijo->getAplicaParcialidad());
+                        $instServicioClonHijo->setFechaEvento($fechaActual->format('Y-m-d'));
+                        $instServicioClonHijo->setFechaInicio($fechaActual->format('Y-m-d'));
+                        $instServicioClonHijo->setFechaFin($fechaActual->format('Y-m-d'));
+                        $instServicioClonHijo->setUsuarioRegistro((int) $this->getUser()->getUserId());
+                        $instServicioClonHijo->setFechaRegistro($fechaActual->format('Y-m-d H:i:s'));
+                        $instServicioClonHijo->setActivo(1);
+                        $instServicioClonHijo->setTipoCliente($servicioFormOriginalHijo->getTipoCliente());
+                        $instServicioClonHijo->setCapacidad($servicioFormOriginalHijo->getCapacidad());
+                        $instServicioClonHijo->setIdServicio($instServicioClon->getId());
+                        $instServicioClonHijo->setTipoTransporte($servicioFormOriginalHijo->getTipoTransporte());
+                        $instServicioClonHijo->setCicloId($servicioFormOriginalHijo->getCicloId());
+                        $instServicioClonHijo->setGradoId($servicioFormOriginalHijo->getGradoId());
+                        $instServicioClonHijo->setGrupoId($servicioFormOriginalHijo->getGrupoId());
+
+                        $instServicioClonHijo->save();
+                    }
+                } else {
+                    $r = array("error" => true, "mensaje" => "NO Guardados Correctamente");
+                    return $this->sendJSON($r);
+                }
+
+                $r = array("error" => false, "mensaje" => "Guardados Correctamente");
+                return $this->sendJSON($r);
+            } else {
+                $r = array("error" => true, "mensaje" => "Error_01: no se pudo guardardaron los valores seleccionados"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            //throw new sfException($e);
+            $r = array("error" => true, "mensaje" => "Error_02: no se pudo guardardaron los valores seleccionados");
+            return $this->sendJSON($r);
         }
     }
 

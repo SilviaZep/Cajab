@@ -583,13 +583,13 @@ class transporteActions extends baseCajabProjectActions {
                     $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAlumnos[$j]['id_alumno']);
                     $listaAlumnos[$j]['nombre'] = $vecNombreAlumno[0]['nombre'];
 
-                    $vecDatosAlumno = consultasInstituto::getMasDatosAlumnoXId($listaAlumnos[$i]['id_alumno'], $fecha);
+                    $vecDatosAlumno = consultasInstituto::getMasDatosAlumnoXId($listaAlumnos[$j]['id_alumno'], $fecha);
                     $listaAlumnos[$j]['datos'] = $vecDatosAlumno[0]['datos'];
-                    $listaAlumnos[$i]['baja_solo'] = $vecDatosAlumno[0]['baja_solo'];
-                    $listaAlumnos[$i]['direccion_baja'] = $vecDatosAlumno[0]['direccion_baja'];
-                    $listaAlumnos[$i]['persona_recibe'] = $vecDatosAlumno[0]['persona_recibe'];
-                    $listaAlumnos[$i]['observaciones'] = $vecDatosAlumno[0]['observaciones'];
-                    $listaAlumnos[$i]['extracurricular'] = $vecDatosAlumno[0]['extracurricular'];
+                    $listaAlumnos[$j]['baja_solo'] = $vecDatosAlumno[0]['baja_solo'];
+                    $listaAlumnos[$j]['direccion_baja'] = $vecDatosAlumno[0]['direccion_baja'];
+                    $listaAlumnos[$j]['persona_recibe'] = $vecDatosAlumno[0]['persona_recibe'];
+                    $listaAlumnos[$j]['observaciones'] = $vecDatosAlumno[0]['observaciones'];
+                    $listaAlumnos[$j]['extracurricular'] = $vecDatosAlumno[0]['extracurricular'];
                 }
                 if (sizeof($listaAlumnos) > 0) {
                     if ($y > 1) {

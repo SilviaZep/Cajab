@@ -76,7 +76,7 @@ class consultasBd {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $sql = "SELECT *
           FROM usuario ORDER by nombre_completo ASC";
-    $sql = sprintf($sql);
+        $sql = sprintf($sql);
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -1375,6 +1375,19 @@ order by no_servicios)t
 
 //  $rsql = sprintf($sql);
 //echo $sql;
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getListaServiciosHijosParaClonar($idPapa) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+
+        $sql = "
+                    select id from servicio
+                    where id_servicio={$idPapa}
+                    and activo=1 ";
+// echo $sql;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }

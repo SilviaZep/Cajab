@@ -40,7 +40,7 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="14" class="info"><b>Listado De Servicios</b></td>
+            <td colspan="15" class="info"><b>Listado De Servicios</b></td>
 
             <tr>
 
@@ -53,6 +53,7 @@
                 <th class="col-md-1">Tipo Clientes</th>
                 <th class="col-md-1">Capacidad</th>
 
+                <th class="col-md-1"></th>
                 <th class="col-md-1"></th>
                 <th class="col-md-1"></th>
                 <th class="col-md-1"></th>
@@ -89,6 +90,7 @@
                     <td> <button type="button" ng-click="asignadosServicio(s)" class="btn btn-info " data-toggle="modal"  data-target="#modalListadoClientesAsignados" title="Asignados al Servicio"> <i class="fa fa-list" aria-hidden="true" ></i></button></td>
                     <td> <button type="button" ng-click="clonarServicio(s)" class="btn btn-primary " data-toggle="modal"  data-target="#crearServicio" title="Clonar Servicio"> <i class="fa fa-files-o" aria-hidden="true"></i></button></td>
                     <td> <button type="button" ng-click="servicioHijo(s.id)" class="btn btn-success " data-toggle="modal"  data-target="#crearServicio" title="Servicio Hijo"><i class="fa fa-link" aria-hidden="true"></i></button></td>
+                    <td> <button type="button" ng-show="s.id_servicio==null" ng-click="clonarServicioActualEHijos(s.id)" class="btn btn-default " title="Clonar Servicio e hijos (Sin Alumnos)"><i class="fa fa-clone" aria-hidden="true"></i></button></td>
 
 
 
