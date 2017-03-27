@@ -350,6 +350,7 @@
                                 <th >Estatus</th>
                                 <th >Fecha Evento</th>
                                 <th >Fecha Pago</th>
+                                <th >No. Recibo</th>
                             </tr>
                            </thead>
                             <tbody>
@@ -363,6 +364,7 @@
                                     </td>
                                     <td >{{ls.fecha_evento| date:'dd/MM/yyyy'}}</td>
                                     <td >{{ls.fecha_pago}}</td>
+                                    <td >{{ls.no_recibo}}</td>
                                 </tr>
 
 

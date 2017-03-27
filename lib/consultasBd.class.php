@@ -1301,7 +1301,8 @@ order by no_servicios)t
     	WHEN 3 THEN 'Cancelado'
     	WHEN 4 THEN 'Condonado'
     	ELSE  'na' END) as estatus,s.fecha_evento,
-    	(SELECT MAX(DATE_FORMAT(sp.fecha_pago,'%d/%m/%Y')) FROM servicio_pago sp WHERE sc.id=sp.id_servicio AND sp.estatus=1 GROUP BY sc.id_servicio) as fecha_pago
+    	(SELECT MAX(DATE_FORMAT(sp.fecha_pago,'%d/%m/%Y')) FROM servicio_pago sp WHERE sc.id=sp.id_servicio AND sp.estatus=1 GROUP BY sp.id_servicio ORDER BY sp.id DESC) as fecha_pago,
+    	(SELECT MAX(sp1.id) FROM servicio_pago sp1 WHERE sc.id=sp1.id_servicio AND sp1.estatus=1 GROUP BY sp1.id_servicio ORDER BY sp1.id DESC) as no_recibo
     	from servicio_cliente sc
     	INNER JOIN servicio s ON sc.id_servicio=s.id
     	INNER JOIN categoria_servicio c ON s.categoria_id=c.id    	
