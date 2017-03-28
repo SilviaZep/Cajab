@@ -62,7 +62,7 @@
         <table class="table table-striped table-bordered">
             <thead>
 
-            <td colspan="8" class="info"><b><i class="fa fa-bus" aria-hidden="true"></i> {{rutaNombre}} <br/> Listado Alumnos  </b>  &nbsp;&nbsp; {{fechaIni| date:'dd-MM-yyyy'}}
+            <td colspan="13" class="info"><b><i class="fa fa-bus" aria-hidden="true"></i> {{rutaNombre}} <br/> Listado Alumnos  </b>  &nbsp;&nbsp; {{fechaIni| date:'dd-MM-yyyy'}}
                 <div class="pull-right">
                     <div class="btn-group ">
                         <button type="button" class="btn btn-success btn-xs " data-toggle="modal"  data-target="#crearEventual"><i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Alumno</button>
@@ -80,12 +80,13 @@
                 <th class="col-md-3">Nombre</th>
                 <th class="col-md-3">Secciòn:Grado:Grupo</th>
                 <th class="col-md-2">Tipo Transporte</th>                
-                <th class="col-md-2">Estatus</th>
+
                 <th class="col-md-1">Bajar Solo</th>
                 <th class="col-md-1">Lugar Bajada</th>
                 <th class="col-md-1">Persona Recibe</th>
                 <th class="col-md-1">Extraescolares</th>
                 <th class="col-md-1">Observaciones</th>
+                <th class="col-md-1">Estatus</th>
                 <th class="col-md-1"></th>
             </tr>
 
@@ -97,6 +98,11 @@
                     <td>{{a.nombre}}</td>
                     <td>{{a.datos}}</td>
                     <td>{{a.tipo_transporte}}</td>
+                    <td>{{a.baja_solo}}</td>
+                    <td>{{a.direccion_baja}}</td>
+                    <td>{{a.persona_recibe}}</td>
+                    <td>{{a.extracurricular}}</td>
+                    <td>{{a.observaciones}}</td>
                     <td> 
                         <button ng-show="a.tipo_transporte == 'Eventual' && a.guardado == 0" type="button" class="btn btn-danger btn-xs" ng-click="eliminarEventual(a)"> 
                             <i class="fa fa-trash-o" aria-hidden="true"> Eliminar</i>
@@ -108,11 +114,7 @@
                             <i class="fa fa-times" aria-hidden="true"> INASISTENCIA</i>
                         </button>
                     </td>  
-                    <td>{{a.baja_solo}}</td>
-                    <td>{{a.direccion_baja}}</td>
-                    <td>{{a.persona_recibe}}</td>
-                    <td>{{a.extracurricular}}</td>
-                    <td>{{a.observaciones}}</td>
+
                     <td>
                         <span ng-show="a.guardado == 0" class="label label-warning">calculado</span>
                         <span ng-show="a.guardado == 1" class="label label-success">guardado</span>                        
