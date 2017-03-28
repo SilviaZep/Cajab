@@ -81,6 +81,11 @@
                 <th class="col-md-3">Secciòn:Grado:Grupo</th>
                 <th class="col-md-2">Tipo Transporte</th>                
                 <th class="col-md-2">Estatus</th>
+                <th class="col-md-1">Bajar Solo</th>
+                <th class="col-md-1">Lugar Bajada</th>
+                <th class="col-md-1">Persona Recibe</th>
+                <th class="col-md-1">Extraescolares</th>
+                <th class="col-md-1">Observaciones</th>
                 <th class="col-md-1"></th>
             </tr>
 
@@ -102,7 +107,12 @@
                         <button ng-show="a.observacion == 'inasistencia' && a.guardado == 1" type="button" class="btn btn-default btn-xs" ng-click="cambiarEstatusAsignado(a)" data-toggle="modal" data-target="#modalCambiarEstatus"> 
                             <i class="fa fa-times" aria-hidden="true"> INASISTENCIA</i>
                         </button>
-                    </td>                  
+                    </td>  
+                    <td>{{a.baja_solo}}</td>
+                    <td>{{a.direccion_baja}}</td>
+                    <td>{{a.persona_recibe}}</td>
+                    <td>{{a.extracurricular}}</td>
+                    <td>{{a.observaciones}}</td>
                     <td>
                         <span ng-show="a.guardado == 0" class="label label-warning">calculado</span>
                         <span ng-show="a.guardado == 1" class="label label-success">guardado</span>                        
