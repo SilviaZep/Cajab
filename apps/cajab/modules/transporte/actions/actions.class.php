@@ -305,7 +305,7 @@ class transporteActions extends baseCajabProjectActions {
         }
     }
 
-     public function executeAlumnosPorRutaDia(sfWebRequest $request) {
+    public function executeAlumnosPorRutaDia(sfWebRequest $request) {
         try {
             if ($request->isMethod(sfWebRequest::POST)) {
 
@@ -624,17 +624,21 @@ class transporteActions extends baseCajabProjectActions {
     }
 
     private function pdfListaAlumnos($pdf, $listaAlumnos) {
-        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetFont('Arial', 'B', 8);
         $pdf->SetTextColor(255, 255, 255);
         $pdf->SetFillColor(136, 138, 140);
-        $pdf->Cell(20, 8, utf8_decode("#"), 'B', 0, 'L', true);
-        $pdf->Cell(110, 8, utf8_decode("Alumno"), 'B', 0, 'L', true);
-        $pdf->Cell(90, 8, utf8_decode("Seccion:Grado:Grupo"), 'B', 0, 'L', true);
-        $pdf->Cell(30, 8, utf8_decode("Tipo"), 'B', 0, 'L', true);
+        $pdf->Cell(8, 8, utf8_decode("#"), 'B', 0, 'L', true);
+        $pdf->Cell(70, 8, utf8_decode("Alumno"), 'B', 0, 'L', true);
+        $pdf->Cell(60, 8, utf8_decode("Seccion:Grado:Grupo"), 'B', 0, 'L', true);
+        $pdf->Cell(20, 8, utf8_decode("Tipo"), 'B', 0, 'L', true);
+        $pdf->Cell(20, 8, utf8_decode("Baja Solo   "), 'B', 0, 'L', true);
+        $pdf->Cell(30, 8, utf8_decode("Lugar Bajada   "), 'B', 0, 'L', true);
+        $pdf->Cell(30, 8, utf8_decode("Persona Recibe   "), 'B', 0, 'L', true);
+        $pdf->Cell(20, 8, utf8_decode("Ext.Esc   "), 'B', 0, 'L', true);
         $pdf->Cell(30, 8, utf8_decode("Observaciones   "), 'B', 0, 'L', true);
         $pdf->Ln(8);
 
-        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetFont('Arial', '', 8);
         $pdf->SetTextColor(88, 89, 91);
         $y = 1;
         //ordenar la lista de alumnos
@@ -647,11 +651,16 @@ class transporteActions extends baseCajabProjectActions {
 
         for ($x = 0; $x < sizeof($listaAlumnos); $x ++) {
             if ($listaAlumnos[$x]['observacion'] == 'asistencia') {
-                $pdf->Cell(20, 8, utf8_decode($y), 'B', 0, 'L');
-                $pdf->Cell(110, 8, utf8_decode($listaAlumnos[$x]['nombre']), 'B', 0, 'L');
-                $pdf->Cell(90, 8, utf8_decode($listaAlumnos[$x]['datos']), 'B', 0, 'L');
-                $pdf->Cell(30, 8, utf8_decode($listaAlumnos[$x]['tipo_transporte']), 'B', 0, 'L');
-                $pdf->Cell(30, 8, utf8_decode(""), 'B', 0, 'L');
+                $pdf->Cell(8, 8, utf8_decode($y), 'B', 0, 'L');
+                $pdf->Cell(70, 8, utf8_decode($listaAlumnos[$x]['nombre']), 'B', 0, 'L');
+                $pdf->Cell(60, 8, utf8_decode($listaAlumnos[$x]['datos']), 'B', 0, 'L');
+                $pdf->Cell(20, 8, utf8_decode($listaAlumnos[$x]['tipo_transporte']), 'B', 0, 'L');
+                $pdf->Cell(20, 8, utf8_decode($listaAlumnos[$x]['baja_solo']), 'B', 0, 'L');
+                $pdf->Cell(30, 8, utf8_decode($listaAlumnos[$x]['direccion_baja']), 'B', 0, 'L');
+                $pdf->Cell(30, 8, utf8_decode($listaAlumnos[$x]['persona_recibe']), 'B', 0, 'L');
+                $pdf->Cell(20, 8, utf8_decode($listaAlumnos[$x]['extracurricular']), 'B', 0, 'L');
+                $pdf->Cell(20, 8, utf8_decode($listaAlumnos[$x]['observaciones']), 'B', 0, 'L');
+
                 $y++;
                 $pdf->Ln(8);
             }
