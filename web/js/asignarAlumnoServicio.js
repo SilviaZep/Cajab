@@ -112,11 +112,11 @@ app.controller('asignarAlumnoServicioController', ['$http', '$scope', function (
         //-----------------Listado de servicios--------------
 
         $scope.listadoServicios = function (alumno) {
-
+            
             if (!alumno) {
                 alumno = $scope.alumnoSel;
             }
-            console.log("idAlumno: " + alumno);
+            debugger
             $http({
                 method: 'POST',
                 url: 'servicios_aplican_alumno',
