@@ -42,13 +42,50 @@ class egresosActions extends baseCajabProjectActions
   {
 	  
 	   $pdf = new \FPDF ();
-		$pdf->AddPage ();		
+		$pdf->AddPage ('L');		
 		$pdf->Ln ( 10 );
-		$pdf->SetFont ( 'Arial', 'B', 18 );
-		$pdf->SetTextColor ( 25, 47, 98 );
-		$pdf->Cell ( 190, 10, utf8_decode ( 'MSDS Binder' ), 0, 1, 'R' );
+		$pdf->SetFont ( 'Arial', 'B', 16 );
+		$pdf->SetTextColor ( 88, 89, 91 );
+		$pdf->Cell ( 190, 10, utf8_decode ( 'Egresos' ), 0, 1, 'R' );
 		$pdf->Ln ( 8 );			
-		
+		$egresos = consultasBd::getEgresossList();
+		$pdf->SetFont ( 'Arial', 'B', 11 );
+		$pdf->SetTextColor ( 255, 255, 255 );
+		$pdf->SetFillColor ( 136, 138, 140 );
+		$pdf->Cell ( 60, 8, "Servicio", 'B', 0, 'L', true );
+		$pdf->Cell ( 45, 8, "Proveedor", 'B', 0, 'C', true );
+		$pdf->Cell ( 50, 8, "Concepto de Cobro",'B', 0, 'C', true );
+		$pdf->Cell ( 20, 8, "Fecha", 'B', 0, 'C', true );
+		$pdf->Cell ( 22, 8, "Tipo Pago", 'B', 0, 'C', true );
+		$pdf->Cell ( 28, 8, "#Factura", 'B', 0, 'C', true );
+		$pdf->Cell ( 29, 8, "Observaciones", 'B', 0, 'C', true );
+		$pdf->Cell ( 30, 8, "Monto", 'B', 0, 'C', true );
+		$pdf->Ln ( 8 );
+		//print_r($this->egresos);die();
+		$pdf->SetFont ( 'Arial', '', 7 );
+		$pdf->SetTextColor ( 88, 89, 91 );
+		$sum=0;
+		for($i=0; $i<sizeof($egresos); $i++){
+			$tipo=($egresos[$i]['tipo_pago']==1)?'Adeudo':'Liquidacion';
+			$pdf->Cell ( 60, 8, $egresos[$i]['servicio'], 'B', 0, 'L' );
+			$pdf->Cell ( 45, 8, $egresos[$i]['proveedor'], 'B', 0, 'L' );
+			$pdf->Cell ( 50, 8, $egresos [$i]['concepto'], 'B', 0, 'L' );
+			$pdf->Cell ( 20, 8, $egresos [$i]['fecha_registro'], 'B', 0, 'L' );
+			$pdf->Cell ( 22, 8, $tipo, 'B', 0, 'L' );
+			$pdf->Cell ( 28, 8, $egresos [$i]['referencia'], 'B', 0, 'L' );
+			$pdf->Cell ( 29, 8, $egresos [$i]['observaciones'], 'B', 0, 'L' );
+			$pdf->Cell ( 30, 8, $egresos [$i]['cantidad'], 'B', 0, 'R' );
+			$sum=$sum+(int)$egresos [$i]['cantidad'];
+			$pdf->Ln ( 8 );
+		}
+		$pdf->Cell ( 60, 8, '', 'B', 0, 'L' );
+		$pdf->Cell ( 45, 8, '', 'B', 0, 'L' );
+		$pdf->Cell ( 50, 8, '', 'B', 0, 'L' );
+		$pdf->Cell ( 20, 8, '', 'B', 0, 'L' );
+		$pdf->Cell ( 22, 8, '', 'B', 0, 'L' );
+		$pdf->Cell ( 28, 8, '', 'B', 0, 'L' );
+		$pdf->Cell ( 29, 8, 'Total', 'B', 0, 'L');
+		$pdf->Cell ( 30, 8, '$'.$sum, 'B', 0, 'R' );
 		$response = new sfWebResponse ( $pdf->Output () );
 		$response->headers->set ( 'Content-Type', 'application/pdf' );
 		return $response;
