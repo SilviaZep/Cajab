@@ -98,9 +98,11 @@
                                 <label for="unidad" class="col-xs-4 control-label">Rol:</label>
                                 <div class="col-xs-8">
                                     <select class="form-control" id="rol1" name="rol1">
-                                        <option value="1">Administrador</option>
-                                        <option value="2">Cajero</option>
-                                        <option value="3">Empleado</option>
+                                         <option value="1">Administrador</option>
+                                        <option value="2">Supervisor</option>
+                                        <option value="3">Transporte</option>
+                                        <option value="4">Cajero</option>
+                                        <option value="5">Director</option>
                                     </select>
                                 </div>
                             </div>
@@ -200,12 +202,24 @@ if ($empleados->count() > 0):
 			   {$tipo_status='<span class="label label-success">Activo</span>';}
 				else{
 					$tipo_status='<span class="label label-danger">Baja</span>';
-				} 
+				}  
 				if($record['rol']==1)
-			   {$rol='<span class="label label-success">Admin</span>';}
+			     {
+			     	$rol='<span class="label label-success">Admin</span>';
+			     }
 				if($record['rol']==2){
-					$rol='<span class="label label-danger">Caja</span>';
-				}?> 
+					$rol='<span class="label label-danger">Supervisor</span>';
+				}
+				if($record['rol']==3){
+					$rol='<span class="label label-danger">Transporte</span>';
+				}
+				if($record['rol']==4){
+					$rol='<span class="label label-danger">Cajero</span>';
+				}
+				if($record['rol']==5){
+					$rol='<span class="label label-danger">Director</span>';
+				}
+				?> 
                 <tr id=" <?php echo $record['id']; ?>">
                     <td><?php echo $record['id']; ?></td>      
                     <td class="col-xs-1"><?php echo $record['nombre_completo']; ?></td>
