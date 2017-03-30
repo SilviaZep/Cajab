@@ -1159,7 +1159,9 @@ order by no_servicios)t
 
 
         $sql = "
-		select s.nombre,s.precio,sp.monto as pago,ifnull(sp.descuento,0) as descuento,0 as egreso,sp.fecha_pago,
+		select 
+                concat(sp.id,'i') as idx,                
+                s.nombre,s.precio,sp.monto as pago,ifnull(sp.descuento,0) as descuento,0 as egreso,sp.fecha_pago,
 		sp.tipo_cliente,sp.id_alumno,sp.id_cliente,sp.id as idPago,
 		CASE sc.tipo_cliente
 		WHEN 1 THEN ifnull((select nombre from alumno_pruebas where id=sc.id_alumno),'na')
@@ -1175,7 +1177,8 @@ order by no_servicios)t
 		and sc.id_servicio=s.id
 		and s.id={$idServicio}
 		union 
-		select 
+		select
+                concat(e.id,'e') as idx,
 		s.nombre,s.precio,0 as pago,0 as descuento,e.cantidad as egreso,e.fecha_registro as fecha_pago,
 		2 as tipo_cliente,null as id_alumno,0 as id_cliente,0 as idPago,
 		p.nombre as cliente,'EGRESO' as modo_pago,'PROVEEDOR' as tipo_descripcion,
@@ -1345,13 +1348,13 @@ order by no_servicios)t
  and (s.ciclo_id=0 or s.ciclo_id={$idCiclo})
  and (s.grado_id=0 or s.grado_id={$idGrado})
  and (s.grupo_id=0 or s.grupo_id={$idGrupo})
- and ( (select count(*) from servicio_cliente sc where sc.id_alumno={$idAlumno}) = 0 or s.categoria_id=4 or (s.categoria_id=1 and s.tipo_transporte=3) )
- and date(s.fecha_inicio)<=date(now()) 
+ and ( (select count(*) from servicio_cliente sc where sc.id_servicio=s.id  and sc.id_alumno={$idAlumno}) = 0 or s.categoria_id=4 or (s.categoria_id=1 and s.tipo_transporte=3) )
  and date(now())<=date(s.fecha_fin) 
  and s.nombre like '%{$nombreServicio}%'
  order by nombre;";
 
 //  $rsql = sprintf($sql);
+//  -- and date(s.fecha_inicio)<=date(now()) 
 // echo $sql;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
@@ -1368,12 +1371,12 @@ order by no_servicios)t
  and (s.ciclo_id=0 or s.ciclo_id={$idCiclo})
  and (s.grado_id=0 or s.grado_id={$idGrado})
  and (s.grupo_id=0 or s.grupo_id={$idGrupo})
- and ( (select count(*) from servicio_cliente sc where sc.id_alumno={$idAlumno}) = 0 or s.categoria_id=4 or (s.categoria_id=1 and s.tipo_transporte=3) )
- and date(s.fecha_inicio)<=date(now()) 
+ and ( (select count(*) from servicio_cliente sc where sc.id_servicio=s.id  and sc.id_alumno={$idAlumno}) = 0 or s.categoria_id=4 or (s.categoria_id=1 and s.tipo_transporte=3) )
  and date(now())<=date(s.fecha_fin) 
  and s.nombre like '%{$nombreServicio}%'  ;";
 
 //  $rsql = sprintf($sql);
+//   and date(s.fecha_inicio)<=date(now()) 
 //echo $sql;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
