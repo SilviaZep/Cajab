@@ -8,7 +8,7 @@
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#egresoModal">  
         <i class="fa fa-user-plus"> Nuevo Egreso</i>
     </button>
-	<a class="btn btn-primary" href="<?php echo url_for("@egresos_imprimir");  ?>" target="_black">  
+	<a class="btn btn-primary" href="http://clubdelibros245.com/puntoventa/web/cajab_dev.php/imprimir-egresos" target="_black">  
         <i class="fa fa-user-plus"> Imprimir</i>
     </a>
 </div>
@@ -365,6 +365,7 @@ if ($egresos->count() > 0):
     });
 	
 	 $("#btn-egreso").click(function(){
+		 	$("#btn-egreso").html('<i class="fa fa-spinner fa-spin fa-2x"></i>');
         dataForm = new FormData();  
 		dataForm.append('servicio', $('#servicioId').val());      
         dataForm.append('cantidad', $('#cantidad').val());
@@ -384,7 +385,7 @@ if ($egresos->count() > 0):
             processData: false
         }).done(function(response){
             if(response== "OK")
-            {
+            {                
                 $('#egresoModal').modal('hide');
                 limpiarCampos();
                 location.reload();                          
@@ -393,7 +394,7 @@ if ($egresos->count() > 0):
             {
                 alert("Error");
             }
-        
+            $("#btn-egreso").text('Save');
         });//end ajax done
 		}
 		else{
