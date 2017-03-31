@@ -169,6 +169,7 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
                 }
             }).then(
                     function (r) {
+                        debugger
                         $scope.listaAlumnosPorDia = r.data.listaAlumnos;
                     }
             );
