@@ -179,8 +179,9 @@ class consultasInstituto {
     public static function getMasDatosAlumnoXId($idAlumno, $fecha) {
         $sql = "select ifnull(CONCAT(ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') as datos,
             if(bajasolo=1,'SI','NO') as baja_solo,ifnull(direccionBajada,'NA') as direccion_baja,ifnull(celular,'NA') as celular,
+            ifnull(telefono,'NA') as telefono,
             ifnull(personarecibe,'NA') as persona_recibe,ifnull(Observaciones,'NA') as observaciones,
-            if(ifnull(dia,' ') like concat('%',@dia,'%') ,'SI','NO') as extracurricular,
+            dia as dia,
             @dia:=(WEEKDAY('$fecha')+1) as dia_hoy,
             @t:=ifnull(LENGTH(dia),0) as tamanio,
             @pi:=ifnull(LOCATE(@dia,dia),0) as pi,
