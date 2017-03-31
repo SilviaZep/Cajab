@@ -41,7 +41,7 @@ class egresosActions extends baseCajabProjectActions
    public function executeImprimirEgresos(sfWebRequest $request)
   {
 	  
-	   $pdf = new \FPDF ();
+	   $pdf = new \FPDF_MC_Table ();
 		$pdf->AddPage ('L');		
 		$pdf->Ln ( 10 );
 		$pdf->SetFont ( 'Arial', 'B', 16 );
@@ -62,19 +62,36 @@ class egresosActions extends baseCajabProjectActions
 		$pdf->Cell ( 30, 8, "Monto", 'B', 0, 'C', true );
 		$pdf->Ln ( 8 );
 		//print_r($this->egresos);die();
-		$pdf->SetFont ( 'Arial', '', 7 );
+		$pdf->SetFont ( 'Arial', '', 9 );
 		$pdf->SetTextColor ( 88, 89, 91 );
 		$sum=0;
+		$pdf->SetWidths ( array (
+				60,45,50,20,22,28,29,30
+		) );
+		$pdf->SetAligns ( array (
+				'L','L','L','L','L','L','L','L','L'
+		) );
 		for($i=0; $i<sizeof($egresos); $i++){
 			$tipo=($egresos[$i]['tipo_pago']==1)?'Adeudo':'Liquidacion';
-			$pdf->Cell ( 60, 8, $egresos[$i]['servicio'], 'B', 0, 'L' );
+			$pdf->RowNoVerticalBorder ( array (
+					utf8_decode ($egresos[$i]['servicio'] ),
+					utf8_decode ( $egresos[$i]['proveedor'] ),
+					utf8_decode ( $egresos[$i]['concepto'] ),
+					utf8_decode ( $egresos[$i]['fecha_registro'] ),
+					utf8_decode ( $tipo ),
+					utf8_decode ( $egresos[$i]['referencia'] ),
+					utf8_decode ( $egresos[$i]['observaciones'] ),
+					utf8_decode ( $egresos[$i]['cantidad'] )
+			) );
+			
+			/*$pdf->Cell ( 60, 8, $egresos[$i]['servicio'], 'B', 0, 'L' );
 			$pdf->Cell ( 45, 8, $egresos[$i]['proveedor'], 'B', 0, 'L' );
 			$pdf->Cell ( 50, 8, $egresos [$i]['concepto'], 'B', 0, 'L' );
 			$pdf->Cell ( 20, 8, $egresos [$i]['fecha_registro'], 'B', 0, 'L' );
 			$pdf->Cell ( 22, 8, $tipo, 'B', 0, 'L' );
 			$pdf->Cell ( 28, 8, $egresos [$i]['referencia'], 'B', 0, 'L' );
 			$pdf->Cell ( 29, 8, $egresos [$i]['observaciones'], 'B', 0, 'L' );
-			$pdf->Cell ( 30, 8, $egresos [$i]['cantidad'], 'B', 0, 'R' );
+			$pdf->Cell ( 30, 8, $egresos [$i]['cantidad'], 'B', 0, 'R' );*/
 			$sum=$sum+(int)$egresos [$i]['cantidad'];
 			$pdf->Ln ( 8 );
 		}
