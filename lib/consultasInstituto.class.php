@@ -178,10 +178,19 @@ class consultasInstituto {
 
     public static function getMasDatosAlumnoXId($idAlumno, $fecha) {
         $sql = "select ifnull(CONCAT(ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') as datos,
-            if(bajasolo=1,'SI','NO') as baja_solo,ifnull(direccionBajada,'NA') as direccion_baja,
+            if(bajasolo=1,'SI','NO') as baja_solo,ifnull(direccionBajada,'NA') as direccion_baja,ifnull(celular,'NA') as celular,
             ifnull(personarecibe,'NA') as persona_recibe,ifnull(Observaciones,'NA') as observaciones,
+            if(ifnull(dia,' ') like concat('%',@dia,'%') ,'SI','NO') as extracurricular,
             @dia:=(WEEKDAY('$fecha')+1) as dia_hoy,
-            if(ifnull(dia,' ') like concat('%',@dia,'%') ,'SI','NO') as extracurricular
+            @t:=ifnull(LENGTH(dia),0) as tamanio,
+            @pi:=ifnull(LOCATE(@dia,dia),0) as pi,
+            @sub:=if(@pi<>0,SUBSTRING(dia,@pi,(@t-(@pi-1))),'') as  sub,
+            @tsub:=ifnull(LENGTH(@sub),0) as tamanio_sub,
+            @pf:=ifnull(if(LOCATE('-',@sub)=0 and @tsub>0,@tsub,LOCATE('-',@sub)),0) as pf,
+            @ext:=if(@pi<>0 and @pf<>0,SUBSTRING(@sub,1,@pf),'NA') as ext,
+            @extB:=REPLACE(@ext,@dia,'') as extB,
+            @extC:=REPLACE(@extB,'-','') as extC,
+            REPLACE(@extC,'|','') as extracurricular
             from ListaAlumnoB where idalumno =" . $idAlumno . " limit 0,1;";
         $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
         $st = $conn->execute($sql);
