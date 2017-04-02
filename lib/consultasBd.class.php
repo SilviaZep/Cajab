@@ -1395,4 +1395,41 @@ order by no_servicios)t
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /* Servicios con detalle de ingresos /egresos */
+
+    public static function getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio) {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+
+        $filtroFormaPago = "";
+        if ($formaPago != "NA") {
+            $filtroFormaPago = "and sp.forma_pago='{$formaPago}'";
+        }
+
+        $sql = "
+        select *,
+        @inscritos:=ifnull((select count(*) from servicio_cliente sc 
+        where sc.estatus in(1,2) and sc.id_servicio=s.id 
+        and '{$fechaIni}' <=date(sc.fecha_registro) and  date(sc.fecha_registro)<='{$fechaFin}'),0) as inscritos,
+        @esperado:=ifnull((@inscritos*s.precio),0) as esperado,
+        @pagado:=ifnull((select sum(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) as pagado
+        from servicio_pago sp,servicio_cliente sc
+        where sp.id_servicio=sc.id
+        and sc.id=s.id
+        and sp.estatus=1
+        {$filtroFormaPago}
+        and  '{$fechaIni}' <=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'),0) as pagado,
+        @egresos:=ifnull((select sum(cantidad)  from egresos e 
+        where e.id_servicio=s.id 
+        and '{$fechaIni}' <=date(e.fecha_registro) and  date(e.fecha_registro)<='{$fechaFin}'),0) as egresos
+        from servicio s
+        where s.nombre like '%{$nombreServicio}%'
+	order by s.nombre desc
+        ;   ";
+        
+        //echo $sql;
+
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
