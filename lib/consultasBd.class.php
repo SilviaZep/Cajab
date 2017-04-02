@@ -1414,7 +1414,7 @@ order by no_servicios)t
         @pagado:=ifnull((select sum(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) as pagado
         from servicio_pago sp,servicio_cliente sc
         where sp.id_servicio=sc.id
-        and sc.id=s.id
+        and sc.id_servicio=s.id
         and sp.estatus=1
         {$filtroFormaPago}
         and  '{$fechaIni}' <=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'),0) as pagado,
