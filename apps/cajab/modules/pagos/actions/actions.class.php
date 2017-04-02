@@ -30,6 +30,10 @@ class pagosActions extends baseCajabProjectActions {
     public function executeMovimientosCaja(sfWebRequest $request) {
         $this->setTemplate('movimientosCaja');
     }
+    
+     public function executeEstadoCuentaServicio(sfWebRequest $request) {
+        $this->setTemplate('estadoCuentaXServicio');
+    }
 
     public function executeServiciosPagandoAlumno(sfWebRequest $request) {
         try {
@@ -774,6 +778,38 @@ class pagosActions extends baseCajabProjectActions {
 
                //echo "<pre>";   print_r($historialServicios);die();
                 $r = array("mensaje" => "Ok", "historialServicios" => $historialServicios); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("mensaje" => "No se pudo guardar Err:001 ", "error" => true); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            // throw new sfException($e);
+            $r = array("mensaje" => "No se pudo guardar Err:002 ", "error" => true); //a partir de php 5.4 es con corchetes[]
+            return $this->sendJSON($r);
+        }
+    }
+    
+    /*Consultar los datos del servicio con su detalle de pagos*/
+    public function executeListaServiciosInformacion(sfWebRequest $request) {//guarda y edita
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                date_default_timezone_set('America/Mexico_City');
+               
+                $formaPago = $request->getParameter("formaPago", "NA");
+                $fechaIni = $request->getParameter("fechaIni", 0);
+                $fechaFin = $request->getParameter("fechaFin", 0);
+
+                $nombreServicio = $request->getParameter("nombreServicio", '');
+             
+
+
+                $listaServiciosInfo = consultasBd::getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio);
+               
+
+
+                $r = array("mensaje" => "Ok", "listaServiciosInfo" => $listaServiciosInfo); //a partir de php 5.4 es con corchetes[]
                 return $this->sendJSON($r);
             } else {
                 $r = array("mensaje" => "No se pudo guardar Err:001 ", "error" => true); //a partir de php 5.4 es con corchetes[]
