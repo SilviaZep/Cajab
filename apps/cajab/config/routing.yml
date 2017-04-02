@@ -259,6 +259,12 @@ pagos_eliminar_pagos:
 pagos_historial_pagos:
   url:   /pagos_historial_pagos
   param: { module: pagos, action: historialPagos }  
+pagos_estado_cuenta_servicio:
+  url:   /pagos_estado_cuenta_servicio
+  param: { module: pagos, action: estadoCuentaServicio }  
+pagos_listado_informacion_servicio:
+  url:   /pagos_listado_informacion_servicio
+  param: { module: pagos, action: listaServiciosInformacion }  
   
 
 
