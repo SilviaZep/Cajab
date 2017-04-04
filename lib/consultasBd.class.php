@@ -1407,6 +1407,12 @@ order by no_servicios)t
 
         $sql = "
         select *,
+        ifnull((pagado-descuento),0) as pagado_sin_descuento,
+        ifnull((pagado-egresos-descuento),0) as total ,
+        ifnull((esperado-pagado-descuento),0) as saldo 
+        from (
+        select s.*,
+        cs.categoria,
         @inscritos:=ifnull((select count(*) from servicio_cliente sc 
         where sc.estatus in(1,2) and sc.id_servicio=s.id 
         and '{$fechaIni}' <=date(sc.fecha_registro) and  date(sc.fecha_registro)<='{$fechaFin}'),0) as inscritos,
@@ -1420,13 +1426,23 @@ order by no_servicios)t
         and  '{$fechaIni}' <=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'),0) as pagado,
         @egresos:=ifnull((select sum(cantidad)  from egresos e 
         where e.id_servicio=s.id 
-        and '{$fechaIni}' <=date(e.fecha_registro) and  date(e.fecha_registro)<='{$fechaFin}'),0) as egresos
-        from servicio s
+        and '{$fechaIni}' <=date(e.fecha_registro) and  date(e.fecha_registro)<='{$fechaFin}'),0) as egresos,
+        @descuento:=ifnull((select sum(ifnull(sp.descuento,0)) as descuento
+        from servicio_pago sp,servicio_cliente sc
+        where sp.id_servicio=sc.id
+        and sc.id_servicio=s.id
+        and sp.estatus=1
+        {$filtroFormaPago}
+        and  '{$fechaIni}' <=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'),0) as descuento
+        from servicio s,categoria_servicio cs
         where s.nombre like '%{$nombreServicio}%'
-	order by s.nombre desc
+        and s.categoria_id=cs.id 
+        )t
+        where (pagado>0 or egresos>0)
+	order by nombre desc
         ;   ";
-        
-        //echo $sql;
+
+        //  echo $sql;
 
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
