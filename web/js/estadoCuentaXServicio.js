@@ -15,6 +15,8 @@ app.controller('estadoCuentaXServicioController', ['$http', '$scope', function (
         $scope.formaPago = "NA";
 
         $scope.nombreServicio = "";
+        
+        $scope.totalesColumnas={precio:0,inscritos:0,esperado:0,descuento:0,pagadoSD:0,egresos:0,total:0,saldo:0};
 
 
 
@@ -42,8 +44,10 @@ app.controller('estadoCuentaXServicioController', ['$http', '$scope', function (
                 alert("La fecha Desde no puede ser mayor a Fecha Fin");
                 return;
             }
-            inicioActualizar();
+            
             $scope.listaServiciosInfo=[];
+            $scope.totalesColumnas={precio:0,inscritos:0,esperado:0,descuento:0,pagadoSD:0,egresos:0,total:0,saldo:0};
+            inicioActualizar();
             $http({
                 method: 'POST',
                 url: 'pagos_listado_informacion_servicio',
@@ -57,6 +61,18 @@ app.controller('estadoCuentaXServicioController', ['$http', '$scope', function (
                     function (r) {
                         
                         $scope.listaServiciosInfo = r.data.listaServiciosInfo;
+                        
+                        for(var i=0;i<$scope.listaServiciosInfo.length;i++){
+                            $scope.totalesColumnas.precio+=parseFloat($scope.listaServiciosInfo[i].precio);
+                            $scope.totalesColumnas.inscritos+=parseInt($scope.listaServiciosInfo[i].inscritos);
+                            $scope.totalesColumnas.esperado+=parseFloat($scope.listaServiciosInfo[i].esperado);
+                            $scope.totalesColumnas.descuento+=parseFloat($scope.listaServiciosInfo[i].descuento);
+                            $scope.totalesColumnas.pagadoSD+=parseFloat($scope.listaServiciosInfo[i].pagado_sin_descuento);
+                            $scope.totalesColumnas.egresos+=parseFloat($scope.listaServiciosInfo[i].egresos);
+                            $scope.totalesColumnas.total+=parseFloat($scope.listaServiciosInfo[i].total);
+                            $scope.totalesColumnas.saldo+=parseFloat($scope.listaServiciosInfo[i].saldo);
+                        }
+                        
                         finActualizar();
                     }
             );
