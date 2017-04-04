@@ -869,9 +869,9 @@ where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as descuento,
 (case tipo_cliente
 when 1 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 when 2 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as no_abonos,
 (CASE sc.tipo_cliente
 WHEN 1 THEN 'na'
@@ -954,9 +954,9 @@ where sc.id_servicio={$idServicio})t
 		end) as descuento,
 		(case sc.tipo_cliente
 		when 1 then (select count(*) from servicio_pago sp
-		where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+		where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 		when 2 then (select count(*) from servicio_pago sp
-		where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+		where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 		end) as no_abonos,
 		date(s.fecha_fin) as fecha_fin,
 		date(now()) as hoy,
@@ -1006,9 +1006,9 @@ where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as descuento,
 (case sc.tipo_cliente
 when 1 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno)
+where sp.id_servicio=sc.id and sp.id_alumno=sc.id_alumno and sp.estatus=1)
 when 2 then (select count(*) from servicio_pago sp
-where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente)
+where sp.id_servicio=sc.id and sp.id_cliente=sc.id_cliente and sp.estatus=1)
 end) as no_abonos,
 s.fecha_fin,
 now() as hoy,
