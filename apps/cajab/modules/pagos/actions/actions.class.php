@@ -598,9 +598,7 @@ class pagosActions extends baseCajabProjectActions {
 
 
             date_default_timezone_set('America/Mexico_City');
-
-            date_default_timezone_set('America/Mexico_City');
-
+           
             $numRecibo = $request->getParameter("numRecibo", 0);
             $formaPago = $request->getParameter("formaPago", "NA");
 
@@ -610,7 +608,7 @@ class pagosActions extends baseCajabProjectActions {
             $nombreServicio = $request->getParameter("nombreServicio", '');
             $nombreSeccion = $request->getParameter("nombreSeccion", '');
 
-            $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago, $nombreServicio);
+            $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago, $nombreServicio,'imp');
             $listadoMovimientosRefinada = [];
 
             for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {

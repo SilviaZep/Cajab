@@ -1194,17 +1194,20 @@ order by no_servicios)t
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago, $nombreServicio) {
+    public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago, $nombreServicio,$tipoRecibo=null) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $filtroIdPago = "";
         $filtroFormaPago = "";
+        $filtroEstatusPago="";
         if ($idPago != 0) {
             $filtroIdPago = "and sp.id_pago={$idPago}";
         }
         if ($formaPago != "NA") {
             $filtroFormaPago = "and sp.forma_pago='{$formaPago}'";
         }
-
+		if($tipoRecibo!=null){
+			$filtroEstatusPago= " and sp.estatus=1 ";
+		}
         $sql = "
             select 
 	s.nombre as nombre_servicio,
@@ -1230,11 +1233,10 @@ order by no_servicios)t
 	and '{$fechaIni}'<=date(sp.fecha_pago) and  date(sp.fecha_pago)<='{$fechaFin}'
 	{$filtroIdPago}
 	{$filtroFormaPago}
+	{$filtroEstatusPago}
 	    and s.nombre like '%{$nombreServicio}%'
-	    order by sp.fecha_pago desc
-;";
+	    order by sp.fecha_pago desc";
 
-// echo $sql;
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
