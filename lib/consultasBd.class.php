@@ -1194,22 +1194,23 @@ order by no_servicios)t
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago, $nombreServicio,$tipoRecibo=null) {
+    public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago, $nombreServicio, $tipoRecibo = null) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $filtroIdPago = "";
         $filtroFormaPago = "";
-        $filtroEstatusPago="";
+        $filtroEstatusPago = "";
         if ($idPago != 0) {
             $filtroIdPago = "and sp.id_pago={$idPago}";
         }
         if ($formaPago != "NA") {
             $filtroFormaPago = "and sp.forma_pago='{$formaPago}'";
         }
-		if($tipoRecibo!=null){
-			$filtroEstatusPago= " and sp.estatus=1 ";
-		}
+        if ($tipoRecibo != null) {
+            $filtroEstatusPago = " and sp.estatus=1 ";
+        }
         $sql = "
             select 
+            concat('p_',sp.id) as id,
 	s.nombre as nombre_servicio,
 	(CASE sp.tipo_cliente
 	WHEN 1 THEN 'na'
@@ -1221,12 +1222,15 @@ order by no_servicios)t
 	ELSE  'na' END) as tipo_descripcion,
 	ifnull(sp.monto,0) as monto,
 	ifnull(sp.descuento,0) as descuento,
-	sp.forma_pago,sp.id_pago,
-	date(sp.fecha_pago) as fecha_pago,sp.id_alumno,
+	sp.forma_pago,
+        sp.id_pago,
+	date(sp.fecha_pago) as fecha_pago,
+        sp.id_alumno,
 	(CASE sp.estatus
 	WHEN 1 THEN 'Pagado'
 	WHEN 0 THEN 'Cancelado'
-	ELSE  '' END) as estatus_pago
+	ELSE  '' END) as estatus_pago,
+        'ingreso' as tipo
 	from servicio_pago sp,servicio_cliente sc,servicio s
 	where sp.id_servicio=sc.id
 	and sc.id_servicio=s.id
@@ -1235,7 +1239,32 @@ order by no_servicios)t
 	{$filtroFormaPago}
 	{$filtroEstatusPago}
 	    and s.nombre like '%{$nombreServicio}%'
-	    order by sp.fecha_pago desc";
+                
+union
+
+        SELECT 
+        concat('e_',e.id) as id,
+        s.nombre as nombre_servicio,
+        p.nombre as proveedor,
+        'Cliente Externo' as tipo_descripcion,
+        e.cantidad as monto,
+        0 as descuento,
+        'na' as forma_pago,
+        0 as id_pago,
+        date(e.fecha_registro) as fecha_pago,
+        0 as id_alumno,
+        'Pagado' as estatus_pago,
+        'egreso' as tipo
+		FROM
+		egresos e
+		JOIN servicio s ON (s.id = e.id_servicio)
+		JOIN proveedores p ON (p.id= e.id_proveedor)
+		JOIN conceptos_cobro cc ON (cc.id=e.id_concepto)
+		where '{$fechaIni}'<=date(e.fecha_registro) and  date(e.fecha_registro)<='{$fechaFin}'
+
+
+	    order by fecha_pago desc,nombre_servicio";
+
 
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
