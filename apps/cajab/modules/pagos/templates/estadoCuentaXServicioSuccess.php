@@ -49,7 +49,7 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="10" class="info">
+            <td colspan="7" class="info">
 
                 <h4>
                     Listado De Servicios
@@ -63,13 +63,13 @@
                 <th class="col-md-2">Categoria</th>
                 <th class="col-md-3">Nombre Servicio</th>
                 <th class="col-md-1">Precio</th>
-                <th class="col-md-1">Inscritos</th>               
-                <th class="col-md-1">Esperado</th>
+              <!--  <th class="col-md-1">Inscritos</th>               -->
+             <!--   <th class="col-md-1">Esperado</th>-->
+                <th class="col-md-1">Ingresos <br/><small>(Pagado Sin Descuento)</small></th>
                 <th class="col-md-1">Descuento</th>
-                <th class="col-md-1">Pagado (Sin Descuento)</th>
                 <th class="col-md-1">Egresos </th>  
-                <th class="col-md-1">Total: (Pagado-Egresos-Descuento) </th>
-                <th class="col-md-1">Saldo: (Esperado-Pagado-Descuento) </th>
+                <th class="col-md-1">Total: <br/><small>(Ingresos-Egresos)</small> </th>
+               <!-- <th class="col-md-1">Saldo: <br/><small>(Sin Descuento)</small>(Esperado-Pagado-Descuento) </th>-->
             </tr>
 
 
@@ -79,28 +79,28 @@
                     <td>{{s.categoria}}</td>
                     <td>{{s.nombre}}</td>
                     <td align="right">{{s.precio|currency}}</td>
-                    <td>{{s.inscritos}}</td>
-                    <td align="right">{{s.esperado|currency}}</td>
-                    <td align="right">{{s.descuento|currency}}</td>
+                  <!--  <td>{{s.inscritos}}</td>-->
+                 <!--   <td align="right">{{s.esperado|currency}}</td>-->
                     <td align="right">{{s.pagado_sin_descuento|currency}}</td>
+                    <td align="right">{{s.descuento|currency}}</td>
                     <td align="right">{{s.egresos|currency}}</td>
                     <td align="right">{{s.total|currency}}</td>
-                    <td align="right">{{s.saldo|currency}}</td>
+                 <!--   <td align="right">{{s.saldo|currency}}</td>-->
                 </tr>
-                
+
                 <tr >
                     <td></td>
                     <td><b>Totales</b></td>
                     <td align="right"><b>{{totalesColumnas.precio|currency}}</b></td>
-                    <td><b>{{totalesColumnas.inscritos|currency}}</b></td>
-                    <td align="right"><b>{{totalesColumnas.esperado|currency}}</b></td>
-                    <td align="right"><b>{{totalesColumnas.descuento|currency}}</b></td>
+               <!--     <td><b>{{totalesColumnas.inscritos|currency}}</b></td>-->
+               <!--     <td align="right"><b>{{totalesColumnas.esperado|currency}}</b></td>-->
                     <td align="right"><b>{{totalesColumnas.pagadoSD|currency}}</b></td>
+                    <td align="right"><b>{{totalesColumnas.descuento|currency}}</b></td>
                     <td align="right"><b>{{totalesColumnas.egresos|currency}}</b></td>
                     <td align="right"><b>{{totalesColumnas.total|currency}}</b></td>
-                    <td align="right"><b>{{totalesColumnas.saldo|currency}}</b></td>
+                  <!--  <td align="right"><b>{{totalesColumnas.saldo|currency}}</b></td>-->
                 </tr>
-                
+
 
 
             </tbody>
