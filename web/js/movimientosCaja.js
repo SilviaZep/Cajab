@@ -48,7 +48,7 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
                 alert("La fecha Desde no puede ser mayor a Fecha Fin");
                 return;
             }
-
+            inicioActualizar();
             $http({
                 method: 'POST',
                 url: 'pagos_listado_movimientos_caja',
@@ -62,6 +62,7 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
                 }
             }).then(
                     function (r) {
+                        finActualizar();
                         $scope.listaMovimientos = r.data.listadoMovimientos;
                         $scope.totalMonto = 0;
                         $scope.totalDescuento = 0;
@@ -99,7 +100,7 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
 
             window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_listado_movimientos_caja_imprimir?fechaIni=' +
                     fechaIni + '&fechaFin=' + fechaFin + '&formaPago=' + $scope.formaPago +
-                    '&numRecibo=' + numRecibo+'&nombreServicio=' + nombreServicio+
+                    '&numRecibo=' + numRecibo + '&nombreServicio=' + nombreServicio +
                     '&nombreSeccion=' + nombreSeccion, '_blank');
             return;
         };

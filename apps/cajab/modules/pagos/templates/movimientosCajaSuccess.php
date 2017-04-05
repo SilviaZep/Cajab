@@ -41,7 +41,7 @@
 
 
                 <button type="submit" ng-click="listadoMovimientosCaja()" class="btn btn-default">
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    <i class="fa fa-refresh" aria-hidden="true" id="botonActualizar"></i>
                 </button>
 
 
@@ -53,7 +53,7 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="8" class="info">
+            <td colspan="9" class="info">
 
                 <h4>
                     Listado De Movimientos
@@ -67,7 +67,7 @@
             </td>
 
             <tr>
-
+                <th class="col-md-1">Tipo</th>
                 <th class="col-md-1">Nombre Servicio</th>
                 <th class="col-md-1">Tipo Cliente</th>
                 <th class="col-md-3">Cliente</th>
@@ -93,29 +93,35 @@
                 <tr ng-repeat="m in listaMovimientos">
 
 
-
+                    <td>
+                        <span ng-if="m.tipo == 'ingreso'" class="label label-success">INGRESO</span>
+                        <span ng-if="m.tipo == 'egreso'" class="label label-danger">EGRESO</span>    
+                    </td>
                     <td>{{m.nombre_servicio}}</td>
                     <td>{{m.tipo_descripcion}}</td>
                     <td>{{m.cliente}}</td>
-                    
+
                     <td align="right">{{m.monto| currency}}</td>
                     <td align="right">{{m.descuento| currency}}</td>
                     <td>{{m.fecha_pago| date:"dd/MM/yyyy"}}</td>
 
                     <td>{{m.forma_pago}}</td>
-                    <td><div style="padding: 10px"><b># {{m.id_pago}} </b>
-                     <span ng-if="m.estatus_pago == 'Cancelado'" class="label label-warning">{{m.estatus_pago}}</span>
-                    <span ng-if="m.estatus_pago == 'Pagado'" class="label label-info">{{m.estatus_pago}}</span>                 
-                    </div>
-                        <div class="form-group">
+                    <td>
+                        <span ng-show="m.tipo == 'ingreso'">
+                            <div style="padding: 10px"><b># {{m.id_pago}} </b>
+                                <span ng-if="m.estatus_pago == 'Cancelado'" class="label label-warning">{{m.estatus_pago}}</span>
+                                <span ng-if="m.estatus_pago == 'Pagado'" class="label label-info">{{m.estatus_pago}}</span>                 
+                            </div>
+                            <div class="form-group">
 
-                            <button type="button" class="btn btn-default" ng-click="reImprimirTicket(m.id_pago)">
-                                <i class="fa fa-print" aria-hidden="true"> </i>
-                            </button>
-                            <button type="button" class="btn btn-danger " ng-click="eliminarPagos(m.id_pago)">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </button>
-                        </div>
+                                <button type="button" class="btn btn-default" ng-click="reImprimirTicket(m.id_pago)">
+                                    <i class="fa fa-print" aria-hidden="true"> </i>
+                                </button>
+                                <button type="button" class="btn btn-danger " ng-click="eliminarPagos(m.id_pago)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </span>
                     </td>
 
 
