@@ -1261,9 +1261,10 @@ union
 		JOIN proveedores p ON (p.id= e.id_proveedor)
 		JOIN conceptos_cobro cc ON (cc.id=e.id_concepto)
 		where '{$fechaIni}'<=date(e.fecha_registro) and  date(e.fecha_registro)<='{$fechaFin}'
+                    and s.nombre like '%{$nombreServicio}%'
 
 
-	    ";
+	   ";
 
 
         $st = $conn->execute($sql);
