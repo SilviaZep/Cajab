@@ -671,7 +671,7 @@ ifnull((select r.nombre from ruta r where id=hr.r_vie_s),'No Asig.') as r_vie_s_
 		s.precio,
 		ifnull((select sum(ifnull(sp.monto,0)+ifnull(sp.descuento,0)) from servicio_pago sp 
 		where sp.id_alumno=sc.id_alumno 
-		and sp.id_servicio=sc.id),0) as abonado,
+		and sp.id_servicio=sc.id and sp.estatus=1),0) as abonado,
 		(select count(*) from servicio_pago sp 
 		where sp.id_alumno=sc.id_alumno 
 		and sp.id_servicio=sc.id and sp.estatus=1) as no_pagos,
@@ -1263,7 +1263,7 @@ union
 		where '{$fechaIni}'<=date(e.fecha_registro) and  date(e.fecha_registro)<='{$fechaFin}'
 
 
-	    order by fecha_pago desc,nombre_servicio";
+	    ";
 
 
         $st = $conn->execute($sql);

@@ -66,10 +66,21 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
                         $scope.listaMovimientos = r.data.listadoMovimientos;
                         $scope.totalMonto = 0;
                         $scope.totalDescuento = 0;
+                        $scope.totalEgreso = 0;
+                        $scope.totalPagado = 0;
                         for (var i = 0; i < $scope.listaMovimientos.length; i++) {
-                            $scope.totalMonto += parseFloat($scope.listaMovimientos[i].monto);
-                            $scope.totalDescuento += parseFloat($scope.listaMovimientos[i].descuento);
+                        	if($scope.listaMovimientos[i].estatus_pago=="Pagado"){
+                        		if($scope.listaMovimientos[i].tipo=="ingreso"){
+	                              $scope.totalPagado += parseFloat($scope.listaMovimientos[i].monto);
+                        		}else if($scope.listaMovimientos[i].tipo=='egreso'){
+                        		   $scope.totalEgreso += parseFloat($scope.listaMovimientos[i].monto);	 
+                        		}
+	                            $scope.totalDescuento += parseFloat($scope.listaMovimientos[i].descuento);
+                        	}
+                        	
                         }
+                        
+                        $scope.totalMonto=$scope.totalPagado-$scope.totalEgreso;
                     }
             );
 

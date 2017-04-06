@@ -650,18 +650,19 @@ class pagosActions extends baseCajabProjectActions {
             $pdf->Ln(8);
 
 
-            $pdf->SetFont('Arial', 'B', 9);
+            $pdf->SetFont('Arial', 'B', 7);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(136, 138, 140);
-            $pdf->Cell(8, 8, utf8_decode("#"), 'B', 0, 'L', true);
-            $pdf->Cell(70, 8, utf8_decode("Nombre Servicio"), 'B', 0, 'L', true);
+            $pdf->Cell(6, 8, utf8_decode("#"), 'B', 0, 'L', true);
+            $pdf->Cell(65, 8, utf8_decode("Nombre Servicio"), 'B', 0, 'L', true);
             $pdf->Cell(20, 8, utf8_decode("Tipo Cli."), 'B', 0, 'L', true);
-            $pdf->Cell(65, 8, utf8_decode("Nombre"), 'B', 0, 'C', true);
+            $pdf->Cell(55, 8, utf8_decode("Nombre"), 'B', 0, 'L', true);
             $pdf->Cell(20, 8, utf8_decode("Monto"), 'B', 0, 'R', true);
             $pdf->Cell(20, 8, utf8_decode("Descuento"), 'B', 0, 'R', true);
             $pdf->Cell(25, 8, utf8_decode("Fecha Pago"), 'B', 0, 'L', true);
-            $pdf->Cell(25, 8, utf8_decode("Forma Pago"), 'B', 0, 'L', true);
-            $pdf->Cell(12, 8, utf8_decode("# Recibo"), 'B', 0, 'R', true);
+            $pdf->Cell(23, 8, utf8_decode("Forma Pago"), 'B', 0, 'L', true);
+            $pdf->Cell(12, 8, utf8_decode("# Recibo"), 'B', 0, 'R', true);  
+            $pdf->Cell(17, 8, utf8_decode("Tipo"), 'B', 0, 'R', true);
             $pdf->Cell(17, 8, utf8_decode("Estatus"), 'B', 0, 'R', true);
             
             $pdf->Ln(8);
@@ -684,17 +685,20 @@ class pagosActions extends baseCajabProjectActions {
 
             $totalDescuento = 0;
             $totalPagado = 0;
+            $totalEgreso=0;
+            $totalMonto=0;
             for ($x = 0; $x < sizeof($listadoMovimientos); $x ++) {
 
-                $pdf->Cell(8, 8, utf8_decode($y), 'B', 0, 'L');
-                $pdf->Cell(70, 8, utf8_decode($listadoMovimientos[$x]['nombre_servicio']), 'B', 0, 'L');
+                $pdf->Cell(6, 8, utf8_decode($y), 'B', 0, 'L');
+                $pdf->Cell(65, 8, utf8_decode($listadoMovimientos[$x]['nombre_servicio']), 'B', 0, 'L');
                 $pdf->Cell(20, 8, utf8_decode($listadoMovimientos[$x]['tipo_descripcion']), 'B', 0, 'L');
-                $pdf->Cell(65, 4, utf8_decode($listadoMovimientos[$x]['cliente']), 0, 0, 'L');
+                $pdf->Cell(55, 8, utf8_decode($listadoMovimientos[$x]['cliente']), 'B', 0, 'L');
                 $pdf->Cell(20, 8, utf8_decode('$' . $listadoMovimientos[$x]['monto']), 'B', 0, 'R');
                 $pdf->Cell(20, 8, utf8_decode('$' . $listadoMovimientos[$x]['descuento']), 'B', 0, 'R');
                 $pdf->Cell(25, 8, utf8_decode($listadoMovimientos[$x]['fecha_pago']), 'B', 0, 'L');
-                $pdf->Cell(25, 8, utf8_decode($listadoMovimientos[$x]['forma_pago']), 'B', 0, 'L');
+                $pdf->Cell(23, 8, utf8_decode($listadoMovimientos[$x]['forma_pago']), 'B', 0, 'L');
                 $pdf->Cell(12, 8, utf8_decode('#' . $listadoMovimientos[$x]['id_pago']), 'B', 0, 'R');
+                $pdf->Cell(17, 8, utf8_decode($listadoMovimientos[$x]['tipo']), 'B', 0, 'R');
                 $pdf->Cell(17, 8, utf8_decode($listadoMovimientos[$x]['estatus_pago']), 'B', 0, 'R');
                 
                 $pdf->Ln(4);
@@ -704,12 +708,18 @@ class pagosActions extends baseCajabProjectActions {
 
                 $y++;
                 if($listadoMovimientos[$x]['estatus_pago']=='Pagado'){
-                	$totalPagado+= $listadoMovimientos[$x]['monto'];
-                    $totalDescuento+= $listadoMovimientos[$x]['descuento'];
+                	if($listadoMovimientos[$x]['tipo']=='ingreso'){
+                	  $totalPagado+= $listadoMovimientos[$x]['monto'];
+                	}else if($listadoMovimientos[$x]['tipo']=='egreso'){
+                	  $totalEgreso+= $listadoMovimientos[$x]['monto'];
+                	}
+                   
                 }
+                $totalDescuento+= $listadoMovimientos[$x]['descuento'];
+              
                 $pdf->Ln(4);
             }
-
+            $totalMonto=$totalPagado-$totalEgreso;
             $pdf->Ln(8);
             $pdf->SetFont('Arial', 'B', 8);
 
@@ -719,7 +729,7 @@ class pagosActions extends baseCajabProjectActions {
 
             $pdf->Ln(8);
             $pdf->Cell(180, 8, "", 0, 0, 'L');
-            $pdf->Cell(40, 8, utf8_decode("$" . $totalPagado), 1, 0, 'R');
+            $pdf->Cell(40, 8, utf8_decode("$" .$totalMonto), 1, 0, 'R');
             $pdf->Cell(40, 8, utf8_decode("$" . $totalDescuento), 1, 0, 'R');
 
 
