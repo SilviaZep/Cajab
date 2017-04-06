@@ -137,6 +137,28 @@ app.controller('estadoCuentaXServicioController', ['$http', '$scope', function (
          );
          
          };*/
+        
+          $scope.listaServiciosImprimir = function () {
+            var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');
+            var fechaFin = moment($scope.fechaFin).format('YYYY-MM-DD');
+            
+            var nombreServicio = '';
+            
+            if ($scope.nombreServicio != "" && $scope.nombreServicio != undefined && $scope.nombreServicio != null) {
+                nombreServicio = $scope.nombreServicio;
+            }
+
+            if ($scope.fechaIni > $scope.fechaFin) {
+                alert("La fecha Desde no puede ser mayor a Fecha Fin");
+                return;
+            }
+
+            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_listado_informacion_servicio_imprimir?fechaIni=' +
+                    fechaIni + '&fechaFin=' + fechaFin + '&formaPago=' + $scope.formaPago +
+                   '&nombreServicio=' + nombreServicio , '_blank');
+            return;
+        };
+
 
 
 
