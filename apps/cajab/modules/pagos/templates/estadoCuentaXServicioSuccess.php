@@ -39,6 +39,10 @@
                 <button type="submit" ng-click="listadoEstadoCuentaServicio()" class="btn btn-default">
                     <i class="fa fa-refresh" aria-hidden="true" id="botonActualizar"></i>
                 </button>
+                
+                     <button ng-show="listaServiciosInfo.length > 0"  type="button" class="btn btn-default pull-right" ng-click="listaServiciosImprimir()">
+                        <i class="fa fa-print" aria-hidden="true"> Imprimir</i>
+                    </button>
 
 
             </form>
