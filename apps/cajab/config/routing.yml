@@ -265,6 +265,9 @@ pagos_estado_cuenta_servicio:
 pagos_listado_informacion_servicio:
   url:   /pagos_listado_informacion_servicio
   param: { module: pagos, action: listaServiciosInformacion }  
+pagos_listado_informacion_servicio_imprimir:
+  url:   /pagos_listado_informacion_servicio_imprimir
+  param: { module: pagos, action: listaServiciosInformacionImprimir } 
   
 
 
