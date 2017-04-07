@@ -57,8 +57,10 @@
 
                 <h4>
                     Listado De Movimientos
-                    <span class="label label-success">Total Cobrado: <b>{{totalMonto|currency}}</b></span>
-                    <span class="label label-warning">Total Descuento: <b>{{totalDescuento|currency}}</b></span>
+                    <span class="label label-success">Total Ingresos: <b>{{totalPagado|currency}}</b></span>
+                    <span class="label label-warning">Total Descuentos: <b>{{totalDescuento|currency}}</b></span>
+                    <span class="label label-danger">Total Egresos: <b>{{totalEgreso|currency}}</b></span>
+                    <span class="label label-primary">Total Ingresos-Desc-Egresos: <b>{{totalMonto|currency}}</b></span>
 
                     <button ng-show="listaMovimientos.length > 0"  type="button" class="btn btn-default pull-right" ng-click="listaMovimientosImprimir()">
                         <i class="fa fa-print" aria-hidden="true"> Imprimir</i>

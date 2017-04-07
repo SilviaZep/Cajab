@@ -698,7 +698,7 @@ class pagosActions extends baseCajabProjectActions {
                 $pdf->Cell(25, 8, utf8_decode($listadoMovimientos[$x]['fecha_pago']), 'B', 0, 'L');
                 $pdf->Cell(23, 8, utf8_decode($listadoMovimientos[$x]['forma_pago']), 'B', 0, 'L');
                 $pdf->Cell(12, 8, utf8_decode('#' . $listadoMovimientos[$x]['id_pago']), 'B', 0, 'R');
-                $pdf->Cell(17, 8, utf8_decode($listadoMovimientos[$x]['tipo']), 'B', 0, 'R');
+                $pdf->Cell(17, 8, utf8_decode(strtoupper($listadoMovimientos[$x]['tipo'])), 'B', 0, 'R');
                 $pdf->Cell(17, 8, utf8_decode($listadoMovimientos[$x]['estatus_pago']), 'B', 0, 'R');
 
                 $pdf->Ln(4);
@@ -713,23 +713,29 @@ class pagosActions extends baseCajabProjectActions {
                     } else if ($listadoMovimientos[$x]['tipo'] == 'egreso') {
                         $totalEgreso+= $listadoMovimientos[$x]['monto'];
                     }
+                    $totalDescuento+= $listadoMovimientos[$x]['descuento'];
                 }
-                $totalDescuento+= $listadoMovimientos[$x]['descuento'];
+              
 
                 $pdf->Ln(4);
             }
-            $totalMonto = $totalPagado - $totalEgreso;
+            $totalMonto = $totalPagado - $totalEgreso-$totalDescuento;
             $pdf->Ln(8);
             $pdf->SetFont('Arial', 'B', 8);
 
-            $pdf->Cell(180, 8, "", 0, 0, 'L');
-            $pdf->Cell(40, 8, utf8_decode("Total Pagado "), 1, 0, 'L');
+            $pdf->Cell(100, 8, "", 0, 0, 'L');
+            $pdf->Cell(40, 8, utf8_decode("Total Ingresos "), 1, 0, 'L');
             $pdf->Cell(40, 8, utf8_decode("Total Descuento: "), 1, 0, 'L');
+            $pdf->Cell(40, 8, utf8_decode("Total Egresos: "), 1, 0, 'L');
+            $pdf->Cell(40, 8, utf8_decode("Total Cobrado: "), 1, 0, 'L');
 
             $pdf->Ln(8);
-            $pdf->Cell(180, 8, "", 0, 0, 'L');
-            $pdf->Cell(40, 8, utf8_decode("$" . $totalMonto), 1, 0, 'R');
+            $pdf->Cell(100, 8, "", 0, 0, 'L');
+            $pdf->Cell(40, 8, utf8_decode("$" . $totalPagado), 1, 0, 'R');
             $pdf->Cell(40, 8, utf8_decode("$" . $totalDescuento), 1, 0, 'R');
+            $pdf->Cell(40, 8, utf8_decode("$" . $totalEgreso), 1, 0, 'R');
+            $pdf->Cell(40, 8, utf8_decode("$" . $totalMonto), 1, 0, 'R');
+            
 
 
 

@@ -80,7 +80,7 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
                         	
                         }
                         
-                        $scope.totalMonto=$scope.totalPagado-$scope.totalEgreso;
+                        $scope.totalMonto=$scope.totalPagado-$scope.totalEgreso-$scope.totalDescuento;
                     }
             );
 
