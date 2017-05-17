@@ -711,4 +711,23 @@ class transporteActions extends baseCajabProjectActions {
         }
     }
 
+    public function executeEliminarRutasHoy(sfWebRequest $request) {
+
+        try {
+            if ($request->isMethod(sfWebRequest::POST)) {
+
+                $flagConsulta = consultasBd::getEliminarRutasHoy();
+               
+
+                $r = array("mensaje" => "Las listas se eliminaron correctamente"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            } else {
+                $r = array("mensaje" => "Error Desconocido", "valor" => "0"); //a partir de php 5.4 es con corchetes[]
+                return $this->sendJSON($r);
+            }
+        } catch (Doctrine_Exception $e) {
+            throw new sfException($e);
+        }
+    }
+
 }
