@@ -194,6 +194,9 @@ transporte_imprimir_rutas_alumnos:
 transporte_cambiar_estatus_alumno_lista_ruta:
   url:   /transporte_cambiar_estatus_alumno_lista_ruta
   param: { module: transporte, action: cambiarEstatusAlumnoListaRuta } 
+transporte_eliminar_rutas_hoy:
+  url:   /transporte_eliminar_rutas_hoy
+  param: { module: transporte, action: eliminarRutasHoy }   
 
 
   
