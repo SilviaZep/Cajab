@@ -1479,5 +1479,12 @@ union
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+       public static function getEliminarRutasHoy() {
+        $conn = Doctrine_Manager::getInstance()->getConnection("default");
+        $sql = " Delete from lista_ruta where date(fecha)=date(now());";
+        $conn->execute($sql);
+        return true;
+    }
 
 }
