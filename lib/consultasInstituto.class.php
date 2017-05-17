@@ -3,9 +3,9 @@
 /*
   Clase para hacer consultas a la bd
  */
-//$GLOBALS['instBD'] = "default";
+$GLOBALS['instBD'] = "default";
 
-$GLOBALS['instBD']="instituto";
+//$GLOBALS['instBD']="instituto";
 class consultasInstituto {
 
     //SISE DESEA USAR EL LOCAL  CAMBIAR
@@ -197,5 +197,19 @@ class consultasInstituto {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    public static function getListaAlumnosFiltrosTest() {
+    
+    	$campos = "select idalumno as id,CONCAT(appat,' ',apmat,' ',nombre) as nombre,seccion as nivel,GradoPuro as grado,if(NombreGrupo='',null,NombreGrupo) as grupo,ifnull(idseccion,0) as idCiclo,ifnull(idgrado,0) as idGrado,ifnull(idgrupo,0) as idGrupo";
+    
+    	$condicion = " WHERE alumnoactivo=1 ";
+        $condicion = $condicion.= " AND idalumno in(11353)";   	
+    
+    
+    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion
+    	$sql = $campos . " FROM ListaAlumnoB" . $condicion . "
+          ORDER BY nombre ASC;";
+    
+    	$st = $conn->execute($sql);
+    	return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

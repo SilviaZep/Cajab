@@ -297,7 +297,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $listaIngresosEgresos = consultasBd::getIngresosEgresosServicio((int) $idServicio);
             for ($i = 0; $i < sizeof($listaIngresosEgresos); $i ++) {
                 if ($listaIngresosEgresos[$i]['tipo_cliente'] == 1) {
-                    $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaIngresosEgresos[$i]['id_alumno']);
+                    $vecNombreAlumno = consultasInstituto::getDatosCompletosAlumnoXId($listaIngresosEgresos[$i]['id_alumno']);
                     $listaIngresosEgresos[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
                 }
             }
@@ -322,7 +322,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $pdf->SetFillColor(136, 138, 140);
             $pdf->Cell(8, 8, utf8_decode("#"), 'B', 0, 'L', true);
             $pdf->Cell(20, 8, utf8_decode("Tipo Cli."), 'B', 0, 'L', true);
-            $pdf->Cell(80, 8, utf8_decode("Nombre"), 'B', 0, 'C', true);
+            $pdf->Cell(100, 8, utf8_decode("Nombre"), 'B', 0, 'C', true);
             $pdf->Cell(30, 8, utf8_decode("Tipo Mov."), 'B', 0, 'L', true);
             $pdf->Cell(30, 8, utf8_decode("Fecha"), 'B', 0, 'L', true);
             $pdf->Cell(30, 8, utf8_decode("Pagado"), 'B', 0, 'R', true);
@@ -353,7 +353,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
 
                 $pdf->Cell(8, 8, utf8_decode($y), 'B', 0, 'L');
                 $pdf->Cell(20, 8, utf8_decode($listaIngresosEgresos[$x]['tipo_descripcion']), 'B', 0, 'L');
-                $pdf->Cell(80, 8, utf8_decode($listaIngresosEgresos[$x]['cliente']), 'B', 0, 'L');
+                $pdf->Cell(100, 8, utf8_decode($listaIngresosEgresos[$x]['cliente']), 'B', 0, 'L');
                 $pdf->Cell(30, 8, utf8_decode($listaIngresosEgresos[$x]['modo_pago']), 'B', 0, 'L');
                 $pdf->Cell(30, 8, utf8_decode($listaIngresosEgresos[$x]['fecha_pago']), 'B', 0, 'L');
                 $pdf->Cell(30, 8, utf8_decode('$' . $listaIngresosEgresos[$x]['pago']), 'B', 0, 'R');
@@ -433,7 +433,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $listaAsignados = consultasBd::getPagadoClientesServicio((int) $idServicio, (int) $limit, (int) $offset);
             for ($i = 0; $i < sizeof($listaAsignados); $i ++) {
                 if ($listaAsignados[$i]['cliente'] == "na" && $listaAsignados[$i]['tipo_descripcion'] == "Alumno") {
-                    $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAsignados[$i]['id_alumno']);
+                    $vecNombreAlumno = consultasInstituto::getDatosCompletosAlumnoXId($listaAsignados[$i]['id_alumno']);
                     $listaAsignados[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
                     if ($flagFiltroNombre) {
                         for ($j = 0; $j < $tam; $j ++) {
@@ -563,7 +563,7 @@ class estadoCuentaActions extends baseCajabProjectActions {
             $listaAsignados = consultasBd::getPagadoClientesServicioAgrupado((int) $idServicio, (int) $limit, (int) $offset);
             for ($i = 0; $i < sizeof($listaAsignados); $i ++) {
                 if ($listaAsignados[$i]['cliente'] == "na" && $listaAsignados[$i]['tipo_descripcion'] == "Alumno") {
-                    $vecNombreAlumno = consultasInstituto::getAlumnoXId($listaAsignados[$i]['id_alumno']);
+                    $vecNombreAlumno = consultasInstituto::getDatosCompletosAlumnoXId($listaAsignados[$i]['id_alumno']);
                     $listaAsignados[$i]['cliente'] = $vecNombreAlumno[0]['nombre'];
                     if ($flagFiltroNombre) {
                         for ($j = 0; $j < $tam; $j ++) {
