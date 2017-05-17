@@ -49,6 +49,16 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
 
         };
 
+        $scope.compararFechasHoy = function () {
+            var r=false;
+            var fechaHoy = moment($scope.fechaHoy).format('YYYY-MM-DD');
+            var fechaIni = moment($scope.fechaIni).format('YYYY-MM-DD');
+            if (fechaHoy == fechaIni) {
+               r=true;
+            } 
+            return r;
+        };
+
 
         $scope.imprimirListasRutasAlumnos = function (r) {
             if (r) {
@@ -178,8 +188,8 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
         //-------------------GuardarListasRuta
 
         $scope.guardarListasPorRuta = function () {
-
             var fecha = moment($scope.fechaIni).format('YYYY-MM-DD');
+            modoBtn('botonGuardarListas', 'fa-floppy-o', 'fa-spinner fa-spin', true);
             $http({
                 method: 'POST',
                 url: 'transporte_guardar_listas_por_ruta',
@@ -190,6 +200,24 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
                     function (r) {
                         alert(r.data.mensaje);
                         $scope.listadoRutas();
+                        modoBtn('botonGuardarListas', 'fa-floppy-o', 'fa-spinner fa-spin', false);
+                    }
+            );
+        };
+
+        $scope.eliminarListasHoy = function () {
+
+            modoBtn('botonEliminarListas', 'fa-trash-o', 'fa-spinner fa-spin', true);
+            $http({
+                method: 'POST',
+                url: 'transporte_eliminar_rutas_hoy',
+                params: {
+                }
+            }).then(
+                    function (r) {
+                        alert(r.data.mensaje);
+                        $scope.listadoRutas();
+                        modoBtn('botonEliminarListas', 'fa-trash-o', 'fa-spinner fa-spin', false);
                     }
             );
         };
@@ -375,5 +403,15 @@ app.controller('listasRutasController', ['$http', '$scope', function ($http, $sc
 
 function cerrarModal(idModal) {
     $("#" + idModal).modal("hide");
+}
+function modoBtn(btn, ca, cb, flag) {// boton,clase a,clase b,flag de activo
+    if (!flag) {
+        var cca = ca;
+        ca = cb;
+        cb = cca;
+    }
+
+    $("#" + btn).removeClass(ca);//"fa-refresh"
+    $("#" + btn).addClass(cb);//"fa-spinner fa-spin"
 }
 
