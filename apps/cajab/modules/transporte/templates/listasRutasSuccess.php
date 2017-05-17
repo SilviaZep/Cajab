@@ -24,8 +24,11 @@
                         </button>
                     </div>
                     <div class="btn-group ">
-                        <button ng-show="flagGuardar == true" type="button" class="btn btn-success pull-right" ng-click="guardarListasPorRuta()">
-                            <i class="fa fa-floppy-o" aria-hidden="true"> Guardar Listas</i> 
+                        <button ng-show="flagGuardar == true" type="button" class="btn btn-success pull-right" ng-click="guardarListasPorRuta();">
+                            <i class="fa fa-floppy-o" aria-hidden="true" id="botonGuardarListas"> </i> Guardar Listas
+                        </button>
+                        <button ng-show="flagGuardar == false && compararFechasHoy()==true" type="button" class="btn btn-danger pull-right" ng-click="eliminarListasHoy();">
+                            <i class="fa fa-trash-o" aria-hidden="true" id="botonEliminarListas"> </i> Eliminar Listas
                         </button>
                     </div>
                 </div>
