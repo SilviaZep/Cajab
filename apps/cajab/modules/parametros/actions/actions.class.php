@@ -149,8 +149,9 @@ class parametrosActions extends baseCajabProjectActions
   {   
        $this->setLayout('menu');
      try {
-          $this->categorias=consultasBd::getCategoriasList();     //se envia la lista de inscritos en JSON
-   
+          //$this->categorias=consultasBd::getListaAlumnosFiltrosTest();     //se envia la lista de inscritos en JSON
+          //print_r( $this->categorias);die();
+     	   $this->categorias=consultasBd::getCategoriasList();
           } catch (Doctrine_Exception $e) {
       throw new Exception($e);
     }

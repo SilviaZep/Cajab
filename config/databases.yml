@@ -16,7 +16,6 @@ all:
       username: centrof3_view
       password: vista#43.Si
       encoding:  Latin1
-      
-      #dsn:      mysql:host=localhost;dbname=clubdem4_cajab
+      #dsn:     mysql:host=localhost;dbname=clubdem4_cajab
       #username: clubdem4_cajabus
-      #password: C4J4B0R13NT3   
+      #password: C4J4B0R13NT3  
