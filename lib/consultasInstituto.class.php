@@ -223,14 +223,15 @@ class consultasInstituto {
     	    //contar registros en cie de  ListaAlumnoB   	   
     	    $count = "select count(idalumno) FROM ListaAlumnoB WHERE alumnoactivo=1";
     	    $st = $conn->execute($count);
-    	    $offset=0;
+    	    $offset=1;
     	    //sleccionar registros de CIE
     	    while($offset>=$count){
+    	    	
 	    	    $campos = "select * FROM ListaAlumnoB WHERE alumnoactivo=1"; 
 	    		$sql =$campos."ORDER BY nombre ASC  limit " . 1000 . " offset  " . $offset . "  ;";  
 	    		$st = $conn->execute($$query);
 	    		$result = $st->fetchAll(PDO::FETCH_ASSOC);
-	    		
+	    	
 	    		for($i=0; $i<=sizeof($result); $i++){
 	    			$form= new ListaAlumnoB();	    			
 					$form ->setIdcolonia($result[$i]['id']);
@@ -267,10 +268,153 @@ class consultasInstituto {
 					$form->setGrado($result[$i]['id']);
 					$form ->setTipoSeccion($result[$i]['id']);
 	    			
-	    			$form->save();
-	    			
+	    			$form->save();	    			
 	    		}
+	    		$offset=$offset+1000;
     	    }
+    
+    	return "OK";
+    }
+    public static function cronUpdateCIEAlumnos(){
+    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['default']);
+    	//borrar tabla en CAJA B
+    	$query = "TRUNCATE TABLE ListaAlumnoB;";
+    	$st = $conn->execute($$query);
+    
+    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
+    	//contar registros en cie de  ListaAlumnoB
+    	$count = "select count(idalumno) FROM ListaAlumnoB WHERE alumnoactivo=1";
+    	$st = $conn->execute($count);
+    	$offset=1;
+    	//sleccionar registros de CIE
+    	while($offset>=$count){
+    
+    		$campos = "select * FROM ListaAlumnoB WHERE alumnoactivo=1";
+    		$sql =$campos."ORDER BY nombre ASC  limit " . 1000 . " offset  " . $offset . "  ;";
+    		$st = $conn->execute($$query);
+    		$result = $st->fetchAll(PDO::FETCH_ASSOC);
+    
+    		for($i=0; $i<=sizeof($result); $i++){
+    			$form= new ListaAlumnoB();
+    			$form ->setIdcolonia($result[$i]['idcolonia']);
+    			$form->setNombre($result[$i]['nombre']);
+    			$form->setAppat($result[$i]['appat']);
+    			$form ->setApmat($result[$i]['apmat']);
+    			$form ->setCuentaactiva($result[$i]['cuentaactiva']);
+    			$form ->setRfc($result[$i]['rfc']);
+    			$form ->setCurp($result[$i]['curp']);
+    			$form ->setDireccion($result[$i]['direccion']);
+    			$form->setCelular($result[$i]['celular']);
+    			$form->setTelefono($result[$i]['telefono']);
+    			$form->setEmail($result[$i]['email']);
+    			$form->setIdalumno($result[$i]['idalumno']);
+    			$form->setIdcicloescolar($result[$i]['idcicloescolar']);
+    			$form->setIdgrado($result[$i]['idgrado']);
+    			$form->setIdgrupo($result[$i]['idgrupo']);
+    			$form->setMatricula($result[$i]['matricula']);
+    			$form->setFechaingreso($result[$i]['fechaingreso']);
+    			$form->setAlumnoactivo($result[$i]['alumnoactivo']);
+    			$form->setMotivoseparacion($result[$i]['motivoseparacion']);
+    			$form->setFechabaja($result[$i]['fechabaja']);
+    			$form->setFechanacimiento($result[$i]['fechanacimiento']);
+    			$form ->setSexo($result[$i]['sexo']);
+    			$form->setEscuelaprocedencia($result[$i]['escuelaprocedencia']);
+    			$form->setUsuarioactivo($result[$i]['usuarioactivo']);
+    			$form->setNombrecompleto($result[$i]['nombrecompleto']);
+    			$form->setNombrecicloEscolar($result[$i]['nombrecicloescolar']);
+    			$form->setNombregrupo($result[$i]['nombregrupo']);
+    			$form ->setNombregrado($result[$i]['nombregrado']);
+    			$form->setNombreseccion($result[$i]['nombreseccion']);
+    			$form->setGradopuro($result[$i]['gradogrupo']);
+    			$form->setIdseccion($result[$i]['idseccion']);
+    			$form->setSeccion($result[$i]['seccion']);
+    			$form->setGrado($result[$i]['grado']);
+    			$form ->setTiposeccion($result[$i]['tiposeccion']);
+    
+    			$form->save();
+    		}
+    		$offset=$offset+1000;
+    	}
+    
+    	return "OK";
+    }
+    public static function cronUpdateCIECicloEscolares(){
+    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['default']);
+    	//borrar tabla en CAJA B
+    	$query = "TRUNCATE TABLE listacicloescolar;";
+    	$st = $conn->execute($$query);
+    
+    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
+    	//contar registros en cie de  ListaAlumnoB
+    	$count = "select count(idalumno) FROM listacicloescolar ";
+    	$st = $conn->execute($count);
+    	$offset=1;
+    	//sleccionar registros de CIE
+    	while($offset>=$count){
+    
+    		$campos = "select * FROM listacicloescolar";
+    		$sql =$campos."ORDER BY nombre ASC  limit " . 1000 . " offset  " . $offset . "  ;";
+    		$st = $conn->execute($$query);
+    		$result = $st->fetchAll(PDO::FETCH_ASSOC);
+    
+    		for($i=0; $i<=sizeof($result); $i++){
+    			$form= new Listacicloescolar();
+    			
+				$form ->setIdcicloescolar($result[$i]['idcicloescolar']);
+				$form ->setFechainicio($result[$i]['fechainicio'] );
+				$form ->setFechatermino($result[$i]['fechatermino'] );
+				$form ->setEstatus($result[$i]['estatus']);
+				$form ->setSeccion($result[$i]['seccion']);
+				$form ->setNombre($result[$i]['nombre']);   
+				$form ->setPrefijomatricula($result[$i]['prefijomatricula']);
+				$form ->setIdseccion($result[$i]['idseccion']);  
+    
+    			$form->save();
+    		}
+    		$offset=$offset+1000;
+    	}
+    
+    	return "OK";
+    }
+    
+    public static function cronUpdateCIEGrupos(){
+    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['default']);
+    	//borrar tabla en CAJA B
+    	$query = "TRUNCATE TABLE listagrupo;";
+    	$st = $conn->execute($$query);
+    
+    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
+    	//contar registros en cie de  ListaAlumnoB
+    	$count = "select count(idalumno) FROM listagrupo ";
+    	$st = $conn->execute($count);
+    	$offset=1;
+    	//sleccionar registros de CIE
+    	while($offset>=$count){
+    
+    		$campos = "select * FROM listagrupo";
+    		$sql =$campos."ORDER BY nombre ASC  limit " . 1000 . " offset  " . $offset . "  ;";
+    		$st = $conn->execute($$query);
+    		$result = $st->fetchAll(PDO::FETCH_ASSOC);
+    
+    		for($i=0; $i<=sizeof($result); $i++){
+    			$form= new listagrupo();
+    			
+    			$form->setIdgrupo($result[$i]['idgrupo']);       
+				$form->setNombre($result[$i]['nombre']);        
+				$form->setGrado($result[$i]['grado']);          
+				$form->setCiclo($result[$i]['ciclo']);         
+				$form->setProfesor($result[$i]['profesor']);       
+				$form->setSeccion($result[$i]['seccion']);        
+				$form->setIdgrado($result[$i]['idgrado']);        
+				$form->setIdcuenta($result[$i]['idcuenta']);       
+				$form->setIdcicloescolar($result[$i]['idcicloescolar']); 
+				$form->setIdseccion($result[$i]['idseccion']);     
+				$form->setOficial($result[$i]['oficial']);
+    
+    			$form->save();
+    		}
+    		$offset=$offset+1000;
+    	}
     
     	return "OK";
     }
