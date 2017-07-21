@@ -286,12 +286,12 @@ class consultasInstituto {
     public static function cronUpdateCIECicloEscolares(){
     	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['default']);
     	//borrar tabla en CAJA B
-    	$query = "TRUNCATE TABLE listacicloescolar;";
-    	$st = $conn->execute($$query);
+    	$query = "TRUNCATE TABLE listacicloescolar";
+    	$st = $conn->execute($query);
     
-    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
+    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['cie']);
     	//contar registros en cie de  ListaAlumnoB
-    	$count = "select count(idalumno) FROM listacicloescolar ";
+    	$count = "select count(idcicloescolar) FROM listacicloescolar ";
     	$st = $conn->execute($count);
     	$offset=1;
     	//sleccionar registros de CIE
@@ -325,12 +325,12 @@ class consultasInstituto {
     public static function cronUpdateCIEGrupos(){
     	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['default']);
     	//borrar tabla en CAJA B
-    	$query = "TRUNCATE TABLE listagrupo;";
+    	$query = "TRUNCATE TABLE listagrupo";
     	$st = $conn->execute($query);
     
-    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
+    	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['cie']);
     	//contar registros en cie de  ListaAlumnoB
-    	$count = "select count(idalumno) FROM listagrupo ";
+    	$count = "select count(idgrupo) FROM listagrupo ";
     	$st = $conn->execute($count);
     	$offset=1;
     	//sleccionar registros de CIE
