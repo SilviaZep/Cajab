@@ -20,17 +20,17 @@ class cronesActions extends sfActions
     //$this->forward('default', 'module');
   }
   
-  public function actualizarListaAlumnoBEscolares(sfWebRequest $request) {
+  public function executeActualizarListaAlumnoB(sfWebRequest $request) {
   	try {  
   		$update = consultasInstituto::cronUpdateCIEAlumnos();
-  		
-  		return $this->sendJSON($update);
+  		echo $update;die();
+  		//return $update;
   	} catch (Doctrine_Exception $e) {
   		throw new sfException($e);
   	}
   }
   
-  public function actualizarListagrupo(sfWebRequest $request) {
+  public function executeActualizarListagrupo(sfWebRequest $request) {
   	try {
   		$update = consultasInstituto::cronUpdateCIEGrupos();
   
@@ -40,7 +40,7 @@ class cronesActions extends sfActions
   	}
   }
   
-  public function actualizarListacicloescolar(sfWebRequest $request) {
+  public function executeActualizarListacicloescolar(sfWebRequest $request) {
   	try {
   		$update = consultasInstituto::cronUpdateCIECicloEscolares();
   
