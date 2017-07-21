@@ -314,6 +314,19 @@ estado_cuenta_listado_dias_mora_imprimir:
   url:   /estado_cuenta_listado_dias_mora_imprimir
   param: { module: estadoCuenta, action: listadoDiasMoraImprimir } 
   
+##crones
+
+cron_actualizarListaAlumnoB:
+  url:   /actualizarListaAlumnoB
+  param: { module: crones, action: actualizarListaAlumnoB } 
+  
+cron_actualizarListacicloescolar:
+  url:   /actualizarListacicloescolar
+  param: { module: crones, action: actualizarListacicloescolar } 
+  
+cron_actualizarListagrupo:
+  url:   /actualizarListagrupo
+  param: { module: crones, action: actualizarListagrupo } 
    
   
   

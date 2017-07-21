@@ -213,68 +213,7 @@ class consultasInstituto {
     	return $st->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    public static function cronUpdateCIEAlumnos(){    	
-    	    $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['default']); 
-    	    //borrar tabla en CAJA B
-    	    $query = "TRUNCATE TABLE ListaAlumnoB;";
-    	    $st = $conn->execute($$query);
-    	   
-    	    $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']);
-    	    //contar registros en cie de  ListaAlumnoB   	   
-    	    $count = "select count(idalumno) FROM ListaAlumnoB WHERE alumnoactivo=1";
-    	    $st = $conn->execute($count);
-    	    $offset=1;
-    	    //sleccionar registros de CIE
-    	    while($offset>=$count){
-    	    	
-	    	    $campos = "select * FROM ListaAlumnoB WHERE alumnoactivo=1"; 
-	    		$sql =$campos."ORDER BY nombre ASC  limit " . 1000 . " offset  " . $offset . "  ;";  
-	    		$st = $conn->execute($$query);
-	    		$result = $st->fetchAll(PDO::FETCH_ASSOC);
-	    	
-	    		for($i=0; $i<=sizeof($result); $i++){
-	    			$form= new ListaAlumnoB();	    			
-					$form ->setIdcolonia($result[$i]['id']);
-					$form->setNombre($result[$i]['id']);
-					$form->setAppat($result[$i]['id']);
-					$form ->setApmat($result[$i]['id']);
-					$form ->setCuentaactiva($result[$i]['id']);
-					$form ->setRfc($result[$i]['id']);
-					$form ->setCurp($result[$i]['id']);
-					$form ->setDireccion($result[$i]['id']);
-					$form->setCelular($result[$i]['id']);
-					$form->setTelefono($result[$i]['id']);
-					$form->setEmail($result[$i]['id']); 
-					$form->setIdalumno($result[$i]['id']);
-					$form->setIdCompleto($result[$i]['id']);
-					$form->setIdgrupo($result[$i]['id']);
-					$form->setMatricula($result[$i]['id']);
-					$form->setFechaingreso($result[$i]['id']);
-					$form->setAlumnoactivo($result[$i]['id']);
-					$form->setMotivoseparacion($result[$i]['id']);
-					$form->setFechabaja($result[$i]['id']);
-					$form->setFechanacimiento($result[$i]['id']);
-					$form ->setSexo($result[$i]['id']);
-					$form->setEscuelaprocedencia($result[$i]['id']); 
-					$form->setUsuarioactivo($result[$i]['id']);
-					$form->setNombreCompleto($result[$i]['id']);
-					$form->setNombreCompleto($result[$i]['id']);
-					$form ->setNombreGrado($result[$i]['id']);
-					$form->setNombreSeccion($result[$i]['id']);
-					$form->setNombreCompleto($result[$i]['id']);
-					$form->setGradoPuro($result[$i]['id']);
-					$form->setIdSeccion($result[$i]['id']);
-					$form->setSeccion($result[$i]['id']);
-					$form->setGrado($result[$i]['id']);
-					$form ->setTipoSeccion($result[$i]['id']);
-	    			
-	    			$form->save();	    			
-	    		}
-	    		$offset=$offset+1000;
-    	    }
-    
-    	return "OK";
-    }
+
     public static function cronUpdateCIEAlumnos(){
     	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['default']);
     	//borrar tabla en CAJA B
