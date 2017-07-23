@@ -23,7 +23,7 @@ class cronesActions extends sfActions
   public function executeActualizarListaAlumnoB(sfWebRequest $request) {
   	try {  
   		$update = consultasInstituto::cronUpdateCIEAlumnos();
-  		echo $update;die();
+  		die();
   		//return $update;
   	} catch (Doctrine_Exception $e) {
   		throw new sfException($e);
@@ -33,8 +33,8 @@ class cronesActions extends sfActions
   public function executeActualizarListagrupo(sfWebRequest $request) {
   	try {
   		$update = consultasInstituto::cronUpdateCIEGrupos();
-  
-  		return $this->sendJSON($update);
+        die();
+  		
   	} catch (Doctrine_Exception $e) {
   		throw new sfException($e);
   	}
@@ -43,8 +43,8 @@ class cronesActions extends sfActions
   public function executeActualizarListacicloescolar(sfWebRequest $request) {
   	try {
   		$update = consultasInstituto::cronUpdateCIECicloEscolares();
-  
-  		return $this->sendJSON($update);
+         die();
+  		
   	} catch (Doctrine_Exception $e) {
   		throw new sfException($e);
   	}
