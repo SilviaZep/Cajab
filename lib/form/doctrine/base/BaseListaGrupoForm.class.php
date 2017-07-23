@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Listagrupo form base class.
+ * ListaGrupo form base class.
  *
- * @method Listagrupo getObject() Returns the current form's model object
+ * @method ListaGrupo getObject() Returns the current form's model object
  *
  * @package    puntoveta
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id: sfDoctrineFormGeneratedTemplate.php 29553 2010-05-20 14:33:00Z Kris.Wallsmith $
  */
-abstract class BaseListagrupoForm extends BaseFormDoctrine
+abstract class BaseListaGrupoForm extends BaseFormDoctrine
 {
   public function setup()
   {
@@ -30,7 +30,7 @@ abstract class BaseListagrupoForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'idgrupo'        => new sfValidatorChoice(array('choices' => array($this->getObject()->get('idgrupo')), 'empty_value' => $this->getObject()->get('idgrupo'), 'required' => false)),
-      'nombre'         => new sfValidatorString(array('max_length' => 20, 'required' => false)),
+      'nombre'         => new sfValidatorString(array('max_length' => 250, 'required' => false)),
       'grado'          => new sfValidatorString(array('max_length' => 45, 'required' => false)),
       'ciclo'          => new sfValidatorString(array('max_length' => 30, 'required' => false)),
       'profesor'       => new sfValidatorString(array('max_length' => 252, 'required' => false)),
@@ -42,7 +42,7 @@ abstract class BaseListagrupoForm extends BaseFormDoctrine
       'oficial'        => new sfValidatorString(array('max_length' => 1, 'required' => false)),
     ));
 
-    $this->widgetSchema->setNameFormat('listagrupo[%s]');
+    $this->widgetSchema->setNameFormat('ListaGrupo[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
 
@@ -53,7 +53,7 @@ abstract class BaseListagrupoForm extends BaseFormDoctrine
 
   public function getModelName()
   {
-    return 'Listagrupo';
+    return 'ListaGrupo';
   }
 
 }

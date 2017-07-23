@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Listaalumnob form base class.
+ * ListaAlumnoB form base class.
  *
- * @method Listaalumnob getObject() Returns the current form's model object
+ * @method ListaAlumnoB getObject() Returns the current form's model object
  *
  * @package    puntoveta
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id: sfDoctrineFormGeneratedTemplate.php 29553 2010-05-20 14:33:00Z Kris.Wallsmith $
  */
-abstract class BaseListaalumnobForm extends BaseFormDoctrine
+abstract class BaseListaAlumnoBForm extends BaseFormDoctrine
 {
   public function setup()
   {
@@ -88,7 +88,7 @@ abstract class BaseListaalumnobForm extends BaseFormDoctrine
       'tiposeccion'        => new sfValidatorString(array('max_length' => 12, 'required' => false)),
     ));
 
-    $this->widgetSchema->setNameFormat('listaalumnob[%s]');
+    $this->widgetSchema->setNameFormat('ListaAlumnoB[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
 
@@ -99,7 +99,7 @@ abstract class BaseListaalumnobForm extends BaseFormDoctrine
 
   public function getModelName()
   {
-    return 'Listaalumnob';
+    return 'ListaAlumnoB';
   }
 
 }

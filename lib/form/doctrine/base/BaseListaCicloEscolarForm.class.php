@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Listacicloescolar form base class.
+ * ListaCicloEscolar form base class.
  *
- * @method Listacicloescolar getObject() Returns the current form's model object
+ * @method ListaCicloEscolar getObject() Returns the current form's model object
  *
  * @package    puntoveta
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id: sfDoctrineFormGeneratedTemplate.php 29553 2010-05-20 14:33:00Z Kris.Wallsmith $
  */
-abstract class BaseListacicloescolarForm extends BaseFormDoctrine
+abstract class BaseListaCicloEscolarForm extends BaseFormDoctrine
 {
   public function setup()
   {
@@ -36,7 +36,7 @@ abstract class BaseListacicloescolarForm extends BaseFormDoctrine
       'idseccion'        => new sfValidatorInteger(array('required' => false)),
     ));
 
-    $this->widgetSchema->setNameFormat('listacicloescolar[%s]');
+    $this->widgetSchema->setNameFormat('ListaCicloEscolar[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
 
@@ -47,7 +47,7 @@ abstract class BaseListacicloescolarForm extends BaseFormDoctrine
 
   public function getModelName()
   {
-    return 'Listacicloescolar';
+    return 'ListaCicloEscolar';
   }
 
 }
