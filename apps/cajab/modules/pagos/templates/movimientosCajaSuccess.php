@@ -29,6 +29,13 @@
                         <option value="PAYPAL">PAYPAL</option>
                     </select>
                 </div>
+                <div class="form-group">  
+                    <label for="exampleInputName2"> Categoria: </label>
+                    <select  ng-model="categoria" class="form-control">      
+                        <option value="0" >Todas</option>
+                        <option ng-repeat="c in listaCategoriaServicios" ng-value="c.id" >{{c.categoria}}</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label for="exampleInputEmail2"> Fecha Pago:</label>
@@ -53,7 +60,7 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="9" class="info">
+            <td colspan="10" class="info">
 
                 <h4>
                     Listado De Movimientos
@@ -61,7 +68,10 @@
                     <span class="label label-warning">Total Descuentos: <b>{{totalDescuento|currency}}</b></span>
                     <span class="label label-danger">Total Egresos: <b>{{totalEgreso|currency}}</b></span>
                     <span class="label label-primary">Total Ingresos-Desc-Egresos: <b>{{totalMonto|currency}}</b></span>
-
+                    <button type="button" class="btn btn-default btn-sm" >
+                        <span ng-show="tipoArchivo == 'PDF'" ng-click="tipoArchivo = 'TICKET'"><i class="fa fa-file-pdf-o" aria-hidden="true" style="color:red"></i> PDF</span>
+                        <span ng-show="tipoArchivo == 'TICKET'"  ng-click="tipoArchivo = 'PDF'"><i class="fa fa-file-text-o" aria-hidden="true"></i> TICKET</span>
+                    </button>
                     <button ng-show="listaMovimientos.length > 0"  type="button" class="btn btn-default pull-right" ng-click="listaMovimientosImprimir()">
                         <i class="fa fa-print" aria-hidden="true"> Imprimir</i>
                     </button>
@@ -70,6 +80,7 @@
 
             <tr>
                 <th class="col-md-1">Tipo</th>
+                <th class="col-md-1">Categoria</th>
                 <th class="col-md-1">Nombre Servicio</th>
                 <th class="col-md-1">Tipo Cliente</th>
                 <th class="col-md-3">Cliente</th>
@@ -99,6 +110,7 @@
                         <span ng-if="m.tipo == 'ingreso'" class="label label-success">INGRESO</span>
                         <span ng-if="m.tipo == 'egreso'" class="label label-danger">EGRESO</span>    
                     </td>
+                    <td>{{m.nombre_categoria}}</td>
                     <td>{{m.nombre_servicio}}</td>
                     <td>{{m.tipo_descripcion}}</td>
                     <td>{{m.cliente}}</td>
