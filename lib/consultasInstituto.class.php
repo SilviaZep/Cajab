@@ -122,7 +122,14 @@ class consultasInstituto {
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-
+        public static function getDatosAlumnoXIdTiket($idAlumno) {
+        $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre),' ') as nombre ,
+            ifnull(CONCAT(ifnull(NombreGrado,' '),' ',ifnull(NombreGrupo,' ')),' ') as seccion 
+                   from ListaAlumnoB where idalumno =" . $idAlumno . " limit 0,1;";
+        $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
+        $st = $conn->execute($sql);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
     //nueva---
   public static function getDatosCompletosAlumnoXId($idAlumno) {
         $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre,' ' ,ifnull(seccion,' '),' ',ifnull(GradoPuro,' '),' ',ifnull(NombreGrupo,' ')),' ') as nombre 
