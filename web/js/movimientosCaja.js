@@ -3,6 +3,7 @@ var app = angular.module('movimientoCaja', []);
 app.controller('movimientoCajaController', ['$http', '$scope', function ($http, $scope) {
 
         $scope.paginaActual = 1;
+        $scope.tipoArchivo = "TICKET";
 
         var date = new Date();
         // var primerDia = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -18,6 +19,7 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
         $scope.totalMonto = 0;
         $scope.totalDescuento = 0;
         $scope.nombreServicio = "";
+        $scope.categoria = "0";
 
 
 
@@ -58,7 +60,8 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
                     formaPago: $scope.formaPago,
                     numRecibo: numRecibo,
                     nombreServicio: nombreServicio,
-                    nombreSeccion: nombreSeccion
+                    nombreSeccion: nombreSeccion,
+                    categoria: $scope.categoria
                 }
             }).then(
                     function (r) {
@@ -69,18 +72,18 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
                         $scope.totalEgreso = 0;
                         $scope.totalPagado = 0;
                         for (var i = 0; i < $scope.listaMovimientos.length; i++) {
-                        	if($scope.listaMovimientos[i].estatus_pago=="Pagado"){
-                        		if($scope.listaMovimientos[i].tipo=="ingreso"){
-	                              $scope.totalPagado += parseFloat($scope.listaMovimientos[i].monto);
-                        		}else if($scope.listaMovimientos[i].tipo=='egreso'){
-                        		   $scope.totalEgreso += parseFloat($scope.listaMovimientos[i].monto);	 
-                        		}
-	                            $scope.totalDescuento += parseFloat($scope.listaMovimientos[i].descuento);
-                        	}
-                        	
+                            if ($scope.listaMovimientos[i].estatus_pago == "Pagado") {
+                                if ($scope.listaMovimientos[i].tipo == "ingreso") {
+                                    $scope.totalPagado += parseFloat($scope.listaMovimientos[i].monto);
+                                } else if ($scope.listaMovimientos[i].tipo == 'egreso') {
+                                    $scope.totalEgreso += parseFloat($scope.listaMovimientos[i].monto);
+                                }
+                                $scope.totalDescuento += parseFloat($scope.listaMovimientos[i].descuento);
+                            }
+
                         }
-                        
-                        $scope.totalMonto=$scope.totalPagado-$scope.totalEgreso-$scope.totalDescuento;
+
+                        $scope.totalMonto = $scope.totalPagado - $scope.totalEgreso - $scope.totalDescuento;
                     }
             );
 
@@ -112,13 +115,19 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
             window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_listado_movimientos_caja_imprimir?fechaIni=' +
                     fechaIni + '&fechaFin=' + fechaFin + '&formaPago=' + $scope.formaPago +
                     '&numRecibo=' + numRecibo + '&nombreServicio=' + nombreServicio +
-                    '&nombreSeccion=' + nombreSeccion, '_blank');
+                    '&nombreSeccion=' + nombreSeccion+'&categoria=' + $scope.categoria, '_blank');
             return;
         };
 
         $scope.reImprimirTicket = function (idRecibo) {
-            window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_imprimir_ticket?idPago=' +
-                    idRecibo, '_blank');
+            if ($scope.tipoArchivo == 'PDF') {
+                window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_imprimir_ticket?idPago=' +
+                        idRecibo, '_blank');
+            } else {
+                window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_imprimir_ticket_formato?idPago=' +
+                        idRecibo, '_blank');
+            }
+
             return;
         };
 
@@ -143,8 +152,23 @@ app.controller('movimientoCajaController', ['$http', '$scope', function ($http, 
             );
 
         };
+        $scope.listadoCategoriasServicios = function () {
+            $http({
+                method: 'POST',
+                url: 'servicios_listado_categorias_servicios',
+                params: {
+                }
+            }).then(
+                    function (r) {
+                        if (r.data.error) {
+                            alert(r.data.mensaje);
+                        }
+                        $scope.listaCategoriaServicios = r.data.listaCategoriaServicios;
+                    }
+            );
+        };
 
-
+        $scope.listadoCategoriasServicios();
 
 
     }]);
