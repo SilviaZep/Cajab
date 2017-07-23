@@ -231,31 +231,25 @@ class consultasInstituto {
     	$totalCie=sizeof($totalCie>0)?$totalCie[0]['total']:0;
     	$consultasInstituto= new consultasInstituto();
     	$offset=1;
+    	$count=0;
     	
-    	$consultasInstituto->insertarCron('UpdateCIEAlumnos');
-    	
-    	while($offset<=$totalCie){       
+    	    	
+    	while($offset<=$totalCie){   
     		echo "offset:".$offset;
     		$campos = "select * FROM listaalumnob WHERE alumnoactivo=1";
     		$sql =$campos." ORDER BY nombre ASC  limit " . 1000 . " offset  " . $offset . "  ;";
     		$stAlumnos = $connInstituto->execute($sql);
     		$result = $stAlumnos->fetchAll(PDO::FETCH_ASSOC);
     		echo " size:".sizeof($result);
+    		$count+=sizeof($result);  		
     		
             $offset+=1000;	
+
             $consultasInstituto->insertarAlumnos($result);  	
     		
     	}
     	
-    	if($totalCie>$offset){
-    		$limit=$totalCie-$offset;
-    		$campos = "select * FROM listaalumnob WHERE alumnoactivo=1";
-    		$sql =$campos." ORDER BY nombre ASC  limit " . $limit . " offset  " . $offset . "  ;";
-    		$stAlumnos = $connInstituto->execute($sql);
-    		$result = $stAlumnos->fetchAll(PDO::FETCH_ASSOC);
-    		$consultasInstituto->insertarAlumnos($result);
-    	}
-    
+    	$consultasInstituto->insertarCron('UpdateCIEAlumnos-'.$count);
     	return "OK";
     }
     
@@ -323,13 +317,14 @@ class consultasInstituto {
     
     	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['cie']);//cie
     	//contar registros en cie de  ListaAlumnoB
-    	$count = "select count(idcicloescolar) as total FROM listacicloescolar ";
-    	$st = $conn->execute($count);
+    	$countCiclos = "select count(idcicloescolar) as total FROM listacicloescolar ";
+    	$st = $conn->execute($countCiclos);
     	$totalCieCiclos=$st->fetchAll(PDO::FETCH_ASSOC);
     	$totalCieCiclos=sizeof($totalCieCiclos>0)?$totalCieCiclos[0]['total']:0;
     	$offset=1;
-        $consultasInstituto= new consultasInstituto();    	
-    	$consultasInstituto->insertarCron('UpdateCIECicloEscolares');
+        $consultasInstituto= new consultasInstituto(); 
+        $count=0;   	
+    	
     	//sleccionar registros de CIE
     	while($offset<=$totalCieCiclos){
     
@@ -337,26 +332,27 @@ class consultasInstituto {
     		$sql =$campos." ORDER BY nombre ASC  limit " . 1000 . " offset  " . $offset . "  ;";
     		$st = $conn->execute($sql);
     		$result = $st->fetchAll(PDO::FETCH_ASSOC);
-            //print_r($result);
+    		$count+=sizeof($result);
+           
     		for($i=0; $i<=sizeof($result); $i++){
     			if(isset($result[$i]) && $result[$i]['idcicloescolar']!=null){
-    			$form= new Listacicloescolar();
     			
-				$form ->setIdcicloescolar($result[$i]['idcicloescolar']);
-				$form ->setFechainicio($result[$i]['fechainicio'] );
-				$form ->setFechatermino($result[$i]['fechatermino'] );
-				$form ->setEstatus($result[$i]['estatus']);
-				$form ->setSeccion($result[$i]['seccion']);
-				$form ->setNombre($result[$i]['nombre']);   
-				$form ->setPrefijomatricula($result[$i]['prefijomatricula']);
-				$form ->setIdseccion($result[$i]['idseccion']);  
-    
-    			$form->save();
+    				$form= new Listacicloescolar();    			
+					$form ->setIdcicloescolar($result[$i]['idcicloescolar']);
+					$form ->setFechainicio($result[$i]['fechainicio'] );
+					$form ->setFechatermino($result[$i]['fechatermino'] );
+					$form ->setEstatus($result[$i]['estatus']);
+					$form ->setSeccion($result[$i]['seccion']);
+					$form ->setNombre($result[$i]['nombre']);   
+					$form ->setPrefijomatricula($result[$i]['prefijomatricula']);
+					$form ->setIdseccion($result[$i]['idseccion']);  
+	    
+	    			$form->save();
     			}
     		}
     		$offset=$offset+1000;
     	}
-    
+    	$consultasInstituto->insertarCron('UpdateCIECicloEscolares-'.$count);
     	return "OK";
     }
     
@@ -368,15 +364,16 @@ class consultasInstituto {
     
     	$conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['cie']);//cie
     	//contar registros en cie de  ListaAlumnoB
-    	$count = "select count(idgrupo) as total FROM listagrupo ";
-    	$st = $conn->execute($count);
+    	$countGrupos = "select count(idgrupo) as total FROM listagrupo ";
+    	$st = $conn->execute($countGrupos);
     	$totalCieGrupos=$st->fetchAll(PDO::FETCH_ASSOC);
     	$totalCieGrupos=sizeof($totalCieGrupos>0)?$totalCieGrupos[0]['total']:0;
     	
-    	$offset=1;
+    	$offset=1; 
+    	$count=0;
     	
     	$consultasInstituto= new consultasInstituto();
-    	$consultasInstituto->insertarCron('UpdateCIEGrupos');
+    	
     	//sleccionar registros de CIE
     	while($offset<=$totalCieGrupos){
     
@@ -386,10 +383,11 @@ class consultasInstituto {
     		$result = $st->fetchAll(PDO::FETCH_ASSOC);
             echo "offset:".$offset;
             echo "size:".sizeof($result);
+            $count+=sizeof($result);
+            
     		for($i=0; $i<=sizeof($result); $i++){
-    			if(isset($result[$i]) && $result[$i]['idgrupo']!=null){
-    			$form= new listagrupo();
-    			
+    		  if(isset($result[$i]) && $result[$i]['idgrupo']!=null){
+    			$form= new listagrupo();    			
     			$form->setIdgrupo($result[$i]['idgrupo']);       
 				$form->setNombre($result[$i]['nombre']);        
 				$form->setGrado($result[$i]['grado']);          
@@ -407,6 +405,8 @@ class consultasInstituto {
     		}
     		$offset=$offset+1000;
     	}
+    	
+    	$consultasInstituto->insertarCron('UpdateCIEGrupos-'.$count);
     
     	return "OK";
     }
