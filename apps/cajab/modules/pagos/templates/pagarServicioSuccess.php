@@ -89,9 +89,14 @@
         <table class="table table-striped table-bordered" style="font-size: 14px !important">
             <thead>
 
-            <td colspan="11" class="info"><h3>Servicios del alumno <small>(Pagando)</small>
-                    <button type="button" class="btn btn-default btn-sx " ng-click="historialServicios()" data-toggle="modal" data-target="#mListaServicios"><i class="fa fa-list-ol" aria-hidden="true"></i> Servicios Alumno</button>
-                    <button type="button" class="btn btn-danger btn-xs pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
+            <td colspan="11" class="info"><h3>Servicios de: <b>{{nombreAlumno}}</b> <small>(Pagando)</small>
+                    <button type="button" class="btn btn-default btn-sm " ng-click="historialServicios()" data-toggle="modal" data-target="#mListaServicios"><i class="fa fa-list-ol" aria-hidden="true"></i> Servicios Alumno</button>
+                    <button type="button" class="btn btn-default btn-sm" >
+                        <span ng-show="tipoArchivo == 'PDF'" ng-click="tipoArchivo='TICKET'"><i class="fa fa-file-pdf-o" aria-hidden="true" style="color:red"></i> PDF</span>
+                        <span ng-show="tipoArchivo == 'TICKET'"  ng-click="tipoArchivo='PDF'"><i class="fa fa-file-text-o" aria-hidden="true"></i> TICKET</span>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm pull-right" ng-click="expandir()"><i class="fa fa-times" aria-hidden="true"></i> Cerrar</button>
+
                 </h3>
             </td>
 
@@ -183,7 +188,7 @@
                     <td><h4><b>Cambio:</b></h4></td>  
                     <td align="right" class="warning"><h4><b>{{(totalIngresado - totalPagara)| currency}}</b></h4></td>
                     <td align="center" class="success">
-                        <button type="button" class="btn btn-success" id="botonGuardarPago" ng-click="guardarPago()"><i class="fa fa-usd" aria-hidden="true"></i> Guardar Pago <span class="badge ng-binding" >{{numPagos}}</span> </button>
+                        <button type="button" class="btn btn-success" id="botonGuardarPago" ng-click="guardarPago()"><i class="fa fa-usd" aria-hidden="true"></i> Guardar Pago* <span class="badge ng-binding" >{{numPagos}}</span> </button>
                     </td>
                 </tr>
 
@@ -352,7 +357,7 @@
                                 <th >Fecha Pago</th>
                                 <th >No. Recibo</th>
                             </tr>
-                           </thead>
+                            </thead>
                             <tbody>
                                 <tr ng-repeat="ls in listadoHistorial">
                                     <td >{{ls.categoria}}</td>
