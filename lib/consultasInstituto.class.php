@@ -232,10 +232,11 @@ class consultasInstituto {
     	$consultasInstituto= new consultasInstituto();
     	$offset=1;
     	
+    	$consultasInstituto->insertarCron('UpdateCIEAlumnos');
     	
     	while($offset<=$totalCie){       
     		echo "offset:".$offset;
-    		$campos = "select * FROM listaalumnobve WHERE alumnoactivo=1";
+    		$campos = "select * FROM listaalumnob WHERE alumnoactivo=1";
     		$sql =$campos." ORDER BY nombre ASC  limit " . 1000 . " offset  " . $offset . "  ;";
     		$stAlumnos = $connInstituto->execute($sql);
     		$result = $stAlumnos->fetchAll(PDO::FETCH_ASSOC);
@@ -248,7 +249,7 @@ class consultasInstituto {
     	
     	if($totalCie>$offset){
     		$limit=$totalCie-$offset;
-    		$campos = "select * FROM listaalumnobve WHERE alumnoactivo=1";
+    		$campos = "select * FROM listaalumnob WHERE alumnoactivo=1";
     		$sql =$campos." ORDER BY nombre ASC  limit " . $limit . " offset  " . $offset . "  ;";
     		$stAlumnos = $connInstituto->execute($sql);
     		$result = $stAlumnos->fetchAll(PDO::FETCH_ASSOC);
@@ -256,6 +257,15 @@ class consultasInstituto {
     	}
     
     	return "OK";
+    }
+    
+    public function insertarCron($tipo){
+    	
+    	$date=date('Y-m-d h:i:s');
+    	$cron=new CronEjecutado();
+    	$cron->setTipo($tipo);
+    	$cron->setFechaEjecucion($date);
+    	$cron->save();
     }
     
   public function insertarAlumnos($result){
@@ -318,6 +328,8 @@ class consultasInstituto {
     	$totalCieCiclos=$st->fetchAll(PDO::FETCH_ASSOC);
     	$totalCieCiclos=sizeof($totalCieCiclos>0)?$totalCieCiclos[0]['total']:0;
     	$offset=1;
+        $consultasInstituto= new consultasInstituto();    	
+    	$consultasInstituto->insertarCron('UpdateCIECicloEscolares');
     	//sleccionar registros de CIE
     	while($offset<=$totalCieCiclos){
     
@@ -362,6 +374,9 @@ class consultasInstituto {
     	$totalCieGrupos=sizeof($totalCieGrupos>0)?$totalCieGrupos[0]['total']:0;
     	
     	$offset=1;
+    	
+    	$consultasInstituto= new consultasInstituto();
+    	$consultasInstituto->insertarCron('UpdateCIEGrupos');
     	//sleccionar registros de CIE
     	while($offset<=$totalCieGrupos){
     
