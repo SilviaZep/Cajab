@@ -4,6 +4,8 @@ var app = angular.module('pagarServicio', []);
 app.controller('pagarServicioController', ['$http', '$scope', function ($http, $scope) {
 
         var x = getCookie('nombre');
+        
+        $scope.tipoArchivo="TICKET";
 
         if (x.length > 0) {
             $scope.nombreAlumno = x;
@@ -172,7 +174,13 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
                         $scope.totalPagara = 0;
                         $scope.numPagos = 0;
                         finActualizarBoton('botonGuardarPago');
-                        myWindow.location = 'http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_imprimir_ticket?idPago=' + r.data.idPago + '&totalIngresado=' + $scope.totalIngresado;
+                        if($scope.tipoArchivo=='PDF'){
+                             myWindow.location = 'http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_imprimir_ticket?idPago=' + r.data.idPago + '&totalIngresado=' + $scope.totalIngresado;
+                        }else{
+                             myWindow.location = 'http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_imprimir_ticket_formato?idPago=' + r.data.idPago + '&totalIngresado=' + $scope.totalIngresado;
+                        }
+                            
+                       
                         $scope.totalIngresado = 0;
                         //window.open('pagos_imprimir_ticket?idPago=' +
                         //      r.data.idPago, '_blank');
