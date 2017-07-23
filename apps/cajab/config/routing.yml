@@ -241,6 +241,9 @@ pagos_pagos_servicios_cliente:
 pagos_imprimir_ticket:
   url:   /pagos_imprimir_ticket
   param: { module: pagos, action: imprimirTicket }   
+pagos_imprimir_ticket_formato:
+  url:   /pagos_imprimir_ticket_formato
+  param: { module: pagos, action: imprimirTicketFormato }  
 pagos_estado_cuenta_alumno:
   url:   /pagos_estado_cuenta_alumno
   param: { module: pagos, action: estadoCuentaAlumno } 
