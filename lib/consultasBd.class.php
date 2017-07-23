@@ -1194,11 +1194,12 @@ order by no_servicios)t
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago, $nombreServicio, $tipoRecibo = null) {
+     public static function getMovimientosCaja($idPago, $fechaIni, $fechaFin, $formaPago, $nombreServicio, $categoria,$tipoRecibo = null) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
         $filtroIdPago = "";
         $filtroFormaPago = "";
         $filtroEstatusPago = "";
+        $filtroCategoria = "";
         if ($idPago != 0) {
             $filtroIdPago = "and sp.id_pago={$idPago}";
         }
@@ -1208,10 +1209,14 @@ order by no_servicios)t
         if ($tipoRecibo != null) {
             $filtroEstatusPago = " and sp.estatus=1 ";
         }
+        if ($categoria != "0") {
+            $filtroCategoria = " and s.categoria_id={$categoria} ";
+        }
         $sql = "
             select 
-            concat('p_',sp.id) as id,
+        concat('p_',sp.id) as id,
 	s.nombre as nombre_servicio,
+        ifnull((select descripcion from categoria_servicio where id=s.categoria_id),'NA') as nombre_categoria,
 	(CASE sp.tipo_cliente
 	WHEN 1 THEN 'na'
 	WHEN 2 THEN ifnull((select nombre from clientes_externos where id=sp.id_cliente),'na')
@@ -1238,6 +1243,7 @@ order by no_servicios)t
 	{$filtroIdPago}
 	{$filtroFormaPago}
 	{$filtroEstatusPago}
+        {$filtroCategoria}
 	    and s.nombre like '%{$nombreServicio}%'
                 
 union
@@ -1245,6 +1251,7 @@ union
         SELECT 
         concat('e_',e.id) as id,
         s.nombre as nombre_servicio,
+        ifnull((select descripcion from categoria_servicio where id=s.categoria_id),'NA') as nombre_categoria,
         p.nombre as proveedor,
         'Cliente Externo' as tipo_descripcion,
         e.cantidad as monto,
@@ -1270,7 +1277,7 @@ union
         $st = $conn->execute($sql);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    
     public static function getEliminarPagos($idPago) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
 
