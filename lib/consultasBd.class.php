@@ -1436,12 +1436,16 @@ union
 
     /* Servicios con detalle de ingresos /egresos */
 
-    public static function getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio) {
+    public static function getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio,$categoria) {
         $conn = Doctrine_Manager::getInstance()->getConnection("default");
 
         $filtroFormaPago = "";
         if ($formaPago != "NA") {
             $filtroFormaPago = "and sp.forma_pago='{$formaPago}'";
+        }
+         $filtroCategoria = "and s.categoria_id={$categoria}";
+        if ($categoria == 0) {
+            $filtroCategoria = "";
         }
 
         $sql = "
@@ -1476,9 +1480,10 @@ union
         from servicio s,categoria_servicio cs
         where s.nombre like '%{$nombreServicio}%'
         and s.categoria_id=cs.id 
+         {$filtroCategoria}
         )t
         where (pagado>0 or egresos>0)
-	order by nombre desc
+	order by categoria asc,nombre asc
         ;   ";
 
         //  echo $sql;
