@@ -56,7 +56,7 @@
                         </td>-->
                         <td>
                             <span >                            
-                                <button type="button" class="btn btn-warning btn-xs" ng-click="contraer(a.id)">
+                                <button type="button" class="btn btn-warning btn-xs" ng-click="contraer(a.id,a.nombre)">
                                     <i class="fa fa-angle-double-right" aria-hidden="true"></i> Servicios Adeuda
                                 </button>
 
