@@ -8,13 +8,14 @@ app.controller('estadoCuentaXServicioController', ['$http', '$scope', function (
         //var ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         var primerDia = new Date();
         var ultimoDia = new Date();
-
+ $scope.listaCategoriaServicios=[];
 
         $scope.fechaIni = primerDia;
         $scope.fechaFin = ultimoDia;
         $scope.formaPago = "NA";
 
         $scope.nombreServicio = "";
+                $scope.categoria = "0";
         
         $scope.totalesColumnas={precio:0,inscritos:0,esperado:0,descuento:0,pagadoSD:0,egresos:0,total:0,saldo:0};
 
@@ -55,7 +56,8 @@ app.controller('estadoCuentaXServicioController', ['$http', '$scope', function (
                     fechaIni: fechaIni,
                     fechaFin: fechaFin,
                     formaPago: $scope.formaPago,
-                    nombreServicio: nombreServicio
+                    nombreServicio: nombreServicio,
+                       categoria: $scope.categoria
                 }
             }).then(
                     function (r) {
@@ -155,9 +157,27 @@ app.controller('estadoCuentaXServicioController', ['$http', '$scope', function (
 
             window.open('http://clubdelibros245.com/puntoventa/web/cajab_dev.php/pagos_listado_informacion_servicio_imprimir?fechaIni=' +
                     fechaIni + '&fechaFin=' + fechaFin + '&formaPago=' + $scope.formaPago +
-                   '&nombreServicio=' + nombreServicio , '_blank');
+                    '&nombreServicio=' + nombreServicio+ '&categoria=' + $scope.categoria , '_blank');
             return;
         };
+        
+          $scope.listadoCategoriasServicios = function () {
+            $http({
+                method: 'POST',
+                url: 'servicios_listado_categorias_servicios',
+                params: {
+                }
+            }).then(
+                    function (r) {
+                        if (r.data.error) {
+                            alert(r.data.mensaje);
+                        }
+                        $scope.listaCategoriaServicios = r.data.listaCategoriaServicios;
+                    }
+            );
+        };
+
+        $scope.listadoCategoriasServicios();
 
 
 
