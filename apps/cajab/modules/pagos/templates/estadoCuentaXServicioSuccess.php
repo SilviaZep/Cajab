@@ -25,6 +25,13 @@
                         <option value="PAYPAL">PAYPAL</option>
                     </select>
                 </div>
+                  <div class="form-group">  
+                    <label for="exampleInputName2"> Categoria: </label>
+                    <select  ng-model="categoria" class="form-control">      
+                        <option value="0" >Todas</option>
+                        <option ng-repeat="c in listaCategoriaServicios" ng-value="c.id" >{{c.categoria}}</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label for="exampleInputEmail2"> Fecha Pago:</label>
