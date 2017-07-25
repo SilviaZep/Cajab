@@ -125,7 +125,7 @@ class consultasInstituto {
 
     //nueva---
   public static function getDatosCompletosAlumnoXId($idAlumno) {
-        $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre,' ' ,ifnull(seccion,' '),' ',ifnull(GradoPuro,' '),' ',ifnull(NombreGrupo,' ')),' ') as nombre 
+        $sql = "select ifnull(CONCAT(appat,' ',apmat,' ',nombre,' ' ,ifnull(seccion,' '),' ',ifnull(GradoPuro,' '),' ',ifnull(if(NombreGrupo='','',NombreGrupo),' ')),' ') as nombre 
                    from ListaAlumnoB where idalumno =" . $idAlumno . " limit 0,1;";
         $conn = Doctrine_Manager::getInstance()->getConnection($GLOBALS['instBD']); //nombre de mi conexion         
         $st = $conn->execute($sql);
