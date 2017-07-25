@@ -433,8 +433,7 @@ class pagosActions extends baseCajabProjectActions {
             }
             $importeLetra = $this->numtoletras($total);
 
-
-            $pdf->Ln(5);
+   $pdf->Ln(5);
 
             $pdf->SetFont('Arial', 'B', 8);
             // $pdf->Cell(130, 8, "", 0, 0, 'L');
@@ -448,20 +447,23 @@ class pagosActions extends baseCajabProjectActions {
 
             $pdf->SetFont('Arial', 'B', 8);
             $pdf->Ln(8);
-            $pdf->Cell(85, 8, utf8_decode('Total(T) | Importe con letra (ICL)'), 1, 0, 'L');
+            $pdf->Cell(85, 8, utf8_decode('Total: $'.$total), 1, 0, 'L');
 
             $pdf->Ln(8);
-            $pdf->Cell(20, 8, utf8_decode("(T): $" . $total), 1, 0, 'R');
-            $pdf->Cell(65, 8, utf8_decode("(ICL): " . $importeLetra), 1, 0, 'L');
+            $pdf->Cell(85, 8, utf8_decode("Importe con letra : " ), 1, 0, 'L');
+ $pdf->Ln(8);
+$pdf->SetFont('Arial', 'B', 6);
+            $pdf->Cell(85, 8, utf8_decode( $importeLetra), 1, 0, 'L');
 
 
             $pdf->Ln(8);
-            $pdf->Cell(130, 8, "", 0, 0, 'L');
+           // $pdf->Cell(130, 8, "", 0, 0, 'L');
             if ($totalIngresado > 0) {
-                $pdf->Cell(30, 8, utf8_decode('Cambio: '), 1, 0, 'L');
-                $pdf->Cell(20, 8, utf8_decode("$" . ($totalIngresado - $total)), 1, 0, 'R');
+                $pdf->Cell(85, 8, utf8_decode('Cambio: '."$" . ($totalIngresado - $total)), 1, 0, 'L');
+              //  $pdf->Cell(20, 8, utf8_decode("$" . ($totalIngresado - $total)), 1, 0, 'R');
                 $pdf->Ln(8);
             }
+
 
 
             //   $pdf->Ln(8);
@@ -957,10 +959,10 @@ class pagosActions extends baseCajabProjectActions {
                 $fechaFin = $request->getParameter("fechaFin", 0);
 
                 $nombreServicio = $request->getParameter("nombreServicio", '');
+   $categoria = $request->getParameter("categoria", '');
 
 
-
-                $listaServiciosInfo = consultasBd::getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio);
+                $listaServiciosInfo = consultasBd::getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio,$categoria);
 
 
 
@@ -988,10 +990,10 @@ class pagosActions extends baseCajabProjectActions {
             $fechaFin = $request->getParameter("fechaFin", 0);
 
             $nombreServicio = $request->getParameter("nombreServicio", '');
+   $categoria = $request->getParameter("categoria", '');
 
 
-
-            $listadoMovimientos = consultasBd::getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio);
+            $listadoMovimientos = consultasBd::getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio,$categoria);
 
             /* Imprimir */
             //-------------imprimir
