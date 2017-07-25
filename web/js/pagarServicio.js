@@ -44,7 +44,8 @@ app.controller('pagarServicioController', ['$http', '$scope', function ($http, $
             }
         };
 
-        $scope.contraer = function (idAlumno) {
+        $scope.contraer = function (idAlumno,nombre) {
+             $scope.nombreAlumno = nombre;
             $scope.listadoServicios(idAlumno);
             $scope.idAlumnoSel=idAlumno;
             $scope.detalle = true;
