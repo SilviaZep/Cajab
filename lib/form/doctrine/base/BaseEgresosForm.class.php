@@ -20,11 +20,11 @@ abstract class BaseEgresosForm extends BaseFormDoctrine
       'id_proveedor'   => new sfWidgetFormInputText(),
       'id_concepto'    => new sfWidgetFormInputText(),
       'fecha_registro' => new sfWidgetFormDate(),
+      'tipo_pago'      => new sfWidgetFormInputText(),
+      'referencia'     => new sfWidgetFormInputText(),
       'cantidad'       => new sfWidgetFormInputText(),
-      'referencia'       => new sfWidgetFormInputText(),
       'observaciones'  => new sfWidgetFormTextarea(),
       'estatus'        => new sfWidgetFormInputText(),
-      'tipo_pago'        => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
@@ -33,11 +33,11 @@ abstract class BaseEgresosForm extends BaseFormDoctrine
       'id_proveedor'   => new sfValidatorInteger(array('required' => false)),
       'id_concepto'    => new sfValidatorInteger(array('required' => false)),
       'fecha_registro' => new sfValidatorDate(array('required' => false)),
+      'tipo_pago'      => new sfValidatorInteger(array('required' => false)),
+      'referencia'     => new sfValidatorString(array('max_length' => 45, 'required' => false)),
       'cantidad'       => new sfValidatorNumber(array('required' => false)),
       'observaciones'  => new sfValidatorString(array('required' => false)),
-      'referencia'  => new sfValidatorString(array('required' => false)),
       'estatus'        => new sfValidatorInteger(array('required' => false)),
-      'tipo_pago'        => new sfValidatorInteger(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('egresos[%s]');

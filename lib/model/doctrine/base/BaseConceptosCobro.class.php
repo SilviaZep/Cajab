@@ -11,15 +11,18 @@ Doctrine_Manager::getInstance()->bindComponent('ConceptosCobro', 'default');
  * @property integer $id_servicio
  * @property string $concepto
  * @property date $fecha_registro
+ * @property integer $estatus
  * 
  * @method integer        getId()             Returns the current record's "id" value
  * @method integer        getIdServicio()     Returns the current record's "id_servicio" value
  * @method string         getConcepto()       Returns the current record's "concepto" value
  * @method date           getFechaRegistro()  Returns the current record's "fecha_registro" value
+ * @method integer        getEstatus()        Returns the current record's "estatus" value
  * @method ConceptosCobro setId()             Sets the current record's "id" value
  * @method ConceptosCobro setIdServicio()     Sets the current record's "id_servicio" value
  * @method ConceptosCobro setConcepto()       Sets the current record's "concepto" value
  * @method ConceptosCobro setFechaRegistro()  Sets the current record's "fecha_registro" value
+ * @method ConceptosCobro setEstatus()        Sets the current record's "estatus" value
  * 
  * @package    puntoveta
  * @subpackage model
@@ -34,10 +37,9 @@ abstract class BaseConceptosCobro extends sfDoctrineRecord
         $this->hasColumn('id', 'integer', 4, array(
              'type' => 'integer',
              'fixed' => 0,
-             'unsigned' => true,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
+             'unsigned' => false,
+             'primary' => true,
+             'autoincrement' => true,
              'length' => 4,
              ));
         $this->hasColumn('id_servicio', 'integer', 4, array(
@@ -67,7 +69,7 @@ abstract class BaseConceptosCobro extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 25,
              ));
-	    $this->hasColumn('estatus', 'integer', 4, array(
+        $this->hasColumn('estatus', 'integer', 4, array(
              'type' => 'integer',
              'fixed' => 0,
              'unsigned' => false,

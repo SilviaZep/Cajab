@@ -49,6 +49,11 @@ abstract class BaseListaAlumnoBForm extends BaseFormDoctrine
       'seccion'            => new sfWidgetFormInputText(),
       'grado'              => new sfWidgetFormInputText(),
       'tiposeccion'        => new sfWidgetFormInputText(),
+      'bajasolo'        => new sfWidgetFormInputText(),
+      'direccionbajada'        => new sfWidgetFormTextarea(),
+      'personarecibe'        => new sfWidgetFormInputText(),
+      'observaciones'        => new sfWidgetFormTextarea(),
+      'dia'        => new sfWidgetFormTextarea(),
     ));
 
     $this->setValidators(array(
@@ -86,6 +91,11 @@ abstract class BaseListaAlumnoBForm extends BaseFormDoctrine
       'seccion'            => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'grado'              => new sfValidatorString(array('max_length' => 45, 'required' => false)),
       'tiposeccion'        => new sfValidatorString(array('max_length' => 12, 'required' => false)),
+      'bajasolo'           => new sfValidatorString(array('max_length' => 12, 'required' => false)),
+      'direccionbajada'    => new sfValidatorString(array('required' => false)),
+      'personarecibe'      => new sfValidatorString(array('max_length' => 100, 'required' => false)),
+      'observaciones'      => new sfValidatorString(array('required' => false)),
+      'dia'        => new sfValidatorString(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('ListaAlumnoB[%s]');

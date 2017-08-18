@@ -69,7 +69,7 @@ abstract class BaseHorarioRuta extends sfDoctrineRecord
              'fixed' => 0,
              'unsigned' => false,
              'primary' => true,
-             'autoincrement' => false,
+             'autoincrement' => true,
              'length' => 4,
              ));
         $this->hasColumn('r_lun_e', 'integer', 4, array(

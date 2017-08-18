@@ -307,6 +307,12 @@ class consultasInstituto {
     			 $form->setSeccion($result[$i]['seccion']);
     			 $form->setGrado($result[$i]['grado']);
     			 $form->setTiposeccion($result[$i]['TipoSeccion']);
+    			 
+    			 $form->setBajasolo($result[$i]['bajasolo']);
+    			 $form->setDireccionbajada($result[$i]['direccionBajada']);
+    			 $form->setPersonarecibe($result[$i]['personarecibe']);
+    			 $form->setObservaciones($result[$i]['Observaciones']);
+    			 $form->setDia($result[$i]['dia']);
     			 $form->save();
     		}
     	 }

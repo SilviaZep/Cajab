@@ -1,5 +1,4 @@
 <?php
-
 // Connection Component Binding
 Doctrine_Manager::getInstance()->bindComponent('Ruta', 'default');
 
@@ -14,6 +13,7 @@ Doctrine_Manager::getInstance()->bindComponent('Ruta', 'default');
  * @property string $nombre
  * @property string $descripcion
  * @property string $horario
+ * @property integer $estatus
  * 
  * @method integer getId()          Returns the current record's "id" value
  * @method integer getCapacidad()   Returns the current record's "capacidad" value
@@ -21,88 +21,92 @@ Doctrine_Manager::getInstance()->bindComponent('Ruta', 'default');
  * @method string  getNombre()      Returns the current record's "nombre" value
  * @method string  getDescripcion() Returns the current record's "descripcion" value
  * @method string  getHorario()     Returns the current record's "horario" value
+ * @method integer getEstatus()     Returns the current record's "estatus" value
  * @method Ruta    setId()          Sets the current record's "id" value
  * @method Ruta    setCapacidad()   Sets the current record's "capacidad" value
  * @method Ruta    setChofer()      Sets the current record's "chofer" value
  * @method Ruta    setNombre()      Sets the current record's "nombre" value
  * @method Ruta    setDescripcion() Sets the current record's "descripcion" value
  * @method Ruta    setHorario()     Sets the current record's "horario" value
+ * @method Ruta    setEstatus()     Sets the current record's "estatus" value
  * 
  * @package    puntoveta
  * @subpackage model
  * @author     Your name here
  * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
-abstract class BaseRuta extends sfDoctrineRecord {
-
-    public function setTableDefinition() {
+abstract class BaseRuta extends sfDoctrineRecord
+{
+    public function setTableDefinition()
+    {
         $this->setTableName('ruta');
         $this->hasColumn('id', 'integer', 4, array(
-            'type' => 'integer',
-            'fixed' => 0,
-            'unsigned' => false,
-            'primary' => true,
-            'autoincrement' => true,
-            'length' => 4,
-        ));
+             'type' => 'integer',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => true,
+             'autoincrement' => true,
+             'length' => 4,
+             ));
         $this->hasColumn('capacidad', 'integer', 4, array(
-            'type' => 'integer',
-            'fixed' => 0,
-            'unsigned' => false,
-            'primary' => false,
-            'notnull' => false,
-            'autoincrement' => false,
-            'length' => 4,
-        ));
+             'type' => 'integer',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => 4,
+             ));
         $this->hasColumn('chofer', 'string', 200, array(
-            'type' => 'string',
-            'fixed' => 0,
-            'unsigned' => false,
-            'primary' => false,
-            'notnull' => false,
-            'autoincrement' => false,
-            'length' => 200,
-        ));
+             'type' => 'string',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => 200,
+             ));
         $this->hasColumn('nombre', 'string', 50, array(
-            'type' => 'string',
-            'fixed' => 0,
-            'unsigned' => false,
-            'primary' => false,
-            'notnull' => false,
-            'autoincrement' => false,
-            'length' => 50,
-        ));
+             'type' => 'string',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => 50,
+             ));
         $this->hasColumn('descripcion', 'string', 250, array(
-            'type' => 'string',
-            'fixed' => 0,
-            'unsigned' => false,
-            'primary' => false,
-            'notnull' => false,
-            'autoincrement' => false,
-            'length' => 250,
-        ));
+             'type' => 'string',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => 250,
+             ));
         $this->hasColumn('horario', 'string', 50, array(
-            'type' => 'string',
-            'fixed' => 0,
-            'unsigned' => false,
-            'primary' => false,
-            'notnull' => false,
-            'autoincrement' => false,
-            'length' => 50,
-        ));
+             'type' => 'string',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => 50,
+             ));
         $this->hasColumn('estatus', 'integer', 4, array(
-            'type' => 'integer',
-            'fixed' => 0,
-            'unsigned' => false,
-            'primary' => false,
-            'notnull' => false,
-            'autoincrement' => false,
-            'length' => 4,
-        ));
+             'type' => 'integer',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => 4,
+             ));
     }
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
+        
     }
-
 }

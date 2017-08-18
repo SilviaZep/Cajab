@@ -426,6 +426,54 @@ abstract class BaseListaAlumnoB extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 12,
              ));
+        $this->hasColumn('bajasolo', 'string', 1, array(
+        		'type' => 'string',
+        		'fixed' => 0,
+        		'unsigned' => false,
+        		'primary' => false,
+        		'notnull' => false,
+        		'autoincrement' => false,
+        		'length' => 12,
+        ));
+        
+        $this->hasColumn('direccionbajada', 'string', '', array(
+        		'type' => 'string',
+        		'fixed' => 0,
+        		'unsigned' => false,
+        		'primary' => false,
+        		'notnull' => false,
+        		'autoincrement' => false,
+        		'length' =>'',
+        ));
+        
+        $this->hasColumn('personarecibe', 'string', 100, array(
+        		'type' => 'string',
+        		'fixed' => 0,
+        		'unsigned' => false,
+        		'primary' => false,
+        		'notnull' => false,
+        		'autoincrement' => false,
+        		'length' => 100,
+        ));
+        
+        $this->hasColumn('observaciones', 'string', '', array(
+        		'type' => 'string',
+        		'fixed' => 0,
+        		'unsigned' => false,
+        		'primary' => false,
+        		'notnull' => false,
+        		'autoincrement' => false,
+        		'length' => '',
+        ));
+        $this->hasColumn('dia', 'string', '', array(
+        		'type' => 'string',
+        		'fixed' => 0,
+        		'unsigned' => false,
+        		'primary' => false,
+        		'notnull' => false,
+        		'autoincrement' => false,
+        		'length' => '',
+        ));
     }
 
     public function setUp()

@@ -18,6 +18,9 @@ Doctrine_Manager::getInstance()->bindComponent('ServicioPago', 'default');
  * @property timestamp $fecha_registro
  * @property integer $tipo_pago
  * @property string $forma_pago
+ * @property integer $id_pago
+ * @property string $descuento
+ * @property integer $estatus
  * 
  * @method integer      getId()               Returns the current record's "id" value
  * @method integer      getIdServicio()       Returns the current record's "id_servicio" value
@@ -30,6 +33,9 @@ Doctrine_Manager::getInstance()->bindComponent('ServicioPago', 'default');
  * @method timestamp    getFechaRegistro()    Returns the current record's "fecha_registro" value
  * @method integer      getTipoPago()         Returns the current record's "tipo_pago" value
  * @method string       getFormaPago()        Returns the current record's "forma_pago" value
+ * @method integer      getIdPago()           Returns the current record's "id_pago" value
+ * @method string       getDescuento()        Returns the current record's "descuento" value
+ * @method integer      getEstatus()          Returns the current record's "estatus" value
  * @method ServicioPago setId()               Sets the current record's "id" value
  * @method ServicioPago setIdServicio()       Sets the current record's "id_servicio" value
  * @method ServicioPago setIdCliente()        Sets the current record's "id_cliente" value
@@ -41,6 +47,9 @@ Doctrine_Manager::getInstance()->bindComponent('ServicioPago', 'default');
  * @method ServicioPago setFechaRegistro()    Sets the current record's "fecha_registro" value
  * @method ServicioPago setTipoPago()         Sets the current record's "tipo_pago" value
  * @method ServicioPago setFormaPago()        Sets the current record's "forma_pago" value
+ * @method ServicioPago setIdPago()           Sets the current record's "id_pago" value
+ * @method ServicioPago setDescuento()        Sets the current record's "descuento" value
+ * @method ServicioPago setEstatus()          Sets the current record's "estatus" value
  * 
  * @package    puntoveta
  * @subpackage model
@@ -150,7 +159,7 @@ abstract class BaseServicioPago extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 20,
              ));
-         $this->hasColumn('id_pago', 'integer', 4, array(
+        $this->hasColumn('id_pago', 'integer', 4, array(
              'type' => 'integer',
              'fixed' => 0,
              'unsigned' => false,
@@ -159,20 +168,21 @@ abstract class BaseServicioPago extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 4,
              ));
-          $this->hasColumn('descuento', 'float', null, array(
-             'type' => 'float',
+        $this->hasColumn('descuento', 'string', 45, array(
+             'type' => 'string',
              'fixed' => 0,
              'unsigned' => false,
              'primary' => false,
              'notnull' => false,
              'autoincrement' => false,
-             'length' => '',
+             'length' => 45,
              ));
-		  $this->hasColumn('estatus', 'integer', 4, array(
+        $this->hasColumn('estatus', 'integer', 4, array(
              'type' => 'integer',
              'fixed' => 0,
              'unsigned' => false,
              'primary' => false,
+             'default' => '1',
              'notnull' => false,
              'autoincrement' => false,
              'length' => 4,

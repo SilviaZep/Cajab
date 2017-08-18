@@ -14,6 +14,7 @@ Doctrine_Manager::getInstance()->bindComponent('ListaRuta', 'default');
  * @property integer $estatus
  * @property integer $estatus_s
  * @property integer $estatus_b
+ * @property integer $tipo
  * 
  * @method integer   getId()        Returns the current record's "id" value
  * @method integer   getIdAlumno()  Returns the current record's "id_alumno" value
@@ -22,6 +23,7 @@ Doctrine_Manager::getInstance()->bindComponent('ListaRuta', 'default');
  * @method integer   getEstatus()   Returns the current record's "estatus" value
  * @method integer   getEstatusS()  Returns the current record's "estatus_s" value
  * @method integer   getEstatusB()  Returns the current record's "estatus_b" value
+ * @method integer   getTipo()      Returns the current record's "tipo" value
  * @method ListaRuta setId()        Sets the current record's "id" value
  * @method ListaRuta setIdAlumno()  Sets the current record's "id_alumno" value
  * @method ListaRuta setIdRuta()    Sets the current record's "id_ruta" value
@@ -29,6 +31,7 @@ Doctrine_Manager::getInstance()->bindComponent('ListaRuta', 'default');
  * @method ListaRuta setEstatus()   Sets the current record's "estatus" value
  * @method ListaRuta setEstatusS()  Sets the current record's "estatus_s" value
  * @method ListaRuta setEstatusB()  Sets the current record's "estatus_b" value
+ * @method ListaRuta setTipo()      Sets the current record's "tipo" value
  * 
  * @package    puntoveta
  * @subpackage model
@@ -45,7 +48,7 @@ abstract class BaseListaRuta extends sfDoctrineRecord
              'fixed' => 0,
              'unsigned' => false,
              'primary' => true,
-             'autoincrement' => false,
+             'autoincrement' => true,
              'length' => 4,
              ));
         $this->hasColumn('id_alumno', 'integer', 4, array(
@@ -111,16 +114,6 @@ abstract class BaseListaRuta extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 4,
              ));
-          $this->hasColumn('observacion', 'string', 20, array(
-            'type' => 'string',
-            'fixed' => 0,
-            'unsigned' => false,
-            'primary' => false,
-            'notnull' => false,
-            'autoincrement' => false,
-            'length' => 20,
-        ));
-        
     }
 
     public function setUp()

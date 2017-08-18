@@ -12,6 +12,8 @@ Doctrine_Manager::getInstance()->bindComponent('Egresos', 'default');
  * @property integer $id_proveedor
  * @property integer $id_concepto
  * @property date $fecha_registro
+ * @property integer $tipo_pago
+ * @property string $referencia
  * @property float $cantidad
  * @property string $observaciones
  * @property integer $estatus
@@ -21,6 +23,8 @@ Doctrine_Manager::getInstance()->bindComponent('Egresos', 'default');
  * @method integer getIdProveedor()    Returns the current record's "id_proveedor" value
  * @method integer getIdConcepto()     Returns the current record's "id_concepto" value
  * @method date    getFechaRegistro()  Returns the current record's "fecha_registro" value
+ * @method integer getTipoPago()       Returns the current record's "tipo_pago" value
+ * @method string  getReferencia()     Returns the current record's "referencia" value
  * @method float   getCantidad()       Returns the current record's "cantidad" value
  * @method string  getObservaciones()  Returns the current record's "observaciones" value
  * @method integer getEstatus()        Returns the current record's "estatus" value
@@ -29,6 +33,8 @@ Doctrine_Manager::getInstance()->bindComponent('Egresos', 'default');
  * @method Egresos setIdProveedor()    Sets the current record's "id_proveedor" value
  * @method Egresos setIdConcepto()     Sets the current record's "id_concepto" value
  * @method Egresos setFechaRegistro()  Sets the current record's "fecha_registro" value
+ * @method Egresos setTipoPago()       Sets the current record's "tipo_pago" value
+ * @method Egresos setReferencia()     Sets the current record's "referencia" value
  * @method Egresos setCantidad()       Sets the current record's "cantidad" value
  * @method Egresos setObservaciones()  Sets the current record's "observaciones" value
  * @method Egresos setEstatus()        Sets the current record's "estatus" value
@@ -87,6 +93,24 @@ abstract class BaseEgresos extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 25,
              ));
+        $this->hasColumn('tipo_pago', 'integer', 4, array(
+             'type' => 'integer',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => 4,
+             ));
+        $this->hasColumn('referencia', 'string', 45, array(
+             'type' => 'string',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => 45,
+             ));
         $this->hasColumn('cantidad', 'float', null, array(
              'type' => 'float',
              'fixed' => 0,
@@ -105,15 +129,6 @@ abstract class BaseEgresos extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => '',
              ));
-        $this->hasColumn('referencia', 'string', null, array(
-        		'type' => 'string',
-        		'fixed' => 0,
-        		'unsigned' => false,
-        		'primary' => false,
-        		'notnull' => false,
-        		'autoincrement' => false,
-        		'length' => '',
-        ));
         $this->hasColumn('estatus', 'integer', 4, array(
              'type' => 'integer',
              'fixed' => 0,
@@ -123,15 +138,6 @@ abstract class BaseEgresos extends sfDoctrineRecord
              'autoincrement' => false,
              'length' => 4,
              ));
-        $this->hasColumn('tipo_pago', 'integer', 4, array(
-        		'type' => 'integer',
-        		'fixed' => 0,
-        		'unsigned' => false,
-        		'primary' => false,
-        		'notnull' => false,
-        		'autoincrement' => false,
-        		'length' => 4,
-        ));
     }
 
     public function setUp()
