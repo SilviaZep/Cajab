@@ -342,6 +342,7 @@ class pagosActions extends baseCajabProjectActions {
             return "";
         }
     }
+
     public function executeImprimirTicketFormato(sfWebRequest $request) {
         date_default_timezone_set('America/Mexico_City');
 
@@ -357,8 +358,13 @@ class pagosActions extends baseCajabProjectActions {
         for ($i = 0; $i < sizeof($pagos); $i ++) {
             if ($pagos[$i]['tipo_descripcion'] == "Alumno") {
                 $nombreAlumno = consultasInstituto::getDatosAlumnoXIdTiket($pagos[$i]['id_alumno']);
-                $pagos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
-                $pagos[$i]['seccion'] = $nombreAlumno[0]['seccion'];
+                if (sizeof($nombreAlumno) > 0) {
+                    $pagos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                    $pagos[$i]['seccion'] = $nombreAlumno[0]['seccion'];
+                } else {
+                    $pagos[$i]['cliente'] = "***";
+                    $pagos[$i]['seccion'] = "***";
+                }
             }
         }
 
@@ -433,7 +439,7 @@ class pagosActions extends baseCajabProjectActions {
             }
             $importeLetra = $this->numtoletras($total);
 
-   $pdf->Ln(5);
+            $pdf->Ln(5);
 
             $pdf->SetFont('Arial', 'B', 8);
             // $pdf->Cell(130, 8, "", 0, 0, 'L');
@@ -447,20 +453,20 @@ class pagosActions extends baseCajabProjectActions {
 
             $pdf->SetFont('Arial', 'B', 8);
             $pdf->Ln(8);
-            $pdf->Cell(85, 8, utf8_decode('Total: $'.$total), 1, 0, 'L');
+            $pdf->Cell(85, 8, utf8_decode('Total: $' . $total), 1, 0, 'L');
 
             $pdf->Ln(8);
-            $pdf->Cell(85, 8, utf8_decode("Importe con letra : " ), 1, 0, 'L');
- $pdf->Ln(8);
-$pdf->SetFont('Arial', 'B', 6);
-            $pdf->Cell(85, 8, utf8_decode( $importeLetra), 1, 0, 'L');
+            $pdf->Cell(85, 8, utf8_decode("Importe con letra : "), 1, 0, 'L');
+            $pdf->Ln(8);
+            $pdf->SetFont('Arial', 'B', 6);
+            $pdf->Cell(85, 8, utf8_decode($importeLetra), 1, 0, 'L');
 
 
             $pdf->Ln(8);
-           // $pdf->Cell(130, 8, "", 0, 0, 'L');
+            // $pdf->Cell(130, 8, "", 0, 0, 'L');
             if ($totalIngresado > 0) {
-                $pdf->Cell(85, 8, utf8_decode('Cambio: '."$" . ($totalIngresado - $total)), 1, 0, 'L');
-              //  $pdf->Cell(20, 8, utf8_decode("$" . ($totalIngresado - $total)), 1, 0, 'R');
+                $pdf->Cell(85, 8, utf8_decode('Cambio: ' . "$" . ($totalIngresado - $total)), 1, 0, 'L');
+                //  $pdf->Cell(20, 8, utf8_decode("$" . ($totalIngresado - $total)), 1, 0, 'R');
                 $pdf->Ln(8);
             }
 
@@ -679,7 +685,7 @@ $pdf->SetFont('Arial', 'B', 6);
         return $xsub;
     }
 
-  public function executeListadoMovimientosCaja(sfWebRequest $request) {//guarda y edita
+    public function executeListadoMovimientosCaja(sfWebRequest $request) {//guarda y edita
         try {
             if ($request->isMethod(sfWebRequest::POST)) {
 
@@ -695,7 +701,7 @@ $pdf->SetFont('Arial', 'B', 6);
                 $nombreSeccion = $request->getParameter("nombreSeccion", '');
                 $categoria = $request->getParameter("categoria", '');
 
-                $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago, $nombreServicio,$categoria);
+                $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago, $nombreServicio, $categoria);
                 $listadoMovimientosRefinada = [];
 
                 for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {
@@ -747,9 +753,9 @@ $pdf->SetFont('Arial', 'B', 6);
 
             $nombreServicio = $request->getParameter("nombreServicio", '');
             $nombreSeccion = $request->getParameter("nombreSeccion", '');
-             $categoria = $request->getParameter("categoria", '');
+            $categoria = $request->getParameter("categoria", '');
 
-            $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago, $nombreServicio,$categoria);
+            $listadoMovimientos = consultasBd::getMovimientosCaja($numRecibo, $fechaIni, $fechaFin, $formaPago, $nombreServicio, $categoria);
             $listadoMovimientosRefinada = [];
 
             for ($i = 0; $i < sizeof($listadoMovimientos); $i ++) {
@@ -893,6 +899,7 @@ $pdf->SetFont('Arial', 'B', 6);
             return $this->sendJSON($r);
         }
     }
+
     public function executeEliminarPagos(sfWebRequest $request) {//guarda y edita
         try {
             if ($request->isMethod(sfWebRequest::POST)) {
@@ -959,10 +966,10 @@ $pdf->SetFont('Arial', 'B', 6);
                 $fechaFin = $request->getParameter("fechaFin", 0);
 
                 $nombreServicio = $request->getParameter("nombreServicio", '');
-   $categoria = $request->getParameter("categoria", '');
+                $categoria = $request->getParameter("categoria", '');
 
 
-                $listaServiciosInfo = consultasBd::getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio,$categoria);
+                $listaServiciosInfo = consultasBd::getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio, $categoria);
 
 
 
@@ -990,10 +997,10 @@ $pdf->SetFont('Arial', 'B', 6);
             $fechaFin = $request->getParameter("fechaFin", 0);
 
             $nombreServicio = $request->getParameter("nombreServicio", '');
-   $categoria = $request->getParameter("categoria", '');
+            $categoria = $request->getParameter("categoria", '');
 
 
-            $listadoMovimientos = consultasBd::getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio,$categoria);
+            $listadoMovimientos = consultasBd::getEstadoCuentaServicio($fechaIni, $fechaFin, $formaPago, $nombreServicio, $categoria);
 
             /* Imprimir */
             //-------------imprimir
