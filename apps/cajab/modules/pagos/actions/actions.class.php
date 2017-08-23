@@ -771,8 +771,13 @@ class pagosActions extends baseCajabProjectActions {
                 } else {
                     if ($listadoMovimientos[$i]['tipo_descripcion'] == "Alumno") {
                         $nombreAlumno = consultasInstituto::getDatosAlumnoXIdSeccionSeparados($listadoMovimientos[$i]['id_alumno'], $nombreSeccion);
-                        $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
-                        $listadoMovimientos[$i]['seccion'] = $nombreAlumno[0]['seccion'];
+                        if (sizeof($nombreAlumno) > 0) {
+                            $listadoMovimientos[$i]['cliente'] = $nombreAlumno[0]['nombre'];
+                            $listadoMovimientos[$i]['seccion'] = $nombreAlumno[0]['seccion'];
+                        } else {
+                            $listadoMovimientos[$i]['cliente'] = "***";
+                            $listadoMovimientos[$i]['seccion'] = "***";
+                        }
                     } else {
                         $listadoMovimientos[$i]['seccion'] = "";
                     }
