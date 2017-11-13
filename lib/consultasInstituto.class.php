@@ -232,7 +232,7 @@ class consultasInstituto {
     	$conn->execute($query);    	    	
     	$conn->close();
     	$consultasInstituto= new consultasInstituto();
-    	$offset=1;
+    	$offset=0;
     	$count=0;
     	
     	    	
